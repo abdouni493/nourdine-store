@@ -49,7 +49,7 @@ import {
   Tooltip,
 } from 'recharts'
 import { StatCard } from '@/components/ui/StatCard'
-import { PageHeader, EmptyState } from '@/components/ui/Misc'
+import { PageHeader, EmptyState, DateRange } from '@/components/ui/Misc'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea, Select } from '@/components/ui/Input'
@@ -71,6 +71,7 @@ import {
   periodWorkerMovements,
 } from '@/utils/calculations'
 import { formatMoney } from '@/utils/helpers'
+import { useChartTheme } from '@/utils/chartTheme'
 import { cardVariants, fadeUp, staggerContainer } from '@/utils/animations'
 import type { CaisseTransaction, CaisseType } from '@/types'
 import { commit } from '@/utils/mutate'
@@ -78,10 +79,10 @@ import { commit } from '@/utils/mutate'
 type PeriodKey = 'today' | 'week' | 'month' | 'year' | 'custom'
 
 const Panel = ({ title, icon, action, children, className = '' }: { title: string; icon?: ReactNode; action?: ReactNode; children: ReactNode; className?: string }) => (
-  <motion.div variants={fadeUp} className={`card-wood rounded-2xl p-5 ${className}`}>
-    <div className="mb-4 flex items-center gap-2">
+  <motion.div variants={fadeUp} className={`card-wood min-w-0 rounded-2xl p-4 sm:p-5 ${className}`}>
+    <div className="mb-4 flex flex-wrap items-center gap-2">
       {icon}
-      <h3 className="text-display text-lg font-bold text-wood-dark">{title}</h3>
+      <h3 className="text-display min-w-0 text-base font-bold text-wood-dark sm:text-lg">{title}</h3>
       {action && <div className="ms-auto">{action}</div>}
     </div>
     {children}
@@ -117,6 +118,7 @@ const MiniTable = ({ head, rows, empty }: { head: string[]; rows: ReactNode[][];
 
 export const CaissePage = () => {
   const { t } = useTranslation()
+  const chart = useChartTheme()
   const { transactions, addTransaction, updateTransaction, deleteTransaction } = useCaisseStore()
   const sales = useSalesStore((s) => s.sales)
   const purchases = usePurchaseStore((s) => s.purchases)
@@ -332,20 +334,20 @@ export const CaissePage = () => {
       />
 
       {/* Global wealth KPIs */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         {kpis.map((k, i) => (
           <StatCard key={k.label} index={i} {...k} />
         ))}
       </div>
 
       {/* Period filter bar */}
-      <motion.div variants={fadeUp} className="card-wood mt-5 flex flex-wrap items-center gap-3 rounded-2xl p-4">
-        <div className="inline-flex flex-wrap gap-1 rounded-xl border border-wood-light/40 bg-white/60 p-1">
+      <motion.div variants={fadeUp} className="card-wood mt-5 flex flex-wrap items-center gap-3 rounded-2xl p-3 sm:p-4">
+        <div className="grid w-full grid-cols-5 gap-1 rounded-xl border border-wood-light/40 bg-wood-cream/60 p-1 sm:inline-flex sm:w-auto sm:flex-wrap">
           {periods.map((p) => (
             <button
               key={p.key}
               onClick={() => setPeriod(p.key)}
-              className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition ${
+              className={`truncate rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition sm:px-3.5 sm:text-xs ${
                 period === p.key ? 'bg-wood-btn text-accentfg shadow-wood' : 'text-wood-medium hover:bg-wood-cream'
               }`}
             >
@@ -357,65 +359,59 @@ export const CaissePage = () => {
         <AnimatePresence>
           {period === 'custom' && (
             <motion.div
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
-              className="flex items-center gap-2 overflow-hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="w-full overflow-hidden sm:w-auto"
             >
-              <span className="text-xs text-wood-medium">{t('from')}</span>
-              <input type="date" value={customFrom} onChange={(e) => setCustomFrom(e.target.value)} className="input-wood py-1.5" />
-              <span className="text-xs text-wood-medium">{t('to')}</span>
-              <input type="date" value={customTo} onChange={(e) => setCustomTo(e.target.value)} className="input-wood py-1.5" />
+              <DateRange from={customFrom} to={customTo} onFrom={setCustomFrom} onTo={setCustomTo} fromLabel={t('from')} toLabel={t('to')} />
             </motion.div>
           )}
         </AnimatePresence>
 
-        <Badge tone="gold" className="ms-auto capitalize">{label}</Badge>
+        <Badge tone="gold" className="capitalize sm:ms-auto">{label}</Badge>
       </motion.div>
 
       {/* Cash-flow summary */}
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <motion.div variants={cardVariants} custom={0} whileHover={{ y: -4 }} className="card-wood relative overflow-hidden rounded-2xl p-5">
-          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-sage to-green-600 opacity-10" />
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-sage to-green-600 text-white shadow-wood"><ArrowDownCircle size={20} /></div>
-            <div>
+        <motion.div variants={cardVariants} custom={0} className="card-wood relative min-w-0 overflow-hidden rounded-2xl p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sage/10 text-sage ring-1 ring-inset ring-sage/20"><ArrowDownCircle size={20} /></div>
+            <div className="min-w-0">
               <p className="text-sm font-medium text-wood-medium">{t('cashIn')}</p>
-              <p className="text-mono text-xl font-bold text-sage">{formatMoney(stats.cashIn)}</p>
+              <p className="text-mono break-words text-lg font-bold text-sage sm:text-xl">{formatMoney(stats.cashIn)}</p>
             </div>
           </div>
         </motion.div>
 
-        <motion.div variants={cardVariants} custom={1} whileHover={{ y: -4 }} className="card-wood relative overflow-hidden rounded-2xl p-5">
-          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-terracotta to-red-600 opacity-10" />
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-terracotta to-red-600 text-white shadow-wood"><ArrowUpCircle size={20} /></div>
-            <div>
+        <motion.div variants={cardVariants} custom={1} className="card-wood relative min-w-0 overflow-hidden rounded-2xl p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-terracotta/10 text-terracotta ring-1 ring-inset ring-terracotta/20"><ArrowUpCircle size={20} /></div>
+            <div className="min-w-0">
               <p className="text-sm font-medium text-wood-medium">{t('cashOut')}</p>
-              <p className="text-mono text-xl font-bold text-terracotta">{formatMoney(stats.cashOut)}</p>
+              <p className="text-mono break-words text-lg font-bold text-terracotta sm:text-xl">{formatMoney(stats.cashOut)}</p>
             </div>
           </div>
         </motion.div>
 
-        <motion.div variants={cardVariants} custom={2} whileHover={{ y: -4 }} className="card-wood relative overflow-hidden rounded-2xl p-5">
-          <div className={`absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br opacity-10 ${stats.netFlow >= 0 ? 'from-gold to-gold-light' : 'from-terracotta to-red-600'}`} />
-          <div className="flex items-center gap-3">
-            <div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-wood ${stats.netFlow >= 0 ? 'from-gold to-gold-light' : 'from-terracotta to-red-600'}`}><TrendingUp size={20} /></div>
-            <div>
+        <motion.div variants={cardVariants} custom={2} className="card-wood relative min-w-0 overflow-hidden rounded-2xl p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset ${stats.netFlow >= 0 ? 'bg-gold/15 text-goldink ring-gold/30' : 'bg-terracotta/10 text-terracotta ring-terracotta/20'}`}><TrendingUp size={20} /></div>
+            <div className="min-w-0">
               <p className="text-sm font-medium text-wood-medium">{t('netFlow')}</p>
-              <p className={`text-mono text-xl font-bold ${stats.netFlow >= 0 ? 'text-[#854D0E]' : 'text-terracotta'}`}>{formatMoney(stats.netFlow)}</p>
+              <p className={`text-mono break-words text-lg font-bold sm:text-xl ${stats.netFlow >= 0 ? 'text-goldink' : 'text-terracotta'}`}>{formatMoney(stats.netFlow)}</p>
             </div>
           </div>
         </motion.div>
       </div>
 
       {/* Detailed period calculation cards */}
-      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
         {detailCards.map((c, i) => (
-          <motion.div key={c.label} variants={cardVariants} custom={i} whileHover={{ y: -4 }} className="card-wood relative overflow-hidden rounded-2xl p-4">
-            <div className={`mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-wood ${c.accent}`}>{c.icon}</div>
+          <motion.div key={c.label} variants={cardVariants} custom={i} className="card-wood relative min-w-0 overflow-hidden rounded-2xl p-3.5 sm:p-4">
+            <div className={`mb-2 flex h-10 w-10 items-center justify-center rounded-xl ring-1 ring-inset ${c.tone === 'sage' ? 'bg-sage/10 text-sage ring-sage/20' : c.tone === 'terracotta' ? 'bg-terracotta/10 text-terracotta ring-terracotta/20' : c.tone === 'gold' ? 'bg-gold/15 text-goldink ring-gold/30' : 'bg-wood-btn text-accentfg ring-transparent'}`}>{c.icon}</div>
             <p className="text-xs font-medium text-wood-medium">{c.label}</p>
-            <p className="text-mono mt-0.5 text-lg font-bold text-wood-dark">{formatMoney(c.value)}</p>
+            <p className="text-mono mt-0.5 break-words text-sm font-bold leading-tight text-wood-dark sm:text-lg">{formatMoney(c.value)}</p>
             <p className="mt-1 truncate text-[11px] text-wood-medium/70">{c.sub}</p>
           </motion.div>
         ))}
@@ -423,20 +419,20 @@ export const CaissePage = () => {
 
       {/* Breakdown + chart */}
       <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Panel title={t('caisseBreakdown')} icon={<Scale size={18} className="text-wood-warm" />}>
+        <Panel title={t('caisseBreakdown')} icon={<Scale size={18} className="text-goldink" />}>
           <div className="space-y-1.5">
             {breakdown.map((row) => (
-              <div key={row.label} className="flex items-center justify-between rounded-xl bg-wood-cream/40 px-3 py-2">
-                <span className="flex items-center gap-2 text-sm text-wood-dark">
+              <div key={row.label} className="flex items-center justify-between gap-3 rounded-xl bg-wood-cream/40 px-3 py-2">
+                <span className="flex min-w-0 items-center gap-2 text-sm text-wood-dark">
                   <span className={`text-base font-bold ${row.positive ? 'text-sage' : 'text-terracotta'}`}>{row.positive ? '+' : '−'}</span>
                   {row.label}
                 </span>
-                <span className={`text-mono text-sm font-bold ${row.positive ? 'text-sage' : 'text-terracotta'}`}>{formatMoney(Math.abs(row.value))}</span>
+                <span className={`text-mono shrink-0 text-sm font-bold ${row.positive ? 'text-sage' : 'text-terracotta'}`}>{formatMoney(Math.abs(row.value))}</span>
               </div>
             ))}
-            <div className="mt-2 flex items-center justify-between rounded-xl bg-wood-header px-3 py-3 text-white">
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-wood-header px-3 py-3 text-white">
               <span className="flex items-center gap-2 text-sm font-bold"><ArrowRightLeft size={16} /> {t('netFlow')}</span>
-              <span className="text-mono text-base font-bold">{formatMoney(stats.netFlow)}</span>
+              <span className="text-mono text-base font-bold text-[#E9C977]">{formatMoney(stats.netFlow)}</span>
             </div>
           </div>
         </Panel>
@@ -444,13 +440,13 @@ export const CaissePage = () => {
         <Panel title={t('inflowVsOutflow')} icon={<TrendingUp size={18} className="text-sage" />}>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={chartData} margin={{ top: 8, right: 8, left: 8, bottom: 8 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#EADFC8" />
-              <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#57534E' }} interval={0} />
-              <YAxis tick={{ fontSize: 11, fill: '#57534E' }} tickFormatter={(v) => `${v / 1000}k`} />
-              <Tooltip formatter={(v: number) => formatMoney(v)} contentStyle={{ borderRadius: 12, border: '1px solid #D9C7A3' }} />
+              <CartesianGrid strokeDasharray="3 3" stroke={chart.grid} />
+              <XAxis dataKey="name" tick={{ ...chart.axis, fontSize: 10 }} interval={0} />
+              <YAxis tick={chart.axis} width={40} tickFormatter={(v) => `${v / 1000}k`} />
+              <Tooltip formatter={(v: number) => formatMoney(v)} contentStyle={chart.tooltip} />
               <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                 {chartData.map((d, i) => (
-                  <Cell key={i} fill={d.kind === 'in' ? '#047857' : '#A16207'} />
+                  <Cell key={i} fill={d.kind === 'in' ? chart.success : chart.accent} />
                 ))}
               </Bar>
             </BarChart>
@@ -459,10 +455,10 @@ export const CaissePage = () => {
       </div>
 
       {/* Per-category analysis — click a category to drill the tables below */}
-      <motion.div variants={fadeUp} className="card-wood mt-5 rounded-2xl p-5">
+      <motion.div variants={fadeUp} className="card-wood mt-5 rounded-2xl p-4 sm:p-5">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <Tags size={18} className="text-wood-warm" />
+            <Tags size={18} className="text-goldink" />
             <h3 className="text-display text-lg font-bold text-wood-dark">{t('categoryAnalysis')}</h3>
           </div>
           <Badge tone="gold">{t('totalGain')}: {formatMoney(catRows.reduce((s, r) => s + r.gain, 0))}</Badge>
@@ -473,9 +469,9 @@ export const CaissePage = () => {
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <button
               onClick={() => setCatFilter('all')}
-              className={`rounded-xl border p-3 text-start transition ${catFilter === 'all' ? 'border-wood-warm bg-wood-cream/60 shadow-wood' : 'border-wood-light/25 bg-white/60 hover:bg-wood-cream/40'}`}
+              className={`rounded-xl border p-3 text-start transition ${catFilter === 'all' ? 'border-wood-warm bg-wood-cream/60 shadow-wood' : 'border-wood-light/25 bg-wood-cream/60 hover:bg-wood-cream/40'}`}
             >
-              <span className="flex items-center gap-1.5 font-semibold text-wood-dark"><Layers size={14} className="text-wood-warm" />{t('allCategories')}</span>
+              <span className="flex items-center gap-1.5 font-semibold text-wood-dark"><Layers size={14} className="text-goldink" />{t('allCategories')}</span>
               <div className="mt-2 grid grid-cols-2 gap-1.5 text-[11px]">
                 <span className="text-wood-medium">{t('sales')}: <b className="text-mono text-wood-dark">{formatMoney(catRows.reduce((s, r) => s + r.salesRevenue, 0))}</b></span>
                 <span className="text-wood-medium">{t('netProfit')}: <b className="text-mono text-sage">{formatMoney(catRows.reduce((s, r) => s + r.gain, 0))}</b></span>
@@ -485,10 +481,10 @@ export const CaissePage = () => {
               <button
                 key={c.category}
                 onClick={() => setCatFilter(catFilter === c.category ? 'all' : c.category)}
-                className={`rounded-xl border p-3 text-start transition ${catFilter === c.category ? 'border-wood-warm bg-wood-cream/60 shadow-wood' : 'border-wood-light/25 bg-white/60 hover:bg-wood-cream/40'}`}
+                className={`rounded-xl border p-3 text-start transition ${catFilter === c.category ? 'border-wood-warm bg-wood-cream/60 shadow-wood' : 'border-wood-light/25 bg-wood-cream/60 hover:bg-wood-cream/40'}`}
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="flex min-w-0 items-center gap-1.5 font-semibold text-wood-dark"><Layers size={14} className="shrink-0 text-wood-warm" /><span className="truncate">{c.category}</span></span>
+                  <span className="flex min-w-0 items-center gap-1.5 font-semibold text-wood-dark"><Layers size={14} className="shrink-0 text-goldink" /><span className="truncate">{c.category}</span></span>
                   <span className={`text-mono shrink-0 text-sm font-bold ${c.gain >= 0 ? 'text-sage' : 'text-terracotta'}`}>{c.gain >= 0 ? '+' : ''}{formatMoney(c.gain)}</span>
                 </div>
                 <div className="mt-2 grid grid-cols-2 gap-1.5 text-[11px]">
@@ -528,7 +524,7 @@ export const CaissePage = () => {
 
         <Panel
           title={t('productsPurchased')}
-          icon={<Package size={18} className="text-wood-warm" />}
+          icon={<Package size={18} className="text-goldink" />}
           action={<Badge tone={catFilter === 'all' ? 'gold' : 'sage'}>{catFilter === 'all' ? t('allCategories') : catFilter}</Badge>}
         >
           <MiniTable
@@ -561,12 +557,12 @@ export const CaissePage = () => {
           </div>
         </Panel>
 
-        <Panel title={t('workerMovements')} icon={<HandCoins size={18} className="text-[#854D0E]" />}>
+        <Panel title={t('workerMovements')} icon={<HandCoins size={18} className="text-goldink" />}>
           <div className="space-y-3">
             <div>
               <p className="mb-1.5 flex items-center justify-between px-1 text-[11px] font-bold uppercase tracking-wide text-wood-medium">
                 <span>{t('salariesPaid')}</span>
-                <span className="text-mono normal-case text-[#854D0E]">{formatMoney(workerMov.totalPayments)}</span>
+                <span className="text-mono normal-case text-goldink">{formatMoney(workerMov.totalPayments)}</span>
               </p>
               <MiniTable
                 head={[t('workers'), t('date'), t('amount')]}
@@ -577,7 +573,7 @@ export const CaissePage = () => {
             <div>
               <p className="mb-1.5 flex items-center justify-between px-1 text-[11px] font-bold uppercase tracking-wide text-wood-medium">
                 <span>{t('advances')}</span>
-                <span className="text-mono normal-case text-wood-warm">{formatMoney(workerMov.totalAdvances)}</span>
+                <span className="text-mono normal-case text-goldink">{formatMoney(workerMov.totalAdvances)}</span>
               </p>
               <MiniTable
                 head={[t('workers'), t('date'), t('amount')]}
@@ -590,13 +586,13 @@ export const CaissePage = () => {
       </div>
 
       {/* Transactions history */}
-      <motion.div variants={fadeUp} className="card-wood mt-5 rounded-2xl p-5">
+      <motion.div variants={fadeUp} className="card-wood mt-5 rounded-2xl p-4 sm:p-5">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <ArrowRightLeft size={18} className="text-wood-warm" />
+            <ArrowRightLeft size={18} className="text-goldink" />
             <h3 className="text-display text-lg font-bold text-wood-dark">{t('transactionsHistory')}</h3>
           </div>
-          <div className="inline-flex rounded-xl border border-wood-light/40 bg-white/60 p-1">
+          <div className="inline-flex rounded-xl border border-wood-light/40 bg-wood-cream/60 p-1">
             {([
               { k: 'all', l: t('allMovements') },
               { k: 'deposit', l: t('deposit') },
@@ -634,22 +630,22 @@ export const CaissePage = () => {
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0, transition: { delay: Math.min(i, 8) * 0.03 } }}
                     exit={{ opacity: 0, x: 12 }}
-                    className="group flex items-center gap-3 rounded-xl border border-wood-light/20 bg-wood-cream/30 px-3 py-2.5"
+                    className="group flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-wood-light/40 bg-wood-cream/30 px-3 py-2.5"
                   >
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-wood ${isDeposit ? 'bg-gradient-to-br from-sage to-green-600' : 'bg-gradient-to-br from-terracotta to-red-600'}`}>
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset ${isDeposit ? 'bg-sage/10 text-sage ring-sage/20' : 'bg-terracotta/10 text-terracotta ring-terracotta/20'}`}>
                       {isDeposit ? <ArrowDownCircle size={18} /> : <ArrowUpCircle size={18} />}
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
+                    <div className="min-w-0 flex-1 basis-[calc(100%-52px)] sm:basis-0">
+                      <div className="flex min-w-0 items-center gap-2">
                         <Badge tone={isDeposit ? 'sage' : 'unpaid'}>{isDeposit ? t('deposit') : t('withdrawal')}</Badge>
                         <span className="truncate text-sm font-medium text-wood-dark">{tx.description || '—'}</span>
                       </div>
                       <p className="text-[11px] text-wood-medium">{format(new Date(tx.date), 'EEEE dd MMMM yyyy', { locale: frLocale })}</p>
                     </div>
-                    <span className={`text-mono text-base font-bold ${isDeposit ? 'text-sage' : 'text-terracotta'}`}>
+                    <span className={`text-mono ms-auto text-sm font-bold sm:text-base ${isDeposit ? 'text-sage' : 'text-terracotta'}`}>
                       {isDeposit ? '+' : '−'}{formatMoney(tx.amount)}
                     </span>
-                    <div className="flex gap-1 opacity-0 transition group-hover:opacity-100">
+                    <div className="flex gap-1 transition lg:opacity-0 lg:focus-within:opacity-100 lg:group-hover:opacity-100">
                       <Button action="edit" size="sm" variant="outline" onClick={() => openEdit(tx)}><Pencil size={14} /></Button>
                       <Button action="delete" size="sm" variant="danger" onClick={() => setDeleting(tx)}><Trash2 size={14} /></Button>
                     </div>
@@ -674,7 +670,7 @@ export const CaissePage = () => {
             <option value="deposit">{t('deposit')}</option>
             <option value="withdrawal">{t('withdrawal')}</option>
           </Select>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Input label={`${t('amount')} (DA)`} type="number" step="0.01" value={form.amount} onChange={(e) => setForm({ ...form, amount: Number(e.target.value) })} />
             <Input label={t('date')} type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
           </div>

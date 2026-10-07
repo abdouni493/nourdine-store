@@ -126,7 +126,7 @@ export const ImageField = ({
       {label && <label className="label-wood">{label}</label>}
       <div
         className={clsx(
-          'group relative w-full overflow-hidden border border-dashed border-wood-light bg-wood-cream transition hover:border-wood-warm',
+          'group relative w-full overflow-hidden rounded-xl border border-dashed border-wood-light bg-wood-cream transition hover:border-gold',
           ratios[ratio],
         )}
       >
@@ -137,7 +137,7 @@ export const ImageField = ({
               type="button"
               onClick={() => onChange('')}
               aria-label={t('removeImage')}
-              className="absolute end-2 top-2 bg-black/70 p-1.5 text-white opacity-0 transition group-hover:opacity-100"
+              className="absolute end-2 top-2 rounded-lg bg-black/70 p-1.5 text-white opacity-0 transition group-hover:opacity-100 [@media(hover:none)]:opacity-100"
             >
               <X size={14} />
             </button>
@@ -248,7 +248,7 @@ export const ImageGallery = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.2 }}
-              className="group relative aspect-[3/4] overflow-hidden border border-wood-light bg-wood-cream"
+              className="group relative aspect-[3/4] overflow-hidden rounded-lg border border-wood-light bg-wood-cream"
             >
               <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
               {i === 0 && (
@@ -256,13 +256,13 @@ export const ImageGallery = ({
                   {t('coverImage')}
                 </span>
               )}
-              <div className="absolute inset-0 flex items-center justify-center gap-1.5 bg-black/55 opacity-0 transition group-hover:opacity-100">
+              <div className="absolute inset-0 flex items-center justify-center gap-1.5 bg-black/55 opacity-0 transition group-hover:opacity-100 [@media(hover:none)]:items-end [@media(hover:none)]:justify-end [@media(hover:none)]:bg-transparent [@media(hover:none)]:p-1 [@media(hover:none)]:opacity-100">
                 {i !== 0 && (
                   <button
                     type="button"
                     onClick={() => makeCover(i)}
                     title={t('coverImage')}
-                    className="rounded-lg bg-white/90 p-1.5 text-teal-700 transition hover:bg-white"
+                    className="rounded-lg bg-white/90 p-1.5 text-[#8A681A] shadow transition hover:bg-white"
                   >
                     <Star size={13} />
                   </button>
@@ -271,7 +271,7 @@ export const ImageGallery = ({
                   type="button"
                   onClick={() => onChange(value.filter((_, k) => k !== i))}
                   title={t('removeImage')}
-                  className="bg-white/90 p-1.5 text-terracotta transition hover:bg-white"
+                  className="rounded-lg bg-white/90 p-1.5 text-terracotta shadow transition hover:bg-white"
                 >
                   <X size={13} />
                 </button>
@@ -285,7 +285,7 @@ export const ImageGallery = ({
             type="button"
             onClick={() => input.current?.click()}
             disabled={busy}
-            className="relative flex aspect-[3/4] flex-col items-center justify-center gap-1.5 overflow-hidden border border-dashed border-wood-light bg-wood-cream text-wood-medium transition hover:border-wood-warm hover:text-wood-dark disabled:cursor-wait"
+            className="relative flex aspect-[3/4] flex-col items-center justify-center gap-1.5 overflow-hidden rounded-lg border border-dashed border-wood-light bg-wood-cream text-wood-medium transition hover:border-gold hover:text-wood-dark disabled:cursor-wait"
           >
             <ImagePlus size={18} />
             <span className="px-1 text-center text-[9px] font-bold uppercase tracking-widest">

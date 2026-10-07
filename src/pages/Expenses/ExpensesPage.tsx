@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'
 import { Plus, Pencil, Trash2, Wallet, Check } from 'lucide-react'
-import { PageHeader, SearchInput, EmptyState } from '@/components/ui/Misc'
+import { PageHeader, SearchInput, EmptyState, DateRange } from '@/components/ui/Misc'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
@@ -68,28 +68,23 @@ export const ExpensesPage = () => {
     <div>
       <PageHeader title={t('expenses')} subtitle={formatMoney(total)} actions={<Button action="create" onClick={openNew}><Plus size={18} />{t('newExpense')}</Button>} />
 
-      <div className="card-wood mb-5 flex flex-wrap items-center gap-3 rounded-2xl p-4">
-        <SearchInput value={search} onChange={setSearch} placeholder={`${t('search')}…`} className="min-w-[200px] flex-1" />
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-wood-medium">{t('from')}</span>
-          <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="input-wood py-1.5" />
-          <span className="text-xs text-wood-medium">{t('to')}</span>
-          <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="input-wood py-1.5" />
-        </div>
+      <div className="card-wood mb-5 flex flex-col gap-3 rounded-2xl p-3 sm:flex-row sm:flex-wrap sm:items-center sm:p-4">
+        <SearchInput value={search} onChange={setSearch} placeholder={`${t('search')}…`} className="w-full sm:w-auto sm:min-w-[200px] sm:flex-1" />
+        <DateRange from={fromDate} to={toDate} onFrom={setFromDate} onTo={setToDate} fromLabel={t('from')} toLabel={t('to')} />
       </div>
 
       {filtered.length === 0 ? (
         <EmptyState title={t('noData')} hint={t('noDataHint')} icon={<Wallet size={40} />} action={<Button action="create" onClick={openNew}><Plus size={18} />{t('newExpense')}</Button>} />
       ) : (
-        <motion.div variants={staggerContainer} initial="initial" animate="animate" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <motion.div variants={staggerContainer} initial="initial" animate="animate" className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           <AnimatePresence>
             {filtered.map((e, i) => (
-              <motion.div key={e.id} variants={cardVariants} custom={i} layout whileHover={{ y: -4 }} className="card-wood rounded-2xl p-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-terracotta to-red-600 text-white"><Wallet size={20} /></div>
-                  <span className="text-mono text-lg font-bold text-terracotta">{formatMoney(e.amount)}</span>
+              <motion.div key={e.id} variants={cardVariants} custom={i} layout className="card-wood min-w-0 rounded-2xl p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-terracotta/10 text-terracotta ring-1 ring-inset ring-terracotta/20"><Wallet size={20} /></div>
+                  <span className="text-mono break-words text-end text-base font-bold text-terracotta sm:text-lg">{formatMoney(e.amount)}</span>
                 </div>
-                <h3 className="mt-3 font-bold text-wood-dark">{e.name}</h3>
+                <h3 className="mt-3 break-words font-bold text-wood-dark">{e.name}</h3>
                 <p className="line-clamp-2 min-h-[2.5rem] text-xs text-wood-medium">{e.description || '—'}</p>
                 <p className="mt-1 text-xs text-wood-medium">{format(new Date(e.date), 'dd/MM/yyyy')}</p>
                 <div className="mt-3 flex gap-1.5 border-t border-wood-light/20 pt-3">
@@ -107,7 +102,7 @@ export const ExpensesPage = () => {
         <div className="space-y-4">
           <Input label={t('name')} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
           <Textarea label={t('description')} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Input label={`${t('amount')} (DA)`} type="number" step="0.01" value={form.amount} onChange={(e) => setForm({ ...form, amount: Number(e.target.value) })} />
             <Input label={t('date')} type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
           </div>

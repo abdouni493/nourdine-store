@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
 import {
@@ -54,6 +54,9 @@ export const POSPage = () => {
   const [received, setReceived] = useState(0)
 
   const [typeFilter, setTypeFilter] = useState<'' | ProductType>('')
+  const cartRef = useRef<HTMLDivElement>(null)
+  // Focusing the search on a phone would throw the keyboard over the till.
+  const autoFocusSearch = typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -221,7 +224,7 @@ export const POSPage = () => {
     <div>
       <PageHeader title={t('pos')} subtitle={format(new Date(), 'dd/MM/yyyy HH:mm')} />
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-5 pb-24 lg:grid-cols-5 lg:pb-0">
         {/* ── Articles ─────────────────────────────────────────────────── */}
         <div className="lg:col-span-3">
           <div className="relative mb-4">
@@ -234,20 +237,20 @@ export const POSPage = () => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder={`${t('search')} (${t('productName')} / ${t('barcode')})`}
               className="input-wood ps-10"
-              autoFocus
+              autoFocus={autoFocusSearch}
             />
           </div>
 
-          <div className="mb-4 flex flex-wrap gap-2">
+          <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
             {(['', ...PRODUCT_TYPES] as ('' | ProductType)[]).map((pt) => (
               <button
                 key={pt || 'all'}
                 type="button"
                 onClick={() => setTypeFilter(pt)}
-                className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
+                className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
                   typeFilter === pt
-                    ? 'border-wood-warm bg-wood-warm text-accentfg'
-                    : 'border-wood-light bg-wood-white text-wood-medium hover:border-wood-warm'
+                    ? 'border-transparent bg-wood-btn text-accentfg'
+                    : 'border-wood-light bg-wood-white text-wood-medium hover:border-gold'
                 }`}
               >
                 {pt ? t(`productType_${pt}` as TranslationKey) : t('allTypes')}
@@ -255,17 +258,16 @@ export const POSPage = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 xl:grid-cols-4">
             {filtered.map((p, i) => (
               <motion.button
                 key={p.id}
                 initial={{ opacity: 0, scale: 0.92 }}
                 animate={{ opacity: 1, scale: 1, transition: { delay: i * 0.02 } }}
-                whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => selectProduct(p)}
                 disabled={p.quantity <= 0}
-                className="card-wood flex flex-col overflow-hidden rounded-2xl p-3 text-start transition disabled:opacity-50"
+                className="card-wood flex min-w-0 flex-col overflow-hidden rounded-2xl p-2.5 text-start transition hover:border-gold disabled:opacity-50 sm:p-3"
               >
                 <div className="mb-2 flex h-20 items-center justify-center overflow-hidden rounded-xl bg-wood-cream text-wood-light">
                   {p.images?.[0] ? (
@@ -284,8 +286,8 @@ export const POSPage = () => {
                     .filter(Boolean)
                     .join(' · ') || t(`productType_${p.productType}` as TranslationKey)}
                 </p>
-                <div className="mt-1 flex items-center justify-between">
-                  <span className="text-mono font-bold text-sage">{formatMoney(p.salePrice)}</span>
+                <div className="mt-1 flex items-center justify-between gap-1">
+                  <span className="text-mono min-w-0 truncate text-xs font-bold text-sage sm:text-sm">{formatMoney(p.salePrice)}</span>
                   <span
                     className={`text-xs ${p.quantity <= p.minQuantity ? 'font-bold text-terracotta' : 'text-wood-medium'}`}
                   >
@@ -321,21 +323,21 @@ export const POSPage = () => {
         </div>
 
         {/* ── Cart ─────────────────────────────────────────────────────── */}
-        <div className="lg:col-span-2">
-          <div className="card-wood sticky top-4 flex max-h-[calc(100vh-8rem)] flex-col rounded-2xl">
-            <div className="flex items-center justify-between rounded-t-2xl bg-wood-header px-4 py-3 text-white">
+        <div ref={cartRef} className="scroll-mt-4 lg:col-span-2">
+          <div className="card-wood flex flex-col overflow-hidden rounded-2xl lg:sticky lg:top-4 lg:max-h-[calc(100dvh-8rem)]">
+            <div className="flex items-center justify-between bg-wood-header px-4 py-3 text-white">
               <h3 className="flex items-center gap-2 text-display text-lg font-bold">
                 <IconCart size={20} />
                 {t('cart')}
               </h3>
               {cart.length > 0 && (
-                <button onClick={resetSale} className="rounded-lg p-1 hover:bg-white/15">
+                <button onClick={resetSale} aria-label={t('delete')} className="rounded-lg p-1.5 hover:bg-white/15">
                   <IconDelete size={18} />
                 </button>
               )}
             </div>
 
-            <div className="flex-1 overflow-y-auto px-4 py-3">
+            <div className="flex-1 px-4 py-3 lg:overflow-y-auto">
               {/* Client */}
               <div className="mb-3 rounded-xl border border-wood-light p-2.5">
                 <label className="mb-2 flex items-center gap-1.5 text-sm">
@@ -349,7 +351,7 @@ export const POSPage = () => {
                         setClientQuery('')
                       }
                     }}
-                    className="accent-wood-warm"
+                    className="accent-[rgb(var(--c-gold))]"
                   />
                   {t('walkInClient')}
                 </label>
@@ -373,7 +375,7 @@ export const POSPage = () => {
                         className="input-wood py-1.5"
                       />
                       {clientSuggestions.length > 0 && (
-                        <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-wood-light bg-white shadow-wood-lg">
+                        <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-wood-light bg-wood-white shadow-wood-lg">
                           {clientSuggestions.map((c) => (
                             <button
                               key={c.id}
@@ -440,9 +442,9 @@ export const POSPage = () => {
                         <motion.div
                           key={key}
                           layout
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, height: 0 }}
                           className="rounded-xl bg-wood-cream/50 p-2.5"
                         >
                           <div className="flex items-start justify-between gap-2">
@@ -451,12 +453,12 @@ export const POSPage = () => {
                                 {l.productName}
                               </p>
                               {l.size && (
-                                <span className="mt-1 inline-block rounded-md bg-wood-warm px-1.5 py-0.5 text-[10px] font-bold text-white">
+                                <span className="mt-1 inline-block rounded-md bg-wood-btn px-1.5 py-0.5 text-[10px] font-bold text-accentfg">
                                   {t('size')} {l.size}
                                 </span>
                               )}
                             </div>
-                            <button onClick={() => removeItem(key)} className="text-terracotta">
+                            <button onClick={() => removeItem(key)} aria-label={t('delete')} className="shrink-0 p-1 text-terracotta">
                               <IconClose size={15} />
                             </button>
                           </div>
@@ -464,7 +466,7 @@ export const POSPage = () => {
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={() => changeQty(key, -1)}
-                                className="flex h-6 w-6 items-center justify-center rounded-lg bg-white text-wood-warm shadow-wood"
+                                className="flex h-8 w-8 items-center justify-center rounded-lg bg-wood-white text-wood-dark shadow-wood"
                               >
                                 <IconMinus size={13} />
                               </button>
@@ -473,7 +475,7 @@ export const POSPage = () => {
                               </span>
                               <button
                                 onClick={() => changeQty(key, 1)}
-                                className="flex h-6 w-6 items-center justify-center rounded-lg bg-white text-wood-warm shadow-wood"
+                                className="flex h-8 w-8 items-center justify-center rounded-lg bg-wood-white text-wood-dark shadow-wood"
                               >
                                 <IconAdd size={13} />
                               </button>
@@ -501,7 +503,7 @@ export const POSPage = () => {
                   type="checkbox"
                   checked={discountOn}
                   onChange={(e) => setDiscountOn(e.target.checked)}
-                  className="accent-wood-warm"
+                  className="accent-[rgb(var(--c-gold))]"
                 />
                 {t('enableDiscount')}
               </label>
@@ -554,6 +556,25 @@ export const POSPage = () => {
         </div>
       </div>
 
+      {/* ── Phone: the basket follows the cashier down the article grid ──── */}
+      {cart.length > 0 && (
+        <div className="fixed inset-x-3 bottom-3 z-30 lg:hidden">
+          <button
+            onClick={() => cartRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            className="flex w-full items-center gap-3 rounded-2xl bg-wood-btn px-4 py-3 text-accentfg shadow-wood-lg"
+          >
+            <span className="relative">
+              <IconCart size={20} />
+              <span className="text-mono absolute -end-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-terracotta px-1 text-[9px] font-bold text-white">
+                {cart.reduce((n, l) => n + l.quantity, 0)}
+              </span>
+            </span>
+            <span className="flex-1 text-start text-sm font-semibold">{t('cart')}</span>
+            <span className="text-mono text-base font-bold">{formatMoney(total)}</span>
+          </button>
+        </div>
+      )}
+
       {/* ── Size picker overlay ────────────────────────────────────────── */}
       <AnimatePresence>
         {picking && (
@@ -562,14 +583,14 @@ export const POSPage = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setPicking(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/50 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-end justify-center bg-black/55 backdrop-blur-sm sm:items-center sm:p-4"
           >
             <motion.div
-              initial={{ scale: 0.94, y: 12 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.94, y: 12, opacity: 0 }}
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 40, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="card-wood w-full max-w-md rounded-2xl p-5"
+              className="card-wood w-full rounded-t-3xl p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:max-w-md sm:rounded-2xl"
             >
               <h3 className="text-display text-lg font-bold text-wood-dark">{picking.name}</h3>
               <p className="mb-4 text-sm text-wood-medium">

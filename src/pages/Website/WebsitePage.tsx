@@ -47,7 +47,7 @@ export const WebsitePage = () => {
             href="/shop"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-wood-btn px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-accentfg transition hover:opacity-85"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-wood-btn px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-accentfg shadow-gold transition hover:opacity-85"
           >
             <ExternalLink size={14} />
             {t('visitWebsite')}
@@ -56,7 +56,7 @@ export const WebsitePage = () => {
       />
 
       {/* Tab rail — the active tab is marked by a rule that slides between them */}
-      <div className="mb-6 overflow-x-auto border-b border-wood-light">
+      <div className="-mx-3 mb-6 overflow-x-auto border-b border-wood-light px-3 sm:mx-0 sm:px-0">
         <div className="flex min-w-max gap-1">
           {TABS.map((item) => {
             const active = tab === item.key
@@ -65,7 +65,7 @@ export const WebsitePage = () => {
                 key={item.key}
                 onClick={() => setTab(item.key)}
                 className={clsx(
-                  'relative flex items-center gap-2 px-4 py-3 text-[11px] font-bold uppercase tracking-wide transition-colors',
+                  'relative flex items-center gap-2 px-3 py-3 text-[11px] font-bold uppercase tracking-wide transition-colors sm:px-4',
                   active ? 'text-wood-dark' : 'text-wood-medium hover:text-wood-dark',
                 )}
               >
@@ -75,7 +75,7 @@ export const WebsitePage = () => {
                   <motion.span
                     layoutId="websiteTab"
                     transition={{ type: 'spring', damping: 30, stiffness: 380 }}
-                    className="absolute inset-x-0 -bottom-px h-0.5 bg-wood-warm"
+                    className="absolute inset-x-0 -bottom-px h-0.5 bg-gold"
                   />
                 )}
               </button>

@@ -9,7 +9,7 @@ interface FieldProps {
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & FieldProps>(
   ({ label, error, hint, className, id, ...props }, ref) => (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {label && (
         <label htmlFor={id} className="label-wood">
           {label}
@@ -28,7 +28,7 @@ Input.displayName = 'Input'
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement> & FieldProps>(
   ({ label, error, className, id, ...props }, ref) => (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {label && (
         <label htmlFor={id} className="label-wood">
           {label}
@@ -47,7 +47,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement>, FieldProp
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ label, error, className, id, children, ...props }, ref) => (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {label && (
         <label htmlFor={id} className="label-wood">
           {label}

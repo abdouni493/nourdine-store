@@ -19,7 +19,7 @@ const apply = (theme: Theme) => {
   document.documentElement.classList.toggle('dark', theme === 'dark')
   document
     .querySelector('meta[name="theme-color"]')
-    ?.setAttribute('content', theme === 'dark' ? '#071A1C' : '#0D9488')
+    ?.setAttribute('content', theme === 'dark' ? '#0A0A0B' : '#111111')
   try {
     localStorage.setItem(KEY, theme)
   } catch {

@@ -5,7 +5,7 @@ import { useReactToPrint } from 'react-to-print'
 import { format, startOfDay, startOfWeek, startOfMonth, isAfter } from 'date-fns'
 import toast from 'react-hot-toast'
 import { Eye, CreditCard, Printer, Trash2, BadgeDollarSign, Pencil, Check } from 'lucide-react'
-import { PageHeader, SearchInput, EmptyState, ViewToggle } from '@/components/ui/Misc'
+import { PageHeader, SearchInput, EmptyState, ViewToggle, MoneyTriplet, DateRange } from '@/components/ui/Misc'
 import { Button } from '@/components/ui/Button'
 import { Badge, statusTone } from '@/components/ui/Badge'
 import { Select, Input } from '@/components/ui/Input'
@@ -72,29 +72,26 @@ export const SalesPage = () => {
     <div>
       <PageHeader title={t('sales')} subtitle={`${sales.length}`} actions={<ViewToggle view={view} onChange={setView} labels={{ cards: t('cardView'), table: t('tableView') }} />} />
 
-      <div className="card-wood mb-5 space-y-3 rounded-2xl p-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <SearchInput value={search} onChange={setSearch} placeholder={`${t('search')} (${t('client')} / ${t('reference')})`} className="min-w-[220px] flex-1" />
-          <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="max-w-[160px]">
+      <div className="card-wood mb-5 space-y-3 rounded-2xl p-3 sm:p-4">
+        <div className="grid grid-cols-[1fr_auto] items-center gap-2 sm:flex sm:flex-wrap sm:gap-3">
+          <SearchInput value={search} onChange={setSearch} placeholder={`${t('search')} (${t('client')} / ${t('reference')})`} className="min-w-0 sm:min-w-[220px] sm:flex-1" />
+          <div className="w-32 sm:w-40">
+          <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
             <option value="">{t('all')}</option>
             <option value="paid">{t('statusPaid')}</option>
             <option value="debt">{t('inDebt')}</option>
           </Select>
+          </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <div className="inline-flex rounded-xl border border-wood-light/40 bg-white/70 p-1">
+          <div className="grid w-full grid-cols-4 rounded-xl border border-wood-light/40 bg-wood-cream/60 p-1 sm:inline-flex sm:w-auto">
             {(['all', 'today', 'week', 'month'] as QuickFilter[]).map((q) => (
               <button key={q} onClick={() => setQuick(q)} className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${quick === q ? 'bg-wood-btn text-accentfg' : 'text-wood-medium hover:bg-wood-cream'}`}>
                 {q === 'all' ? t('all') : q === 'today' ? t('today') : q === 'week' ? t('thisWeek') : t('thisMonth')}
               </button>
             ))}
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-wood-medium">{t('from')}</span>
-            <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="input-wood py-1.5" />
-            <span className="text-xs text-wood-medium">{t('to')}</span>
-            <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="input-wood py-1.5" />
-          </div>
+          <DateRange from={fromDate} to={toDate} onFrom={setFromDate} onTo={setToDate} fromLabel={t('from')} toLabel={t('to')} />
         </div>
       </div>
 
@@ -107,17 +104,20 @@ export const SalesPage = () => {
               const status = paymentStatus(s.total, s.paid)
               const rest = remaining(s.total, s.paid)
               return (
-                <motion.div key={s.id} variants={cardVariants} custom={i} layout whileHover={{ y: -4 }} className="card-wood rounded-2xl p-4">
-                  <div className="flex items-start justify-between">
-                    <div><p className="text-mono font-bold text-wood-dark">{s.reference}</p><p className="text-sm text-wood-medium">{s.clientName}</p></div>
+                <motion.div key={s.id} variants={cardVariants} custom={i} layout className="card-wood min-w-0 rounded-2xl p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0"><p className="text-mono font-bold text-wood-dark">{s.reference}</p><p className="truncate text-sm text-wood-medium">{s.clientName}</p></div>
                     <Badge tone={statusTone(status)}>{statusLabel(status)}</Badge>
                   </div>
                   <p className="mt-1 text-xs text-wood-medium">{format(new Date(s.date), 'dd/MM/yyyy')}</p>
-                  <div className="mt-3 grid grid-cols-3 gap-2 text-center text-sm">
-                    <div className="rounded-lg bg-wood-cream/40 py-1.5"><p className="text-[10px] text-wood-medium">{t('total')}</p><p className="text-mono font-bold">{formatMoney(s.total)}</p></div>
-                    <div className="rounded-lg bg-sage/10 py-1.5"><p className="text-[10px] text-wood-medium">{t('paid')}</p><p className="text-mono font-bold text-sage">{formatMoney(s.paid)}</p></div>
-                    <div className="rounded-lg bg-terracotta/10 py-1.5"><p className="text-[10px] text-wood-medium">{t('remaining')}</p><p className="text-mono font-bold text-terracotta">{formatMoney(rest)}</p></div>
-                  </div>
+                  <MoneyTriplet
+                    className="mt-3"
+                    cells={[
+                      { label: t('total'), value: formatMoney(s.total) },
+                      { label: t('paid'), value: formatMoney(s.paid), tone: 'sage' },
+                      { label: t('remaining'), value: formatMoney(rest), tone: 'terracotta' },
+                    ]}
+                  />
                   <div className="mt-4 flex flex-wrap gap-1.5 border-t border-wood-light/20 pt-3">
                     <Button size="sm" variant="outline" onClick={() => setViewing(s)}><Eye size={15} /></Button>
                     <Button action="edit" size="sm" variant="outline" onClick={() => setEditing(s)}><Pencil size={15} /></Button>
@@ -162,7 +162,7 @@ export const SalesPage = () => {
                       <td className="px-4 py-2.5">
                         <div className="flex justify-center gap-1">
                           <button onClick={() => setViewing(s)} className="rounded-lg p-1.5 text-wood-medium hover:bg-wood-cream"><Eye size={16} /></button>
-                          <Can action="edit"><button onClick={() => setEditing(s)} className="rounded-lg p-1.5 text-wood-warm hover:bg-wood-cream"><Pencil size={16} /></button></Can>
+                          <Can action="edit"><button onClick={() => setEditing(s)} className="rounded-lg p-1.5 text-goldink hover:bg-wood-cream"><Pencil size={16} /></button></Can>
                           {rest > 0 && <Can action="pay"><button onClick={() => setPaying(s)} className="rounded-lg p-1.5 text-sage hover:bg-sage/10"><CreditCard size={16} /></button></Can>}
                           <Can action="print"><button onClick={() => doPrint(s)} className="rounded-lg p-1.5 text-gold hover:bg-gold/10"><Printer size={16} /></button></Can>
                           <Can action="delete"><button onClick={() => setDeleting(s)} className="rounded-lg p-1.5 text-terracotta hover:bg-terracotta/10"><Trash2 size={16} /></button></Can>
@@ -181,7 +181,8 @@ export const SalesPage = () => {
       <Modal open={!!viewing} onClose={() => setViewing(null)} title={viewing?.reference} subtitle={viewing?.clientName} size="lg">
         {viewing && (
           <div className="space-y-4">
-            <table className="w-full text-sm">
+            <div className="-mx-1 overflow-x-auto px-1">
+            <table className="w-full min-w-[480px] text-sm">
               <thead><tr className="border-b border-wood-light/30 text-xs uppercase text-wood-medium"><th className="py-2 text-start">{t('productName')}</th><th className="py-2 text-center">{t('size')}</th><th className="py-2 text-center">{t('quantity')}</th><th className="py-2 text-end">{t('unitPrice')}</th><th className="py-2 text-end">{t('subtotal')}</th></tr></thead>
               <tbody>
                 {viewing.lines.map((l, i) => (
@@ -189,6 +190,7 @@ export const SalesPage = () => {
                 ))}
               </tbody>
             </table>
+            </div>
             <div className="flex justify-end">
               <div className="space-y-1 text-end text-sm">
                 {viewing.discount > 0 && <p className="text-terracotta">{t('discount')}: <span className="text-mono">- {formatMoney(viewing.discount)}</span></p>}

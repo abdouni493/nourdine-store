@@ -5,33 +5,33 @@ import { useThemeStore } from '@/store/useThemeStore'
  * CSS `var()` does not resolve — so the charts read the theme in JS and pick a
  * concrete palette instead of inheriting the design tokens.
  *
- * The ramp opens on the brand's indigo and violet, then adds hue only as far as
+ * The ramp opens on the brand's gold and ink, then adds hue only as far as
  * a series count demands it. Every entry clears 3:1 against its own theme's
  * surface, and no meaning ever rests on colour alone: each chart pairs its
  * series with a legend and a tooltip.
  */
 const LIGHT = [
-  '#0D9488', // indigo
-  '#0891B2', // violet
-  '#059669', // emerald
-  '#E11D48', // rose
-  '#D97706', // amber
-  '#0284C7', // sky
-  '#DB2777', // pink
-  '#7C3AED', // violet
+  '#B08A2E', // gold
+  '#1C1C1E', // ink
+  '#15803D', // green
+  '#BE123C', // crimson
   '#64748B', // slate
+  '#C2410C', // copper
+  '#0E7490', // petrol
+  '#7C3AED', // violet
+  '#A8A29E', // stone
 ]
 
 const DARK = [
-  '#2DD4BF',
-  '#22D3EE',
-  '#34D399',
+  '#D6B052',
+  '#E7E5E4',
+  '#4ADE80',
   '#FB7185',
-  '#FBBF24',
-  '#38BDF8',
-  '#F472B6',
-  '#A78BFA',
   '#94A3B8',
+  '#FB923C',
+  '#22D3EE',
+  '#A78BFA',
+  '#78716C',
 ]
 
 export interface ChartTheme {
@@ -49,18 +49,18 @@ export const useChartTheme = (): ChartTheme => {
   const dark = useThemeStore((s) => s.theme) === 'dark'
   return {
     colors: dark ? DARK : LIGHT,
-    axis: { fontSize: 11, fill: dark ? '#9FB8B6' : '#4B5563' },
-    grid: dark ? '#24403F' : '#DCE7E6',
+    axis: { fontSize: 11, fill: dark ? '#B2AB9E' : '#57534E' },
+    grid: dark ? '#302D28' : '#E6E1D6',
     tooltip: {
       borderRadius: 12,
-      border: `1px solid ${dark ? '#24403F' : '#DCE7E6'}`,
-      background: dark ? '#0F2224' : '#FFFFFF',
-      color: dark ? '#ECF6F5' : '#111827',
+      border: `1px solid ${dark ? '#302D28' : '#E6E1D6'}`,
+      background: dark ? '#151517' : '#FFFFFF',
+      color: dark ? '#F6F3EC' : '#111111',
       fontSize: 12,
-      boxShadow: '0 12px 32px -12px rgba(49, 46, 129, 0.35)',
+      boxShadow: '0 12px 32px -12px rgba(0, 0, 0, 0.35)',
     },
-    accent: dark ? '#2DD4BF' : '#0D9488',
-    success: dark ? '#34D399' : '#059669',
-    danger: dark ? '#FB7185' : '#E11D48',
+    accent: dark ? '#D6B052' : '#B08A2E',
+    success: dark ? '#4ADE80' : '#15803D',
+    danger: dark ? '#FB7185' : '#BE123C',
   }
 }

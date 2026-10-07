@@ -20,12 +20,12 @@ export const InvoicePrint = forwardRef<HTMLDivElement, InvoicePrintProps>(({ doc
   return (
     <div ref={ref} className="print-area mx-auto max-w-[800px] bg-white p-10 text-charcoal" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Header */}
-      <div className="flex items-start justify-between border-b-2 border-wood-warm pb-5">
+      <div className="flex items-start justify-between border-b-2 border-gold pb-5">
         <div className="flex items-center gap-3">
           {settings.logo ? (
             <img src={settings.logo} alt="logo" className="h-16 w-16 rounded-lg object-cover" />
           ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-wood-warm text-2xl font-bold text-white">
+            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-wood-btn text-2xl font-bold text-accentfg">
               {settings.name.charAt(0)}
             </div>
           )}
@@ -41,7 +41,7 @@ export const InvoicePrint = forwardRef<HTMLDivElement, InvoicePrintProps>(({ doc
           </div>
         </div>
         <div className="text-right">
-          <h2 className="text-xl font-bold uppercase tracking-wide text-wood-warm">
+          <h2 className="text-xl font-bold uppercase tracking-wide text-goldink">
             {kind === 'sale' ? 'Facture de Vente' : "Facture d'Achat"}
           </h2>
           <p className="mt-1 text-sm font-semibold">{doc.reference}</p>
@@ -58,7 +58,7 @@ export const InvoicePrint = forwardRef<HTMLDivElement, InvoicePrintProps>(({ doc
       {/* Lines */}
       <table className="mt-6 w-full text-sm">
         <thead>
-          <tr className="border-b-2 border-wood-warm text-left text-xs uppercase text-wood-medium">
+          <tr className="border-b-2 border-gold text-left text-xs uppercase text-wood-medium">
             <th className="py-2">Désignation</th>
             <th className="py-2 text-center">Taille</th>
             <th className="py-2 text-center">Qté</th>
@@ -101,7 +101,7 @@ export const InvoicePrint = forwardRef<HTMLDivElement, InvoicePrintProps>(({ doc
               </div>
             </>
           )}
-          <div className="flex justify-between border-t border-wood-warm pt-2 text-base font-bold text-wood-dark">
+          <div className="flex justify-between border-t border-gold pt-2 text-base font-bold text-wood-dark">
             <span>Total</span>
             <span style={{ fontFamily: 'JetBrains Mono, monospace' }}>{formatMoney(doc.total, settings.currency)}</span>
           </div>

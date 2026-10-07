@@ -1,16 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2DD4BF"/>
-      <stop offset="0.55" stop-color="#0D9488"/>
-      <stop offset="1" stop-color="#0E7490"/>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F0D487"/>
+      <stop offset="0.55" stop-color="#D6B052"/>
+      <stop offset="1" stop-color="#A8843A"/>
     </linearGradient>
   </defs>
-  <!-- teal market tile -->
-  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
-  <!-- shopping bag -->
-  <path d="M16 24 H48 L45.5 50 Q45.2 53 42 53 H22 Q18.8 53 18.5 50 Z" fill="#FFFFFF"/>
-  <path d="M25 28 V21 Q25 13 32 13 Q39 13 39 21 V28" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
-  <!-- N monogram -->
-  <path d="M26 46 V32 L38 46 V32" fill="none" stroke="#0D9488" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- black tile with a fine gold edge -->
+  <rect width="64" height="64" rx="16" fill="#0B0B0B"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="14.5" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity="0.7"/>
+  <!-- gold shopping bag -->
+  <path d="M16 24 H48 L45.5 50 Q45.2 53 42 53 H22 Q18.8 53 18.5 50 Z" fill="url(#gold)"/>
+  <path d="M25 28 V21 Q25 13 32 13 Q39 13 39 21 V28" fill="none" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/>
+  <!-- N monogram in black -->
+  <path d="M26 46 V32 L38 46 V32" fill="none" stroke="#0B0B0B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

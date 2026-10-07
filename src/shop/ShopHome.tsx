@@ -49,7 +49,7 @@ export const ShopHome = () => {
   return (
     <div>
       {/* ══ Hero ═══════════════════════════════════════════════════════════ */}
-      <section ref={heroRef} className="relative h-[88vh] min-h-[520px] overflow-hidden bg-[#042F2E]">
+      <section ref={heroRef} className="relative h-[88vh] min-h-[520px] overflow-hidden bg-[#0B0B0B]">
         <motion.div style={{ y: imageY }} className="absolute inset-0 -bottom-[18%]">
           {identity.heroImage ? (
             <img
@@ -58,10 +58,10 @@ export const ShopHome = () => {
               className="h-full w-full object-cover opacity-65"
             />
           ) : (
-            <div className="wood-grain h-full w-full bg-gradient-to-br from-teal-950 via-cyan-900 to-emerald-900" />
+            <div className="wood-grain h-full w-full bg-gradient-to-br from-[#0B0B0B] via-[#17140F] to-[#2A2214]" />
           )}
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/45 to-[#042F2E]/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-black/20" />
 
         <motion.div
           style={{ opacity: copyOpacity }}
@@ -69,7 +69,7 @@ export const ShopHome = () => {
         >
           {identity.tagline && (
             <Reveal delay={0.1}>
-              <span className="mb-4 inline-block border border-white/25 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white/75">
+              <span className="mb-4 inline-block rounded-full border border-[#D6B052]/50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#E9C977]">
                 {identity.tagline}
               </span>
             </Reveal>
@@ -88,7 +88,7 @@ export const ShopHome = () => {
             )}
             <h1 className="min-w-0">
               <Reveal delay={0.2}>
-                <span className="text-hero block text-[clamp(2.5rem,10vw,8rem)] text-white">
+                <span className="text-hero block break-words text-[clamp(2.25rem,10vw,8rem)] text-white [overflow-wrap:anywhere]">
                   {identity.name}
                 </span>
               </Reveal>
@@ -112,7 +112,7 @@ export const ShopHome = () => {
           >
             <Link
               to="/shop/products"
-              className="group flex items-center gap-2 rounded-full bg-white px-7 py-4 text-[11px] font-black uppercase tracking-widest text-teal-700 transition hover:bg-white/85"
+              className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-[#E9C977] via-[#D6B052] to-[#B8913A] text-[#111] px-7 py-4 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-black/40 transition hover:brightness-110"
             >
               {t('shopNow')}
               <ArrowRight
@@ -123,7 +123,7 @@ export const ShopHome = () => {
             {offers.length > 0 && (
               <Link
                 to="/shop/offers"
-                className="flex items-center gap-2 border border-white/35 px-7 py-4 text-[11px] font-black uppercase tracking-widest text-white transition hover:border-white hover:bg-white/10"
+                className="flex items-center gap-2 rounded-full border border-[#D6B052]/60 px-7 py-4 text-[11px] font-black uppercase tracking-widest text-white transition hover:border-white hover:bg-white/10"
               >
                 <Sparkles size={15} />
                 {t('ourOffers')}
@@ -147,7 +147,7 @@ export const ShopHome = () => {
 
       {/* ══ Promises ═══════════════════════════════════════════════════════ */}
       <section className="border-b border-wood-light">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-wood-light sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-wood-light sm:grid-cols-3 sm:divide-x sm:divide-y-0 rtl:sm:divide-x-reverse">
           {[
             { icon: Truck, label: t('deliveryToAllWilayas') },
             { icon: ShieldCheck, label: t('securePayment') },
@@ -159,9 +159,9 @@ export const ShopHome = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.4 }}
-              className="flex items-center justify-center gap-3 px-6 py-6"
+              className="flex items-center justify-center gap-3 px-6 py-4 sm:py-6"
             >
-              <item.icon size={18} className="shrink-0 text-wood-dark" />
+              <item.icon size={18} className="shrink-0 text-goldink" />
               <span className="text-[10px] font-bold uppercase tracking-widest text-wood-dark">
                 {item.label}
               </span>
@@ -172,7 +172,7 @@ export const ShopHome = () => {
 
       {/* ══ Live offers ════════════════════════════════════════════════════ */}
       {offers.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20">
+        <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20">
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow">{t('ourOffers')}</p>
@@ -199,7 +199,7 @@ export const ShopHome = () => {
               >
                 <Link
                   to={`/shop/offers/${o.id}`}
-                  className="group relative block aspect-[16/10] overflow-hidden bg-[#042F2E]"
+                  className="group relative block aspect-[16/10] overflow-hidden rounded-2xl bg-[#0B0B0B]"
                 >
                   {o.image ? (
                     <img
@@ -210,16 +210,16 @@ export const ShopHome = () => {
                   ) : (
                     <div className="wood-grain h-full w-full bg-neutral-900" />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/30 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
                   {o.discountPercent > 0 && (
-                    <span className="text-mono absolute end-4 top-4 rounded-full bg-white px-3 py-1.5 text-lg font-black text-teal-700">
+                    <span className="text-mono absolute end-4 top-4 rounded-full bg-gradient-to-br from-[#F0D487] to-[#B8913A] text-[#111] px-3 py-1.5 text-lg font-black">
                       −{o.discountPercent.toFixed(0)}%
                     </span>
                   )}
 
                   <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                    <h3 className="text-hero text-2xl text-white sm:text-3xl">{o.title}</h3>
+                    <h3 className="text-hero break-words text-2xl text-white sm:text-3xl">{o.title}</h3>
                     <div className="mt-3 flex flex-wrap items-center gap-4">
                       <span className="text-mono text-lg font-black text-white">
                         {formatMoney(o.offerTotal, identity.currency)}

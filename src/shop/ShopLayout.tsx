@@ -36,7 +36,7 @@ const LINKS: { to: string; labelKey: TranslationKey }[] = [
  * customer navigates lives here.
  */
 export const ShopLayout = () => {
-  const { t, toggleLang, lang } = useTranslation()
+  const { t, toggleLang, lang, isRTL } = useTranslation()
   const location = useLocation()
   const items = useCartStore((s) => s.items)
   // The shell is on every storefront route, so this is where the catalogue,
@@ -88,14 +88,14 @@ export const ShopLayout = () => {
   return (
     <div className="flex min-h-dvh flex-col bg-wood-white">
       {/* Announcement ribbon */}
-      <div className="overflow-hidden border-b border-wood-light bg-wood-btn py-2">
+      <div className="overflow-hidden border-b border-[#D6B052]/30 bg-[#0B0B0B] py-2">
         <div className="flex w-max animate-marquee gap-10 whitespace-nowrap">
           {[0, 1].map((dup) => (
             <div key={dup} className="flex gap-10">
               {[t('deliveryToAllWilayas'), t('securePayment'), t('qualityGuarantee')].map((m) => (
                 <span
                   key={m}
-                  className="text-[10px] font-bold uppercase tracking-widest text-accentfg"
+                  className="text-[10px] font-bold uppercase tracking-widest text-[#E9C977]"
                 >
                   {m}
                 </span>
@@ -107,7 +107,7 @@ export const ShopLayout = () => {
 
       {/* Nav */}
       <header className="sticky top-0 z-40 border-b border-wood-light bg-wood-white/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3.5 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center gap-2 px-3 py-3.5 sm:gap-4 sm:px-6">
           <button
             onClick={() => setMenu(true)}
             aria-label={t('shopProducts')}
@@ -120,7 +120,7 @@ export const ShopLayout = () => {
             {identity.logo ? (
               <img src={identity.logo} alt="" className="h-8 w-8 object-cover" />
             ) : (
-              <span className="flex h-8 w-8 items-center justify-center bg-wood-btn text-sm font-black text-accentfg">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#F0D487] to-[#B8913A] text-[#111] text-sm font-black">
                 {identity.name.slice(0, 1).toUpperCase()}
               </span>
             )}
@@ -165,7 +165,7 @@ export const ShopLayout = () => {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
-                    className="text-mono absolute -end-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center bg-wood-btn px-1 text-[9px] font-bold leading-none text-accentfg"
+                    className="text-mono absolute -end-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-wood-btn px-1 text-[9px] font-bold leading-none text-accentfg"
                   >
                     {count}
                   </motion.span>
@@ -188,11 +188,11 @@ export const ShopLayout = () => {
               className="fixed inset-0 z-50 bg-black/50 lg:hidden"
             />
             <motion.aside
-              initial={{ x: '-100%' }}
+              initial={{ x: isRTL ? '100%' : '-100%' }}
               animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
+              exit={{ x: isRTL ? '100%' : '-100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed inset-y-0 start-0 z-50 flex w-72 flex-col bg-wood-white lg:hidden"
+              className="fixed inset-y-0 start-0 z-50 flex w-[82vw] max-w-xs flex-col bg-wood-white shadow-2xl lg:hidden"
             >
               <div className="flex items-center justify-between border-b border-wood-light px-5 py-4">
                 <span className="text-display text-sm font-black uppercase tracking-widest text-wood-dark">
@@ -206,8 +206,8 @@ export const ShopLayout = () => {
                 {LINKS.map((l, i) => (
                   <motion.div
                     key={l.to}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.05 + i * 0.05 }}
                   >
                     <NavLink
@@ -215,7 +215,7 @@ export const ShopLayout = () => {
                       end={l.to === '/shop'}
                       className={({ isActive }) =>
                         clsx(
-                          'block px-4 py-3.5 text-sm font-black uppercase tracking-wide transition',
+                          'block rounded-xl px-4 py-3.5 text-sm font-black uppercase tracking-wide transition',
                           isActive
                             ? 'bg-wood-btn text-accentfg'
                             : 'text-wood-dark hover:bg-wood-cream',
@@ -236,7 +236,7 @@ export const ShopLayout = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={s.label}
-                      className="border border-wood-light p-2.5 text-wood-dark transition hover:bg-wood-cream"
+                      className="rounded-lg border border-wood-light p-2.5 text-wood-dark transition hover:bg-wood-cream"
                     >
                       <s.icon size={16} />
                     </a>
@@ -254,14 +254,14 @@ export const ShopLayout = () => {
 
       {/* Footer */}
       <footer className="border-t border-wood-light bg-wood-cream">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
             <div className="md:col-span-2">
               <Link to="/shop" className="flex items-center gap-2.5">
                 {identity.logo ? (
                   <img src={identity.logo} alt="" className="h-9 w-9 object-cover" />
                 ) : (
-                  <span className="flex h-9 w-9 items-center justify-center bg-wood-btn text-sm font-black text-accentfg">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#F0D487] to-[#B8913A] text-[#111] text-sm font-black">
                     {identity.name.slice(0, 1).toUpperCase()}
                   </span>
                 )}
@@ -283,7 +283,7 @@ export const ShopLayout = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={s.label}
-                      className="border border-wood-light p-2.5 text-wood-dark transition hover:bg-wood-btn hover:text-accentfg"
+                      className="rounded-lg border border-wood-light p-2.5 text-wood-dark transition hover:bg-wood-btn hover:text-accentfg"
                     >
                       <s.icon size={16} />
                     </a>

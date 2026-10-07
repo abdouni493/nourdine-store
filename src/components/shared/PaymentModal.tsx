@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { MoneyTriplet } from '@/components/ui/Misc'
 import { useTranslation } from '@/i18n/useTranslation'
 import { formatMoney, round2 } from '@/utils/helpers'
 import { remaining } from '@/utils/calculations'
@@ -63,20 +64,13 @@ export const PaymentModal = ({ open, onClose, total, paid, payments, onPay }: Pa
       }
     >
       <div className="space-y-4">
-        <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-xl bg-wood-cream/40 p-3 text-center">
-            <p className="text-xs text-wood-medium">{t('invoiceTotal')}</p>
-            <p className="text-mono font-bold text-wood-dark">{formatMoney(total)}</p>
-          </div>
-          <div className="rounded-xl bg-sage/10 p-3 text-center">
-            <p className="text-xs text-wood-medium">{t('alreadyPaid')}</p>
-            <p className="text-mono font-bold text-sage">{formatMoney(paid)}</p>
-          </div>
-          <div className="rounded-xl bg-terracotta/10 p-3 text-center">
-            <p className="text-xs text-wood-medium">{t('remaining')}</p>
-            <p className="text-mono font-bold text-terracotta">{formatMoney(rest)}</p>
-          </div>
-        </div>
+        <MoneyTriplet
+          cells={[
+            { label: t('invoiceTotal'), value: formatMoney(total) },
+            { label: t('alreadyPaid'), value: formatMoney(paid), tone: 'sage' },
+            { label: t('remaining'), value: formatMoney(rest), tone: 'terracotta' },
+          ]}
+        />
 
         {payments.length > 0 && (
           <div>
@@ -92,7 +86,7 @@ export const PaymentModal = ({ open, onClose, total, paid, payments, onPay }: Pa
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Input label={t('thisPayment')} type="number" step="0.01" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
           <Input label={t('date')} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
         </div>
@@ -100,7 +94,7 @@ export const PaymentModal = ({ open, onClose, total, paid, payments, onPay }: Pa
 
         <div className="flex items-center justify-between rounded-xl bg-wood-btn px-4 py-3 text-accentfg">
           <span className="flex items-center gap-2 font-medium"><CreditCard size={18} />{t('remaining')}</span>
-          <span className="text-mono text-lg font-bold">{formatMoney(newRest)}</span>
+          <span className="text-mono text-base font-bold sm:text-lg">{formatMoney(newRest)}</span>
         </div>
       </div>
     </Modal>

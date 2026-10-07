@@ -1,15 +1,16 @@
 import type { Variants } from 'framer-motion'
 
 export const pageVariants: Variants = {
-  initial: { opacity: 0, x: -30, scale: 0.98 },
-  animate: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.4, ease: 'easeOut' } },
-  exit: { opacity: 0, x: 30, scale: 0.98, transition: { duration: 0.3 } },
+  // Vertical only: a sideways slide reads as the layout jumping on a phone.
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
+  exit: { opacity: 0, transition: { duration: 0.15 } },
 }
 
 export const modalVariants: Variants = {
-  initial: { opacity: 0, scale: 0.85, y: 20 },
-  animate: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', damping: 25, stiffness: 300 } },
-  exit: { opacity: 0, scale: 0.85, y: 20, transition: { duration: 0.2 } },
+  initial: { opacity: 0, scale: 0.96, y: 24 },
+  animate: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', damping: 28, stiffness: 320 } },
+  exit: { opacity: 0, scale: 0.96, y: 24, transition: { duration: 0.18 } },
 }
 
 export const overlayVariants: Variants = {
@@ -43,10 +44,10 @@ export const fadeUp: Variants = {
 }
 
 export const rowVariants: Variants = {
-  initial: { opacity: 0, x: -12 },
+  initial: { opacity: 0, y: 6 },
   animate: (i: number) => ({
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: { delay: (i ?? 0) * 0.035, duration: 0.3 },
   }),
 }

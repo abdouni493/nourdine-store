@@ -344,10 +344,10 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
                   key={pt}
                   type="button"
                   onClick={() => setValue('productType', pt, { shouldValidate: false })}
-                  className={`flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-start transition ${
+                  className={`flex min-w-0 items-center gap-2 rounded-xl border-2 px-3 py-3 text-start transition sm:gap-3 sm:px-4 ${
                     active
-                      ? 'border-wood-warm bg-wood-warm/10 text-wood-dark'
-                      : 'border-wood-light bg-wood-white text-wood-medium hover:border-wood-warm/60'
+                      ? 'border-gold bg-gold/10 text-wood-dark'
+                      : 'border-wood-light bg-wood-white text-wood-medium hover:border-gold/60'
                   }`}
                 >
                   {pt === 'clothing' ? <IconGarment size={22} /> : <Package size={22} />}
@@ -365,7 +365,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
 
         {/* ── Identity ───────────────────────────────────────────────────── */}
         <section className="space-y-4">
-          <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-wood-warm">
+          <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-goldink">
             <IconGarment size={16} />
             {t('articleIdentity')}
           </h4>
@@ -408,7 +408,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
 
         {/* ── Storefront photos ──────────────────────────────────────────── */}
         <section className="space-y-3">
-          <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-wood-warm">
+          <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-goldink">
             <IconGarment size={15} />
             {t('images')}{' '}
             <span className="font-normal normal-case tracking-normal text-wood-medium">
@@ -430,7 +430,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
         {/* ── Stock of a general product: one figure, no size scale ─────── */}
         {!clothing && (
           <section className="space-y-3">
-            <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-wood-warm">
+            <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-goldink">
               <Package size={16} />
               {t('stockLevel')}
             </h4>
@@ -463,7 +463,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
         <>
         {/* ── Sizes ──────────────────────────────────────────────────────── */}
         <section className="space-y-3">
-          <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-wood-warm">
+          <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-goldink">
             <IconSeason size={16} />
             {t('sizesAndStock')}
           </h4>
@@ -478,8 +478,8 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
                   onClick={() => changeSizeCategory(c)}
                   className={`rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
                     sizeCategory === c
-                      ? 'border-wood-warm bg-wood-btn text-accentfg shadow-gold'
-                      : 'border-wood-light bg-white text-wood-medium hover:border-wood-warm hover:text-wood-warm'
+                      ? 'border-transparent bg-wood-btn text-accentfg shadow-gold'
+                      : 'border-wood-light bg-wood-white text-wood-medium hover:border-gold hover:text-goldink'
                   }`}
                 >
                   {t(`size_${c}` as TranslationKey)}
@@ -499,7 +499,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
 
         {/* ── Garment details ────────────────────────────────────────────── */}
         <section className="space-y-4">
-          <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-wood-warm">
+          <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-goldink">
             <IconMaterial size={16} />
             {t('garmentDetails')}
           </h4>
@@ -511,7 +511,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
               render={({ field }) => (
                 <CreatableSelect
                   label={t('color')}
-                  icon={<IconColor size={15} className="text-wood-warm" />}
+                  icon={<IconColor size={15} className="text-goldink" />}
                   options={colors}
                   value={field.value ?? ''}
                   onChange={field.onChange}
@@ -527,7 +527,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
               render={({ field }) => (
                 <CreatableSelect
                   label={t('material')}
-                  icon={<IconMaterial size={15} className="text-wood-warm" />}
+                  icon={<IconMaterial size={15} className="text-goldink" />}
                   options={materials}
                   value={field.value ?? ''}
                   onChange={field.onChange}
@@ -542,7 +542,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
               <label className="label-wood flex items-center gap-1.5">
-                <IconGender size={15} className="text-wood-warm" />
+                <IconGender size={15} className="text-goldink" />
                 {t('gender')}
               </label>
               <Select {...register('gender')}>
@@ -555,7 +555,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
             </div>
             <div>
               <label className="label-wood flex items-center gap-1.5">
-                <IconSeason size={15} className="text-wood-warm" />
+                <IconSeason size={15} className="text-goldink" />
                 {t('season')}
               </label>
               <Select {...register('season')}>
@@ -568,7 +568,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
             </div>
             <div>
               <label className="label-wood flex items-center gap-1.5">
-                <IconCollection size={15} className="text-wood-warm" />
+                <IconCollection size={15} className="text-goldink" />
                 {t('collection')}
               </label>
               <input
@@ -584,7 +584,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
 
         {/* ── Barcode ────────────────────────────────────────────────────── */}
         <section className="rounded-xl border border-wood-light bg-wood-cream/40 p-4">
-          <h4 className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-wood-warm">
+          <h4 className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-goldink">
             <IconBarcode size={16} />
             {t('barcode')} <span className="font-normal normal-case">({t('optional')})</span>
           </h4>
@@ -617,8 +617,8 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
         </section>
 
         {/* Pricing is captured on the first purchase of the article */}
-        <div className="flex items-start gap-2 rounded-xl border border-wood-light bg-gradient-to-br from-wood-cream/60 to-white px-4 py-3 text-xs text-wood-medium">
-          <Info size={15} className="mt-0.5 shrink-0 text-wood-warm" />
+        <div className="flex items-start gap-2 rounded-xl border border-wood-light bg-gradient-to-br from-wood-cream/60 to-wood-white px-4 py-3 text-xs text-wood-medium">
+          <Info size={15} className="mt-0.5 shrink-0 text-goldink" />
           <span>{t('pricingLaterHint')}</span>
         </div>
       </form>

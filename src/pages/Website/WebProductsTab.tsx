@@ -47,12 +47,12 @@ const CardAction = ({
     title={label}
     aria-label={label}
     className={clsx(
-      'flex flex-1 items-center justify-center gap-1.5 border py-2 text-[10px] font-bold uppercase tracking-wide transition',
+      'flex flex-1 items-center justify-center gap-1.5 rounded-lg border py-2 text-[10px] font-bold uppercase tracking-wide transition',
       tone === 'accent'
         ? 'border-wood-warm bg-wood-btn text-accentfg hover:opacity-85'
         : tone === 'danger'
           ? 'border-wood-light text-terracotta hover:border-terracotta hover:bg-terracotta/10'
-          : 'border-wood-light text-wood-medium hover:border-wood-warm hover:text-wood-dark',
+          : 'border-wood-light text-wood-medium hover:border-gold hover:text-wood-dark',
     )}
   >
     {icon}
@@ -107,17 +107,17 @@ export const WebProductsTab = () => {
   return (
     <div>
       {/* Toolbar */}
-      <div className="mb-5 flex flex-wrap items-center gap-3">
+      <div className="mb-5 grid grid-cols-1 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
         <SearchInput
           value={query}
           onChange={setQuery}
           placeholder={t('search')}
-          className="min-w-[220px] flex-1"
+          className="sm:min-w-[220px] sm:flex-1"
         />
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="input-wood w-auto cursor-pointer"
+          className="input-wood cursor-pointer sm:w-auto"
         >
           <option value="">{t('filterCategory')}</option>
           {categories.map((c) => (
@@ -126,13 +126,13 @@ export const WebProductsTab = () => {
             </option>
           ))}
         </select>
-        <div className="inline-flex border border-wood-light">
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border border-wood-light sm:inline-flex">
           {filters.map((f) => (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
               className={clsx(
-                'px-3 py-2.5 text-[10px] font-bold uppercase tracking-wide transition',
+                'truncate px-2 py-2.5 text-[10px] font-bold uppercase tracking-wide transition sm:px-3',
                 filter === f.key
                   ? 'bg-wood-btn text-accentfg'
                   : 'text-wood-medium hover:bg-wood-cream',
@@ -145,7 +145,7 @@ export const WebProductsTab = () => {
         </div>
       </div>
 
-      <p className="mb-5 flex items-start gap-2 border border-wood-light bg-wood-cream px-3 py-2.5 text-[11px] leading-relaxed text-wood-medium">
+      <p className="mb-5 flex items-start gap-2 rounded-xl border border-wood-light bg-wood-cream px-3 py-2.5 text-[11px] leading-relaxed text-wood-medium">
         <Info size={13} className="mt-px shrink-0" />
         {t('webProductsHint')}
       </p>
@@ -153,7 +153,7 @@ export const WebProductsTab = () => {
       {rows.length === 0 ? (
         <EmptyState title={t('noData')} hint={t('noDataHint')} icon={<PackageOpen size={36} />} />
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
           {rows.map((p, i) => {
             const hidden = isHidden(p.id)
             const cover = p.images?.[0]
@@ -165,7 +165,7 @@ export const WebProductsTab = () => {
                 animate="animate"
                 custom={i}
                 className={clsx(
-                  'card-wood group flex flex-col overflow-hidden transition',
+                  'card-wood group flex min-w-0 flex-col overflow-hidden rounded-2xl transition',
                   hidden && 'opacity-60',
                 )}
               >
@@ -216,7 +216,7 @@ export const WebProductsTab = () => {
                   </p>
 
                   {/* Actions */}
-                  <div className="mt-3 flex gap-1.5">
+                  <div className="mt-3 grid grid-cols-4 gap-1">
                     <CardAction
                       icon={hidden ? <Eye size={14} /> : <EyeOff size={14} />}
                       label={hidden ? t('showOnSite') : t('hideFromSite')}
@@ -299,7 +299,7 @@ export const WebProductsTab = () => {
               </div>
             )}
 
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3 sm:gap-x-6">
               {(
                 [
                   ['productType', t(`productType_${details.productType}` as TranslationKey)],

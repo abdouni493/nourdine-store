@@ -36,7 +36,7 @@ export const SizeChip = ({ size, quantity, active, disabled, onClick, title }: S
         'size-chip transition',
         active && 'size-chip-active',
         empty && 'size-chip-empty',
-        onClick && !empty && 'cursor-pointer hover:border-wood-warm hover:text-wood-warm',
+        onClick && !empty && 'cursor-pointer hover:border-gold hover:text-goldink',
         onClick && empty && 'cursor-not-allowed',
       )}
     >
@@ -117,7 +117,7 @@ export const SizePicker = ({ scale, value, onChange, onCreateSize, category }: S
     <div className="rounded-xl border border-wood-light bg-wood-cream/40 p-4">
       <div className="mb-3 flex items-center justify-between">
         <label className="flex items-center gap-1.5 text-sm font-medium text-wood-medium">
-          <IconSize size={15} className="text-wood-warm" />
+          <IconSize size={15} className="text-goldink" />
           {t('sizesAvailable')}
         </label>
         <span className="text-xs text-wood-medium">
@@ -145,7 +145,7 @@ export const SizePicker = ({ scale, value, onChange, onCreateSize, category }: S
                 if (e.key === 'Escape') setAdding(false)
               }}
               placeholder={t('newSize')}
-              className="w-24 rounded-lg border border-wood-warm bg-white px-2 py-0.5 text-xs outline-none"
+              className="w-24 rounded-lg border border-gold bg-wood-white px-2 py-0.5 text-xs outline-none"
             />
             <Button type="button" size="sm" onClick={createSize}>
               <IconSave size={13} />
@@ -156,7 +156,7 @@ export const SizePicker = ({ scale, value, onChange, onCreateSize, category }: S
             type="button"
             onClick={() => setAdding(true)}
             title={t('createSize')}
-            className="size-chip border-dashed border-wood-warm/60 bg-transparent text-wood-warm transition hover:bg-wood-warm/10"
+            className="size-chip border-dashed border-wood-warm/60 bg-transparent text-goldink transition hover:bg-wood-warm/10"
           >
             <IconAdd size={13} />
             <span className="ms-0.5">{t('createSize')}</span>
@@ -180,7 +180,7 @@ export const SizePicker = ({ scale, value, onChange, onCreateSize, category }: S
                 .map((s) => (
                   <label
                     key={s.size}
-                    className="flex items-center gap-2 rounded-lg border border-wood-light bg-white px-2 py-1.5"
+                    className="flex items-center gap-2 rounded-lg border border-wood-light bg-wood-white px-2 py-1.5"
                   >
                     <span className="min-w-[2.2rem] text-xs font-bold text-wood-dark">{s.size}</span>
                     <input

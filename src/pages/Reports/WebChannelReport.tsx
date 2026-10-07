@@ -58,9 +58,9 @@ const Metric = ({
   hint?: string
   tone?: string
 }) => (
-  <div className="border border-wood-light bg-wood-white px-4 py-3">
-    <p className="eyebrow">{label}</p>
-    <p className={`text-mono mt-1 text-lg font-black ${tone ?? 'text-wood-dark'}`}>{value}</p>
+  <div className="min-w-0 rounded-xl border border-wood-light bg-wood-white px-3 py-3 sm:px-4">
+    <p className="eyebrow truncate">{label}</p>
+    <p className={`text-mono mt-1 break-words text-base font-black leading-tight sm:text-lg ${tone ?? 'text-wood-dark'}`}>{value}</p>
     {hint && <p className="mt-0.5 text-[10px] uppercase tracking-wide text-wood-medium">{hint}</p>}
   </div>
 )
@@ -134,19 +134,19 @@ export const WebChannelReport = ({ start, end, storeRevenue, Section, ReportTabl
             <span>{t('inStoreSales')}</span>
             <span>{t('onlineSales')}</span>
           </div>
-          <div className="flex h-3 overflow-hidden border border-wood-light">
+          <div className="flex h-3 overflow-hidden rounded-full border border-wood-light">
             <div
               className="bg-wood-dark transition-all duration-700"
               style={{ width: `${100 - webShare}%` }}
               title={formatMoney(storeRevenue, currency)}
             />
             <div
-              className="bg-wood-medium transition-all duration-700"
+              className="bg-gold transition-all duration-700"
               style={{ width: `${webShare}%` }}
               title={formatMoney(stats.netRevenue, currency)}
             />
           </div>
-          <div className="mt-1.5 flex justify-between text-mono text-[11px] font-bold text-wood-dark">
+          <div className="mt-1.5 flex flex-wrap justify-between gap-x-3 text-mono text-[11px] font-bold text-wood-dark">
             <span>{formatMoney(storeRevenue, currency)}</span>
             <span>{formatMoney(stats.netRevenue, currency)}</span>
           </div>
@@ -161,7 +161,7 @@ export const WebChannelReport = ({ start, end, storeRevenue, Section, ReportTabl
               <BarChart data={funnel} layout="vertical" margin={{ left: 8, right: 24 }}>
                 <CartesianGrid strokeDasharray="2 4" stroke={chart.grid} horizontal={false} />
                 <XAxis type="number" tick={chart.axis} allowDecimals={false} />
-                <YAxis type="category" dataKey="label" tick={chart.axis} width={110} />
+                <YAxis type="category" dataKey="label" tick={{ ...chart.axis, fontSize: 10 }} width={92} />
                 <Tooltip contentStyle={chart.tooltip} cursor={{ fill: chart.grid, opacity: 0.3 }} />
                 <Bar dataKey="value" name={t('webOrdersTotal')} fill={chart.accent} barSize={22} />
               </BarChart>
@@ -185,7 +185,7 @@ export const WebChannelReport = ({ start, end, storeRevenue, Section, ReportTabl
         </div>
 
         {/* Status ledger — the numbers behind the bars */}
-        <div className="mt-5 grid grid-cols-2 gap-px border border-wood-light bg-wood-light sm:grid-cols-3 lg:grid-cols-6">
+        <div className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-wood-light bg-wood-light sm:grid-cols-3 lg:grid-cols-6">
           {(
             [
               'pending',
@@ -196,7 +196,7 @@ export const WebChannelReport = ({ start, end, storeRevenue, Section, ReportTabl
               'canceled',
             ] as const
           ).map((s) => (
-            <div key={s} className="bg-wood-white px-3 py-2.5 text-center">
+            <div key={s} className="min-w-0 bg-wood-white px-2 py-2.5 text-center">
               <p className="eyebrow">{t(`orderStatus_${s}` as TranslationKey)}</p>
               <p className="text-mono mt-1 text-base font-black text-wood-dark">{stats[s]}</p>
             </div>

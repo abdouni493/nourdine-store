@@ -44,16 +44,18 @@ export const AdvancesModal = ({ open, onClose, worker }: OpProps) => {
   return (
     <Modal open={open} onClose={onClose} title={t('advances')} subtitle={worker.fullName} size="md">
       <div className="space-y-4">
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           <Input label={t('date')} type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
-          <Input label={t('description')} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
           <Input label={`${t('amount')} (DA)`} type="number" value={form.amount} onChange={(e) => setForm({ ...form, amount: Number(e.target.value) })} />
+          <div className="col-span-2 sm:col-span-1 sm:row-start-1 sm:col-start-2">
+            <Input label={t('description')} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+          </div>
         </div>
         <Button onClick={submit} className="w-full"><Plus size={16} />{t('addAdvance')}</Button>
 
-        <div className="flex items-center justify-between rounded-xl bg-gold/10 px-4 py-2 text-sm">
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-gold/10 px-4 py-2 text-sm">
           <span className="flex items-center gap-2 text-wood-medium"><Coins size={16} />{t('advances')} ({t('remaining')})</span>
-          <span className="text-mono font-bold text-[#854D0E]">{formatMoney(pending)}</span>
+          <span className="text-mono font-bold text-goldink">{formatMoney(pending)}</span>
         </div>
 
         <div className="max-h-52 space-y-1.5 overflow-y-auto">
@@ -66,7 +68,7 @@ export const AdvancesModal = ({ open, onClose, worker }: OpProps) => {
                   <p className="font-medium text-wood-dark">{a.description || '—'}</p>
                   <p className="text-xs text-wood-medium">{format(new Date(a.date), 'dd/MM/yyyy')}{a.deducted ? ` · ${t('paid')}` : ''}</p>
                 </div>
-                <span className="text-mono font-bold text-[#854D0E]">{formatMoney(a.amount)}</span>
+                <span className="text-mono font-bold text-goldink">{formatMoney(a.amount)}</span>
               </div>
             ))
           )}
@@ -100,10 +102,12 @@ export const AbsencesModal = ({ open, onClose, worker }: OpProps) => {
   return (
     <Modal open={open} onClose={onClose} title={t('absences')} subtitle={worker.fullName} size="md">
       <div className="space-y-4">
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           <Input label={t('date')} type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
-          <Input label={t('description')} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
           <Input label={`${t('absenceCost')} (DA)`} type="number" value={form.cost} onChange={(e) => setForm({ ...form, cost: Number(e.target.value) })} />
+          <div className="col-span-2 sm:col-span-1 sm:row-start-1 sm:col-start-2">
+            <Input label={t('description')} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+          </div>
         </div>
         <Button onClick={submit} className="w-full"><Plus size={16} />{t('addAbsence')}</Button>
 
@@ -184,7 +188,7 @@ export const SalaryModal = ({ open, onClose, worker }: OpProps) => {
           <div className="flex justify-between border-t border-wood-light/30 pt-1.5 font-bold text-wood-dark"><span>{t('toPaySalary')}</span><span className="text-mono">{formatMoney(calc.toPay)}</span></div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Input label={t('toPaySalary')} type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
           <Input label={t('date')} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
         </div>

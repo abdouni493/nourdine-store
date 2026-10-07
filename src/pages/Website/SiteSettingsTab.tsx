@@ -29,8 +29,8 @@ export const SiteSettingsTab = () => {
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
       {/* ── Fields ─────────────────────────────────────────────────────── */}
       <div className="space-y-6">
-        <section className="card-wood p-5">
-          <h3 className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-wood-warm">
+        <section className="card-wood rounded-2xl p-4 sm:p-5">
+          <h3 className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-goldink">
             <Sparkles size={15} />
             {t('siteDescription')}
           </h3>
@@ -60,8 +60,8 @@ export const SiteSettingsTab = () => {
           </div>
         </section>
 
-        <section className="card-wood p-5">
-          <h3 className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-wood-warm">
+        <section className="card-wood rounded-2xl p-4 sm:p-5">
+          <h3 className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-goldink">
             <Monitor size={15} />
             {t('webSettings')}
           </h3>
@@ -104,7 +104,7 @@ export const SiteSettingsTab = () => {
       {/* ── Live preview of the landing hero ───────────────────────────── */}
       <aside className="lg:sticky lg:top-20 lg:self-start">
         <p className="eyebrow mb-2">{t('website')}</p>
-        <div className="relative aspect-[9/14] overflow-hidden border border-wood-light bg-[#042F2E]">
+        <div className="relative mx-auto aspect-[9/14] max-w-xs overflow-hidden rounded-2xl border border-wood-light bg-[#0B0B0B] lg:max-w-none">
           {draft.heroImage && (
             <img
               src={draft.heroImage}
@@ -112,7 +112,7 @@ export const SiteSettingsTab = () => {
               className="absolute inset-0 h-full w-full object-cover opacity-60"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-between p-5">
             <div className="flex items-center gap-2">
               {draft.favicon ? (
@@ -120,7 +120,7 @@ export const SiteSettingsTab = () => {
               ) : settings.logo ? (
                 <img src={settings.logo} alt="" className="h-6 w-6 object-cover" />
               ) : (
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-white text-[10px] font-black text-teal-700">
+                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#F0D487] to-[#A8843A] text-[10px] font-black text-[#111]">
                   {(settings.name || 'B').slice(0, 1).toUpperCase()}
                 </span>
               )}
@@ -138,7 +138,7 @@ export const SiteSettingsTab = () => {
               <p className="mt-2 line-clamp-3 text-[10px] leading-relaxed text-white/60">
                 {draft.description || t('appTagline')}
               </p>
-              <span className="mt-4 inline-block rounded-full bg-white px-4 py-2 text-[9px] font-black uppercase tracking-widest text-teal-700">
+              <span className="mt-4 inline-block rounded-full bg-gradient-to-r from-[#E9C977] via-[#D6B052] to-[#B8913A] text-[#111] px-4 py-2 text-[9px] font-black uppercase tracking-widest">
                 {t('shopNow')}
               </span>
             </div>

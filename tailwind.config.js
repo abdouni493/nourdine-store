@@ -15,7 +15,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ── Monochrome scale — ink on paper, inverted in dark mode ──────────
+        // ── Ink on ivory in light mode, ivory on black in dark mode ──────────
         wood: {
           dark: v('c-fg'), // headings & primary text
           medium: v('c-fg-muted'), // secondary text (>= 4.5:1 both themes)
@@ -25,10 +25,13 @@ export default {
           cream: v('c-surface-2'), // tinted surface
           white: v('c-surface'), // card surface
         },
+        /** Decorative gold — icons, tiles, rings. */
         gold: {
-          DEFAULT: v('c-accent'),
-          light: v('c-fg-muted'),
+          DEFAULT: v('c-gold'),
+          light: v('c-gold-2'),
         },
+        /** Gold that is safe as text on the page surface. */
+        goldink: v('c-gold-ink'),
         /** Text that sits ON the accent slab — flips with the theme. */
         accentfg: v('c-accent-fg'),
         /** Always-white text for the permanently dark chrome (nav, table heads). */
@@ -58,21 +61,21 @@ export default {
         full: '9999px',
       },
       backgroundImage: {
-        'wood-sidebar': 'linear-gradient(180deg, #032423 0%, #063F3C 55%, #0B5E58 100%)',
+        'wood-sidebar': 'linear-gradient(180deg, #0B0B0B 0%, #111110 60%, #1A1814 100%)',
         'wood-header':
           'linear-gradient(135deg, rgb(var(--c-chrome)) 0%, rgb(var(--c-chrome-2)) 100%)',
         'wood-btn': 'linear-gradient(135deg, rgb(var(--c-accent)) 0%, rgb(var(--c-accent-2)) 100%)',
         'wood-bg': 'linear-gradient(180deg, rgb(var(--c-bg)) 0%, rgb(var(--c-bg-2)) 100%)',
         'wood-card': 'linear-gradient(180deg, rgb(var(--c-surface)) 0%, rgb(var(--c-surface)) 100%)',
         'gold-shine': 'linear-gradient(135deg, rgb(var(--c-accent)) 0%, rgb(var(--c-accent-2)) 100%)',
-        'rose-shine': 'linear-gradient(135deg, #C7D2FE 0%, #DDD6FE 50%, #FBCFE8 100%)',
+        'rose-shine': 'linear-gradient(135deg, rgb(var(--c-gold-2)) 0%, rgb(var(--c-gold)) 100%)',
       },
       boxShadow: {
         wood: '0 1px 3px rgb(var(--c-shadow) / 0.08), 0 4px 14px -6px rgb(var(--c-shadow) / 0.14)',
         'wood-lg': '0 18px 48px -12px rgb(var(--c-shadow) / 0.28)',
         'wood-inset': 'inset 0 0 0 1px rgb(var(--c-border) / 0.9)',
-        gold: '0 8px 22px -6px rgb(var(--c-accent) / 0.45)',
-        rose: '0 8px 22px -6px rgb(var(--c-accent-2) / 0.45)',
+        gold: '0 8px 22px -8px rgb(var(--c-gold) / 0.55)',
+        rose: '0 8px 22px -8px rgb(var(--c-gold-2) / 0.45)',
       },
       borderColor: {
         woodborder: 'rgb(var(--c-border))',

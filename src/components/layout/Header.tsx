@@ -69,7 +69,7 @@ export const Header = ({ sidebarOpen, onToggleSidebar }: HeaderProps) => {
   }
 
   const iconBtn =
-    'flex h-10 min-w-10 items-center justify-center rounded-xl border border-wood-light bg-wood-white p-2 text-wood-medium transition hover:border-wood-warm hover:text-wood-dark'
+    'flex h-10 min-w-10 items-center justify-center rounded-xl border border-wood-light bg-wood-white p-2 text-wood-medium transition hover:border-gold hover:text-wood-dark'
 
   return (
     <header className="sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-wood-light bg-wood-white/90 px-3 py-2.5 backdrop-blur-md sm:px-6">
@@ -252,7 +252,7 @@ export const Header = ({ sidebarOpen, onToggleSidebar }: HeaderProps) => {
               setMenuOpen((v) => !v)
               setNotifOpen(false)
             }}
-            className="flex items-center gap-2 rounded-xl border border-wood-light bg-wood-white p-1 sm:pe-3 transition hover:border-wood-warm"
+            className="flex items-center gap-2 rounded-xl border border-wood-light bg-wood-white p-1 sm:pe-3 transition hover:border-gold"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-wood-btn text-[10px] font-bold text-accentfg">
               {initials(currentUser?.fullName ?? 'U')}

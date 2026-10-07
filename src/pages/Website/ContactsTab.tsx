@@ -57,15 +57,15 @@ export const ContactsTab = () => {
 
   return (
     <div className="max-w-3xl">
-      <p className="mb-5 flex items-start gap-2 border border-wood-light bg-wood-cream px-3 py-2.5 text-[11px] leading-relaxed text-wood-medium">
+      <p className="mb-5 flex items-start gap-2 rounded-xl border border-wood-light bg-wood-cream px-3 py-2.5 text-[11px] leading-relaxed text-wood-medium">
         <Info size={13} className="mt-px shrink-0" />
         {t('contactsHint')}
       </p>
 
-      <div className="card-wood divide-y divide-wood-light">
+      <div className="card-wood divide-y divide-wood-light overflow-hidden rounded-2xl">
         {ROWS.map((row) => (
           <div key={row.key} className="flex items-center gap-3 p-3 transition hover:bg-wood-cream/40">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-wood-light bg-wood-cream text-wood-dark">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-wood-light bg-wood-cream text-goldink">
               <row.icon size={16} />
             </div>
             <div className="min-w-0 flex-1">

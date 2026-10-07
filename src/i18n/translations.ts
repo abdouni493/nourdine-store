@@ -380,6 +380,7 @@ export const fr = {
   backToDashboard: 'Tableau de bord',
   darkMode: 'Mode sombre',
   lightMode: 'Mode clair',
+  appearance: 'Apparence',
   // ── Catalogue exposure ──────────────────────────────────────────
   publishedOnSite: 'En ligne',
   hiddenFromSite: 'Masqué',
@@ -980,6 +981,7 @@ export const ar: Record<TranslationKey, string> = {
   backToDashboard: 'لوحة التحكم',
   darkMode: 'الوضع الليلي',
   lightMode: 'الوضع النهاري',
+  appearance: 'المظهر',
   // ── Catalogue exposure ──────────────────────────────────────────
   publishedOnSite: 'منشور',
   hiddenFromSite: 'مخفي',

@@ -65,7 +65,7 @@ export const ProductCard = memo(({ product, currency, index = 0 }: Props) => {
     >
       <Link
         to={`/shop/products/${product.id}`}
-        className="relative block aspect-[3/4] overflow-hidden bg-wood-cream"
+        className="relative block aspect-[3/4] overflow-hidden rounded-xl bg-wood-cream"
       >
         {product.cover ? (
           <img
@@ -96,7 +96,7 @@ export const ProductCard = memo(({ product, currency, index = 0 }: Props) => {
           </span>
         )}
         {!soldOut && product.featured && (
-          <span className="absolute start-2 top-2 bg-wood-btn px-2 py-1 text-[8px] font-bold uppercase tracking-widest text-accentfg">
+          <span className="absolute start-2 top-2 rounded-full bg-gradient-to-br from-[#F0D487] to-[#B8913A] text-[#111] px-2 py-1 text-[8px] font-bold uppercase tracking-widest">
             ★
           </span>
         )}
@@ -129,7 +129,7 @@ export const ProductCard = memo(({ product, currency, index = 0 }: Props) => {
             disabled={soldOut}
             title={t('addToCart')}
             aria-label={t('addToCart')}
-            className="flex flex-1 items-center justify-center gap-1 border border-wood-light py-2 text-[9px] font-bold uppercase tracking-widest text-wood-dark transition hover:border-wood-warm hover:bg-wood-cream disabled:cursor-not-allowed disabled:opacity-35"
+            className="flex flex-1 items-center justify-center gap-1 rounded-lg border border-wood-light py-2.5 text-[9px] font-bold uppercase tracking-widest text-wood-dark transition hover:border-gold hover:bg-wood-cream disabled:cursor-not-allowed disabled:opacity-35"
           >
             <ShoppingBag size={12} />
             <span className="hidden sm:inline">{t('addToCart')}</span>
@@ -139,7 +139,7 @@ export const ProductCard = memo(({ product, currency, index = 0 }: Props) => {
             disabled={soldOut}
             title={t('buyNow')}
             aria-label={t('buyNow')}
-            className="flex flex-1 items-center justify-center gap-1 bg-wood-btn py-2 text-[9px] font-bold uppercase tracking-widest text-accentfg transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35"
+            className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-wood-btn py-2.5 text-[9px] font-bold uppercase tracking-widest text-accentfg transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35"
           >
             <Zap size={12} />
             <span className="hidden sm:inline">{t('buyNow')}</span>

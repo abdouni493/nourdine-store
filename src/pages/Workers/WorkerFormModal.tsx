@@ -152,7 +152,7 @@ export const WorkerFormModal = ({ open, onClose, worker }: Props) => {
         {/* Salary */}
         <div className="rounded-xl border border-wood-light/25 p-3">
           <label className="flex items-center gap-2 text-sm font-medium text-wood-dark">
-            <input type="checkbox" checked={form.hasSalary} onChange={(e) => set('hasSalary', e.target.checked)} className="accent-wood-warm" />
+            <input type="checkbox" checked={form.hasSalary} onChange={(e) => set('hasSalary', e.target.checked)} className="accent-[rgb(var(--c-gold))]" />
             {t('hasSalary')}
           </label>
           {form.hasSalary && (
@@ -169,7 +169,7 @@ export const WorkerFormModal = ({ open, onClose, worker }: Props) => {
         {/* Account */}
         <div className="rounded-xl border border-wood-light/25 p-3">
           <label className="flex items-center gap-2 text-sm font-medium text-wood-dark">
-            <input type="checkbox" checked={form.hasAccount} onChange={(e) => set('hasAccount', e.target.checked)} className="accent-wood-warm" />
+            <input type="checkbox" checked={form.hasAccount} onChange={(e) => set('hasAccount', e.target.checked)} className="accent-[rgb(var(--c-gold))]" />
             {t('hasAccount')}
           </label>
           {form.hasAccount && (
@@ -185,7 +185,7 @@ export const WorkerFormModal = ({ open, onClose, worker }: Props) => {
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Input label={t('startDate')} type="date" value={form.startDate} onChange={(e) => set('startDate', e.target.value)} />
           <Select label={t('status')} value={form.active ? '1' : '0'} onChange={(e) => set('active', e.target.value === '1')}>
             <option value="1">{t('active')}</option>

@@ -52,9 +52,9 @@ export const PermissionsModal = ({ open, onClose, worker }: { open: boolean; onC
         {NAV_ITEMS.map((item) => {
           const enabled = perms[item.key]?.enabled ?? false
           return (
-            <div key={item.key} className="border border-wood-light p-3">
+            <div key={item.key} className="rounded-xl border border-wood-light p-3">
               <label className="flex items-center gap-3">
-                <input type="checkbox" checked={enabled} onChange={(e) => toggleModule(item.key, e.target.checked)} className="h-4 w-4 accent-wood-warm" />
+                <input type="checkbox" checked={enabled} onChange={(e) => toggleModule(item.key, e.target.checked)} className="h-4 w-4 accent-[rgb(var(--c-gold))]" />
                 <item.icon size={17} className="text-wood-medium" />
                 <span className="font-semibold text-wood-dark">{t(item.labelKey)}</span>
               </label>
@@ -68,8 +68,8 @@ export const PermissionsModal = ({ open, onClose, worker }: { open: boolean; onC
                           <button
                             key={a}
                             onClick={() => toggleAction(item.key, a)}
-                            className={`border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide transition ${
-                              checked ? 'border-sage bg-sage/12 text-sage' : 'border-wood-light text-wood-medium hover:bg-wood-cream'
+                            className={`rounded-lg border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide transition ${
+                              checked ? 'border-sage bg-sage/10 text-sage' : 'border-wood-light text-wood-medium hover:bg-wood-cream'
                             }`}
                           >
                             {t(a)}

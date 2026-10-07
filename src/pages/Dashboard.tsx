@@ -49,22 +49,18 @@ import {
   productsWithMissingSizes,
 } from '@/utils/calculations'
 import { formatMoney, formatNumber } from '@/utils/helpers'
+import { useChartTheme } from '@/utils/chartTheme'
 import type { TranslationKey } from '@/i18n/translations'
 import { fadeUp, staggerContainer } from '@/utils/animations'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
-// Brass · ink · emerald · red · stone — the boutique's chart palette.
-const PIE_COLORS = ['#A16207', '#1C1917', '#047857', '#BE123C', '#B45309']
-const GRID = '#EADFC8'
-const AXIS = { fontSize: 11, fill: '#57534E' }
-const TOOLTIP_STYLE = { borderRadius: 12, border: '1px solid #D9C7A3', fontSize: 12 }
 
 const Panel = ({ title, icon, children, className = '' }: { title: string; icon?: React.ReactNode; children: React.ReactNode; className?: string }) => (
-  <motion.div variants={fadeUp} className={`card-wood rounded-2xl p-5 ${className}`}>
+  <motion.div variants={fadeUp} className={`card-wood min-w-0 rounded-2xl p-4 sm:p-5 ${className}`}>
     <div className="mb-4 flex items-center gap-2">
       {icon}
-      <h3 className="text-display text-lg font-bold text-wood-dark">{title}</h3>
+      <h3 className="text-display min-w-0 truncate text-base font-bold text-wood-dark sm:text-lg">{title}</h3>
     </div>
     {children}
   </motion.div>
@@ -72,6 +68,12 @@ const Panel = ({ title, icon, children, className = '' }: { title: string; icon?
 
 export const Dashboard = () => {
   const { t } = useTranslation()
+  // Recharts needs literal colours, so they come from the active theme.
+  const chart = useChartTheme()
+  const PIE_COLORS = chart.colors
+  const GRID = chart.grid
+  const AXIS = chart.axis
+  const TOOLTIP_STYLE = chart.tooltip
   const products = useProductStore((s) => s.products)
   const sales = useSalesStore((s) => s.sales)
   const purchases = usePurchaseStore((s) => s.purchases)
@@ -135,7 +137,7 @@ export const Dashboard = () => {
       <PageHeader title={t('dashboard')} subtitle={format(new Date(), 'EEEE dd MMMM yyyy', { locale: fr })} />
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
         {kpis.map((k, i) => (
           <StatCard key={k.label} index={i} {...k} />
         ))}
@@ -143,7 +145,7 @@ export const Dashboard = () => {
 
       {/* Size intelligence — what a clothing shop needs at a glance */}
       <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Panel title={t('missingSizes')} icon={<Ruler size={18} className="text-wood-warm" />}>
+        <Panel title={t('missingSizes')} icon={<Ruler size={18} className="text-goldink" />}>
           {missingSizes.length === 0 ? (
             <p className="py-6 text-center text-sm text-sage">{t('inStock')}</p>
           ) : (
@@ -171,7 +173,7 @@ export const Dashboard = () => {
           )}
         </Panel>
 
-        <Panel title={t('sizeBreakdown')} icon={<Shirt size={18} className="text-wood-warm" />}>
+        <Panel title={t('sizeBreakdown')} icon={<Shirt size={18} className="text-goldink" />}>
           {sizeStock.length === 0 ? (
             <p className="py-6 text-center text-sm text-wood-medium">{t('noData')}</p>
           ) : (
@@ -189,7 +191,7 @@ export const Dashboard = () => {
                   formatter={(v: number) => formatNumber(v)}
                   contentStyle={TOOLTIP_STYLE}
                 />
-                <Bar dataKey="units" name={t('totalStock')} fill="#A16207" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="units" name={t('totalStock')} fill={chart.colors[0]} radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -203,24 +205,24 @@ export const Dashboard = () => {
             <LineChart data={monthly}>
               <CartesianGrid strokeDasharray="3 3" stroke={GRID} />
               <XAxis dataKey="month" tick={AXIS} />
-              <YAxis tick={AXIS} tickFormatter={(v) => `${v / 1000}k`} />
+              <YAxis tick={AXIS} width={40} tickFormatter={(v) => `${v / 1000}k`} />
               <Tooltip formatter={(v: number) => formatMoney(v)} contentStyle={TOOLTIP_STYLE} />
-              <Line type="monotone" dataKey="sales" name={t('sales')} stroke="#047857" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 6 }} />
+              <Line type="monotone" dataKey="sales" name={t('sales')} stroke={chart.colors[0]} strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 6 }} />
             </LineChart>
           </ResponsiveContainer>
         </Panel>
 
-        <Panel title={t('comparison')} icon={<TrendingUp size={18} className="text-wood-warm" />}>
+        <Panel title={t('comparison')} icon={<TrendingUp size={18} className="text-goldink" />}>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={monthly}>
               <CartesianGrid strokeDasharray="3 3" stroke={GRID} />
               <XAxis dataKey="month" tick={AXIS} />
-              <YAxis tick={AXIS} tickFormatter={(v) => `${v / 1000}k`} />
+              <YAxis tick={AXIS} width={40} tickFormatter={(v) => `${v / 1000}k`} />
               <Tooltip formatter={(v: number) => formatMoney(v)} contentStyle={TOOLTIP_STYLE} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Bar dataKey="sales" name={t('sales')} fill="#047857" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="purchases" name={t('purchase')} fill="#A16207" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="expenses" name={t('expenses')} fill="#BE123C" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="sales" name={t('sales')} fill={chart.colors[0]} radius={[4, 4, 0, 0]} />
+              <Bar dataKey="purchases" name={t('purchase')} fill={chart.colors[1]} radius={[4, 4, 0, 0]} />
+              <Bar dataKey="expenses" name={t('expenses')} fill={chart.danger} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </Panel>
@@ -234,8 +236,8 @@ export const Dashboard = () => {
           ) : (
             <div className="space-y-2">
               {lowStock.slice(0, 6).map((p) => (
-                <div key={p.id} className="flex items-center justify-between rounded-xl bg-terracotta/5 px-3 py-2">
-                  <span className="truncate text-sm font-medium text-wood-dark">{p.name}</span>
+                <div key={p.id} className="flex items-center justify-between gap-2 rounded-xl bg-terracotta/5 px-3 py-2">
+                  <span className="min-w-0 truncate text-sm font-medium text-wood-dark">{p.name}</span>
                   <Badge tone="unpaid">{p.quantity} / {p.minQuantity}</Badge>
                 </div>
               ))}
@@ -243,15 +245,15 @@ export const Dashboard = () => {
           )}
         </Panel>
 
-        <Panel title={t('clientDebts')} icon={<Users size={18} className="text-wood-warm" />}>
+        <Panel title={t('clientDebts')} icon={<Users size={18} className="text-goldink" />}>
           {clientDebts.length === 0 ? (
             <p className="py-6 text-center text-sm text-wood-medium">{t('noData')}</p>
           ) : (
             <div className="space-y-2">
               {clientDebts.map((c) => (
-                <div key={c.id} className="flex items-center justify-between rounded-xl bg-wood-cream/40 px-3 py-2">
-                  <span className="truncate text-sm font-medium text-wood-dark">{c.name}</span>
-                  <span className="text-mono text-sm font-bold text-terracotta">{formatMoney(c.totalDebt)}</span>
+                <div key={c.id} className="flex items-center justify-between gap-2 rounded-xl bg-wood-cream/40 px-3 py-2">
+                  <span className="min-w-0 truncate text-sm font-medium text-wood-dark">{c.name}</span>
+                  <span className="text-mono shrink-0 text-sm font-bold text-terracotta">{formatMoney(c.totalDebt)}</span>
                 </div>
               ))}
             </div>
@@ -264,9 +266,9 @@ export const Dashboard = () => {
           ) : (
             <div className="space-y-2">
               {supplierDebts.map((s) => (
-                <div key={s.id} className="flex items-center justify-between rounded-xl bg-wood-cream/40 px-3 py-2">
-                  <span className="truncate text-sm font-medium text-wood-dark">{s.name}</span>
-                  <span className="text-mono text-sm font-bold text-terracotta">{formatMoney(s.totalDebt)}</span>
+                <div key={s.id} className="flex items-center justify-between gap-2 rounded-xl bg-wood-cream/40 px-3 py-2">
+                  <span className="min-w-0 truncate text-sm font-medium text-wood-dark">{s.name}</span>
+                  <span className="text-mono shrink-0 text-sm font-bold text-terracotta">{formatMoney(s.totalDebt)}</span>
                 </div>
               ))}
             </div>
@@ -279,12 +281,12 @@ export const Dashboard = () => {
         <Panel title={t('recentSales')}>
           <div className="space-y-2">
             {recentSales.map((s) => (
-              <div key={s.id} className="flex items-center justify-between rounded-xl bg-wood-cream/40 px-3 py-2">
+              <div key={s.id} className="flex items-center justify-between gap-2 rounded-xl bg-wood-cream/40 px-3 py-2">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-wood-dark">{s.clientName}</p>
                   <p className="text-[11px] text-wood-medium">{format(new Date(s.date), 'dd/MM/yyyy')}</p>
                 </div>
-                <span className="text-mono text-sm font-bold text-sage">{formatMoney(s.total)}</span>
+                <span className="text-mono shrink-0 text-sm font-bold text-sage">{formatMoney(s.total)}</span>
               </div>
             ))}
           </div>
@@ -293,12 +295,12 @@ export const Dashboard = () => {
         <Panel title={t('recentPurchases')}>
           <div className="space-y-2">
             {recentPurchases.map((p) => (
-              <div key={p.id} className="flex items-center justify-between rounded-xl bg-wood-cream/40 px-3 py-2">
+              <div key={p.id} className="flex items-center justify-between gap-2 rounded-xl bg-wood-cream/40 px-3 py-2">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-wood-dark">{p.supplierName}</p>
                   <p className="text-[11px] text-wood-medium">{format(new Date(p.date), 'dd/MM/yyyy')}</p>
                 </div>
-                <span className="text-mono text-sm font-bold text-wood-warm">{formatMoney(p.total)}</span>
+                <span className="text-mono shrink-0 text-sm font-bold text-goldink">{formatMoney(p.total)}</span>
               </div>
             ))}
           </div>
@@ -307,12 +309,12 @@ export const Dashboard = () => {
         <Panel title={t('recentExpenses')}>
           <div className="space-y-2">
             {recentExpenses.map((e) => (
-              <div key={e.id} className="flex items-center justify-between rounded-xl bg-wood-cream/40 px-3 py-2">
+              <div key={e.id} className="flex items-center justify-between gap-2 rounded-xl bg-wood-cream/40 px-3 py-2">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-wood-dark">{e.name}</p>
                   <p className="text-[11px] text-wood-medium">{format(new Date(e.date), 'dd/MM/yyyy')}</p>
                 </div>
-                <span className="text-mono text-sm font-bold text-terracotta">{formatMoney(e.amount)}</span>
+                <span className="text-mono shrink-0 text-sm font-bold text-terracotta">{formatMoney(e.amount)}</span>
               </div>
             ))}
           </div>
@@ -332,13 +334,13 @@ export const Dashboard = () => {
               <p className="text-xs text-wood-medium">{t('inactive')}</p>
             </div>
             <div className="col-span-2 rounded-xl bg-gold/10 p-3 text-center">
-              <p className="text-mono text-xl font-bold text-[#854D0E]">{formatMoney(salaryDue)}</p>
+              <p className="text-mono text-xl font-bold text-goldink">{formatMoney(salaryDue)}</p>
               <p className="text-xs text-wood-medium">{t('salariesToPay')}</p>
             </div>
           </div>
         </Panel>
 
-        <Panel title={t('topProducts')} icon={<Boxes size={18} className="text-wood-warm" />} className="lg:col-span-2">
+        <Panel title={t('topProducts')} icon={<Boxes size={18} className="text-goldink" />} className="lg:col-span-2">
           {top5.length === 0 ? (
             <p className="py-6 text-center text-sm text-wood-medium">{t('noData')}</p>
           ) : (
@@ -358,7 +360,7 @@ export const Dashboard = () => {
                   <div key={p.productId} className="flex items-center gap-2">
                     <span className="h-3 w-3 rounded-full" style={{ background: PIE_COLORS[i % PIE_COLORS.length] }} />
                     <span className="flex-1 truncate text-sm text-wood-dark">{p.name}</span>
-                    <span className="text-mono text-sm font-bold text-wood-medium">{p.quantity}</span>
+                    <span className="text-mono shrink-0 text-sm font-bold text-wood-medium">{p.quantity}</span>
                   </div>
                 ))}
               </div>

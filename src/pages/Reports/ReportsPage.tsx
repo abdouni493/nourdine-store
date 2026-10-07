@@ -93,19 +93,19 @@ const SummaryCard = ({
   color: string
   icon: React.ReactNode
 }) => (
-  <div className="card-wood p-4">
-    <div className={`flex h-9 w-9 items-center justify-center text-white ${color}`}>{icon}</div>
-    <p className="eyebrow mt-3">{label}</p>
-    <p className="text-mono mt-1 text-lg font-black leading-tight text-wood-dark [font-size:clamp(0.95rem,1.6vw,1.25rem)]">
+  <div className="card-wood min-w-0 rounded-2xl p-3.5 sm:p-4">
+    <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${color}`}>{icon}</div>
+    <p className="eyebrow mt-3 truncate">{label}</p>
+    <p className="text-mono mt-1 break-words text-lg font-black leading-tight text-wood-dark [font-size:clamp(0.9rem,1.6vw,1.25rem)]">
       {formatMoney(value)}
     </p>
   </div>
 )
 
 const MiniStat = ({ label, value, tone }: { label: string; value: string; tone?: string }) => (
-  <div className="card-wood p-3">
-    <p className="eyebrow">{label}</p>
-    <p className={`text-mono mt-1 text-lg font-black ${tone ?? 'text-wood-dark'}`}>{value}</p>
+  <div className="card-wood min-w-0 rounded-2xl p-3">
+    <p className="eyebrow truncate">{label}</p>
+    <p className={`text-mono mt-1 break-words text-base font-black sm:text-lg ${tone ?? 'text-wood-dark'}`}>{value}</p>
   </div>
 )
 
@@ -118,9 +118,9 @@ const Section = ({
   icon: React.ReactNode
   children: React.ReactNode
 }) => (
-  <section className="card-wood p-5">
+  <section className="card-wood min-w-0 rounded-2xl p-4 sm:p-5">
     <h2 className="mb-4 flex items-center gap-2.5 border-b border-wood-light pb-3 text-display text-sm font-black uppercase tracking-wide text-wood-dark">
-      <span className="text-wood-warm">{icon}</span>
+      <span className="text-goldink">{icon}</span>
       {title}
     </h2>
     {children}
@@ -154,9 +154,9 @@ const ReportTable = ({
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-wood-dark text-[10px] font-bold uppercase tracking-widest text-wood-medium">
+          <tr className="border-b border-gold/60 text-[10px] font-bold uppercase tracking-widest text-wood-medium">
             {head.map((h, i) => (
-              <th key={i} className={`py-2 ${cls(alignOf(i))}`}>
+              <th key={i} className={`whitespace-nowrap py-2 pe-3 last:pe-0 ${cls(alignOf(i))}`}>
                 {h}
               </th>
             ))}
@@ -168,7 +168,7 @@ const ReportTable = ({
               {row.map((cell, j) => (
                 <td
                   key={j}
-                  className={`py-2 ${cls(alignOf(j))} ${
+                  className={`py-2 pe-3 last:pe-0 ${cls(alignOf(j))} ${
                     j === 0 ? 'font-medium text-wood-dark' : 'text-wood-medium'
                   } ${alignOf(j) === 'end' ? 'text-mono' : ''}`}
                 >
@@ -330,9 +330,9 @@ export const ReportsPage = () => {
       />
 
       {/* Period picker */}
-      <div className="card-wood mb-5 p-4">
-        <div className="flex flex-wrap items-end gap-3">
-          <div>
+      <div className="card-wood mb-5 rounded-2xl p-3 sm:p-4">
+        <div className="grid grid-cols-2 items-end gap-3 sm:flex sm:flex-wrap">
+          <div className="min-w-0">
             <label className="label-wood">{t('from')}</label>
             <input
               type="date"
@@ -341,7 +341,7 @@ export const ReportsPage = () => {
               className="input-wood"
             />
           </div>
-          <div>
+          <div className="min-w-0">
             <label className="label-wood">{t('to')}</label>
             <input
               type="date"
@@ -350,7 +350,7 @@ export const ReportsPage = () => {
               className="input-wood"
             />
           </div>
-          <Button onClick={generate}>
+          <Button onClick={generate} className="col-span-2 sm:col-span-1">
             <IconChart size={16} />
             {t('generateReport')}
           </Button>
@@ -361,7 +361,7 @@ export const ReportsPage = () => {
             <button
               key={r.label}
               onClick={() => applyRange(r.range())}
-              className="border border-wood-light bg-wood-white px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wide text-wood-medium transition hover:border-wood-warm hover:text-wood-dark"
+              className="rounded-lg border border-wood-light bg-wood-white px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wide text-wood-medium transition hover:border-gold hover:text-wood-dark"
             >
               {r.label}
             </button>
@@ -404,16 +404,16 @@ export const ReportsPage = () => {
                 {t('financialSummary')}
               </h2>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-                <SummaryCard label={t('totalSales')} value={report.totalSales} color="bg-sage" icon={<IconUp size={18} />} />
-                <SummaryCard label={t('totalPurchasesReport')} value={report.totalPurchases} color="bg-wood-warm" icon={<IconCart size={18} />} />
-                <SummaryCard label={t('totalExpenses')} value={report.totalExpenses} color="bg-terracotta" icon={<IconExpense size={18} />} />
-                <SummaryCard label={t('totalSalaries')} value={report.totalSalaries} color="bg-gold" icon={<IconPayroll size={18} />} />
-                <SummaryCard label={t('grossMargin')} value={report.grossMargin} color="bg-wood-dark" icon={<IconMargin size={18} />} />
-                <div className="bg-wood-btn p-4 text-accentfg">
+                <SummaryCard label={t('totalSales')} value={report.totalSales} color="bg-sage/10 text-sage" icon={<IconUp size={18} />} />
+                <SummaryCard label={t('totalPurchasesReport')} value={report.totalPurchases} color="bg-wood-btn text-accentfg" icon={<IconCart size={18} />} />
+                <SummaryCard label={t('totalExpenses')} value={report.totalExpenses} color="bg-terracotta/10 text-terracotta" icon={<IconExpense size={18} />} />
+                <SummaryCard label={t('totalSalaries')} value={report.totalSalaries} color="bg-gold/15 text-goldink" icon={<IconPayroll size={18} />} />
+                <SummaryCard label={t('grossMargin')} value={report.grossMargin} color="bg-wood-btn text-accentfg" icon={<IconMargin size={18} />} />
+                <div className="min-w-0 rounded-2xl bg-wood-btn p-3.5 text-accentfg shadow-gold sm:p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest opacity-70">
                     {t('netProfit')}
                   </p>
-                  <p className="text-mono mt-3 text-lg font-black leading-tight [font-size:clamp(0.95rem,1.6vw,1.25rem)]">
+                  <p className="text-mono mt-3 break-words text-lg font-black leading-tight [font-size:clamp(0.9rem,1.6vw,1.25rem)]">
                     {formatMoney(report.netProfit)}
                   </p>
                 </div>
@@ -500,10 +500,10 @@ export const ReportsPage = () => {
                       <div key={c.sizeCategory} className="rounded-xl border border-wood-light bg-wood-cream/30 p-3">
                         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                           <h4 className="flex items-center gap-2 text-sm font-bold text-wood-dark">
-                            <IconSize size={14} className="text-wood-warm" />
+                            <IconSize size={14} className="text-goldink" />
                             {sizeLabel(c.sizeCategory)}
                           </h4>
-                          <div className="flex gap-4 text-xs text-wood-medium">
+                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-wood-medium">
                             <span>
                               {t('qtySold')}: <span className="text-mono font-bold text-wood-dark">{c.quantity}</span>
                             </span>
@@ -644,9 +644,9 @@ export const ReportsPage = () => {
                   { l: `${t('paid')} — ${t('purchase')}`, v: report.caisse.purchasesPaid, c: 'text-wood-dark' },
                   { l: t('salariesPaid'), v: report.caisse.salaries, c: 'text-wood-dark' },
                 ].map((x) => (
-                  <div key={x.l} className="rounded-xl bg-wood-cream/50 p-3">
+                  <div key={x.l} className="min-w-0 rounded-xl bg-wood-cream/50 p-3">
                     <p className="truncate text-[11px] text-wood-medium" title={x.l}>{x.l}</p>
-                    <p className={`text-mono text-base font-bold ${x.c}`}>{formatMoney(x.v)}</p>
+                    <p className={`text-mono break-words text-sm font-bold sm:text-base ${x.c}`}>{formatMoney(x.v)}</p>
                   </div>
                 ))}
               </div>
@@ -844,7 +844,7 @@ export const ReportsPage = () => {
             animate={{ opacity: 1 }}
             className="card-wood flex flex-col items-center gap-3 rounded-2xl py-20 text-center"
           >
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-wood-cream text-wood-warm">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-wood-cream text-goldink">
               <IconChart size={40} />
             </div>
             <p className="text-sm text-wood-medium">{t('selectPeriod')}</p>

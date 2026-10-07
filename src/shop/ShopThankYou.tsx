@@ -44,7 +44,7 @@ export const ShopThankYou = () => {
           initial={{ scale: 0, rotate: -25 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: 'spring', damping: 13, stiffness: 200 }}
-          className="mx-auto flex h-20 w-20 items-center justify-center bg-wood-btn"
+          className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-wood-btn shadow-gold"
         >
           <motion.span
             initial={{ pathLength: 0 }}
@@ -110,7 +110,7 @@ export const ShopThankYou = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.05 }}
-          className="text-mono mt-7 inline-block border border-wood-dark px-5 py-2.5 text-sm font-bold text-wood-dark"
+          className="text-mono mt-7 inline-block rounded-full border border-gold px-5 py-2.5 text-sm font-bold text-wood-dark"
         >
           {order.reference}
         </motion.p>
@@ -121,7 +121,7 @@ export const ShopThankYou = () => {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.15, duration: 0.6 }}
-        className="mt-12 border border-wood-light"
+        className="mt-12 overflow-hidden rounded-2xl border border-wood-light"
       >
         <h2 className="border-b border-wood-light px-5 py-3.5 text-xs font-black uppercase tracking-widest text-wood-dark">
           {t('orderSummary')}

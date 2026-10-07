@@ -244,7 +244,7 @@ export const WebOrdersPage = () => {
         title={t('weborders')}
         subtitle={t('webOrdersSubtitle')}
         actions={
-          <div className="flex items-center gap-2 border border-wood-light px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-wood-medium">
+          <div className="flex items-center justify-between gap-2 rounded-xl border border-gold/40 bg-gold/10 px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-wood-medium">
             {t('webRevenue')}
             <span className="text-mono text-sm text-wood-dark">{formatMoney(revenue, currency)}</span>
           </div>
@@ -252,17 +252,17 @@ export const WebOrdersPage = () => {
       />
 
       {/* Status rail */}
-      <div className="mb-4 overflow-x-auto">
-        <div className="flex min-w-max gap-1.5">
+      <div className="-mx-3 mb-4 overflow-x-auto px-3 sm:mx-0 sm:px-0">
+        <div className="flex min-w-max gap-1.5 pb-1">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setFilter(tab.key)}
               className={clsx(
-                'flex items-center gap-2 border px-3.5 py-2 text-[10px] font-bold uppercase tracking-wide transition',
+                'flex items-center gap-2 rounded-full border px-3.5 py-2 text-[10px] font-bold uppercase tracking-wide transition',
                 filter === tab.key
                   ? 'border-wood-warm bg-wood-btn text-accentfg'
-                  : 'border-wood-light text-wood-medium hover:border-wood-warm hover:text-wood-dark',
+                  : 'border-wood-light text-wood-medium hover:border-gold hover:text-wood-dark',
               )}
             >
               {tab.label}
@@ -300,7 +300,7 @@ export const WebOrdersPage = () => {
                 animate="animate"
                 exit={{ opacity: 0, y: -6 }}
                 custom={Math.min(i, 8)}
-                className="card-wood flex flex-col gap-3 p-4 lg:flex-row lg:items-center"
+                className="card-wood flex min-w-0 flex-col gap-3 rounded-2xl p-4 lg:flex-row lg:items-center"
               >
                 {/* Identity */}
                 <div className="min-w-0 flex-1">
@@ -319,9 +319,9 @@ export const WebOrdersPage = () => {
                       <Phone size={11} />
                       {o.phone}
                     </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin size={11} />
-                      {o.commune}, {o.wilaya}
+                    <span className="flex min-w-0 items-center gap-1">
+                      <MapPin size={11} className="shrink-0" />
+                      <span className="truncate">{o.commune}, {o.wilaya}</span>
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock size={11} />
@@ -331,7 +331,7 @@ export const WebOrdersPage = () => {
                 </div>
 
                 {/* Money */}
-                <div className="flex shrink-0 items-center gap-5 lg:justify-end">
+                <div className="flex shrink-0 items-center justify-between gap-5 border-t border-wood-light pt-3 lg:justify-end lg:border-0 lg:pt-0">
                   <div className="text-start lg:text-end">
                     <p className="eyebrow">{t('articlesCount')}</p>
                     <p className="text-mono text-sm font-bold text-wood-dark">
@@ -352,7 +352,7 @@ export const WebOrdersPage = () => {
                     onClick={() => setDetails(o)}
                     title={t('viewDetails')}
                     aria-label={t('viewDetails')}
-                    className="border border-wood-light p-2 text-wood-medium transition hover:border-wood-warm hover:text-wood-dark"
+                    className="rounded-lg border border-wood-light p-2 text-wood-medium transition hover:border-gold hover:text-wood-dark"
                   >
                     <Info size={14} />
                   </button>
@@ -361,7 +361,7 @@ export const WebOrdersPage = () => {
                       onClick={() => setEditing(o)}
                       title={t('editOrder')}
                       aria-label={t('editOrder')}
-                      className="border border-wood-light p-2 text-wood-medium transition hover:border-wood-warm hover:text-wood-dark"
+                      className="rounded-lg border border-wood-light p-2 text-wood-medium transition hover:border-gold hover:text-wood-dark"
                     >
                       <Pencil size={14} />
                     </button></Can>
@@ -371,14 +371,14 @@ export const WebOrdersPage = () => {
                       key={a.key}
                       onClick={a.onClick}
                       className={clsx(
-                        'flex items-center gap-1.5 border px-3 py-2 text-[10px] font-bold uppercase tracking-wide transition',
+                        'flex grow items-center justify-center gap-1.5 rounded-lg border px-3 py-2 text-[10px] font-bold uppercase tracking-wide transition sm:grow-0',
                         a.tone === 'accent'
                           ? 'border-wood-warm bg-wood-btn text-accentfg hover:opacity-85'
                           : a.tone === 'sage'
                             ? 'border-sage bg-sage text-white hover:opacity-85'
                             : a.tone === 'danger'
                               ? 'border-wood-light text-terracotta hover:border-terracotta hover:bg-terracotta/10'
-                              : 'border-wood-light text-wood-medium hover:border-wood-warm hover:text-wood-dark',
+                              : 'border-wood-light text-wood-medium hover:border-gold hover:text-wood-dark',
                       )}
                     >
                       {a.icon}
@@ -468,8 +468,8 @@ export const WebOrdersPage = () => {
             )}
 
             {/* Lines */}
-            <div className="overflow-x-auto border border-wood-light">
-              <table className="w-full text-xs">
+            <div className="overflow-x-auto rounded-xl border border-wood-light">
+              <table className="w-full min-w-[460px] text-xs">
                 <thead className="bg-wood-header text-white">
                   <tr>
                     {[t('productName'), t('size'), t('quantity'), t('unitPrice'), t('total')].map(
@@ -516,16 +516,16 @@ export const WebOrdersPage = () => {
               </table>
             </div>
 
-            <div className="grid grid-cols-3 gap-px border border-wood-warm bg-wood-light">
+            <div className="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-gold/50 bg-wood-light">
               {[
                 { label: t('subtotal'), value: formatMoney(details.subtotal, currency) },
                 { label: t('deliveryFee'), value: formatMoney(details.deliveryPrice, currency) },
                 { label: t('grandTotal'), value: formatMoney(details.total, currency), strong: true },
               ].map((c) => (
-                <div key={c.label} className="bg-wood-white px-4 py-3">
-                  <p className="eyebrow">{c.label}</p>
+                <div key={c.label} className="min-w-0 bg-wood-white px-2 py-3 sm:px-4">
+                  <p className="eyebrow truncate">{c.label}</p>
                   <p
-                    className={`text-mono mt-1 font-bold text-wood-dark ${c.strong ? 'text-base' : 'text-sm'}`}
+                    className={`text-mono mt-1 break-words font-bold leading-tight text-wood-dark ${c.strong ? 'text-sm sm:text-base' : 'text-xs sm:text-sm'}`}
                   >
                     {c.value}
                   </p>

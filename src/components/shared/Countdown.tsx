@@ -37,7 +37,7 @@ interface Props {
 const sizes = {
   sm: { cell: 'min-w-[38px] px-1.5 py-1', num: 'text-sm', label: 'text-[8px]' },
   md: { cell: 'min-w-[52px] px-2 py-1.5', num: 'text-lg', label: 'text-[9px]' },
-  lg: { cell: 'min-w-[72px] px-3 py-2.5', num: 'text-3xl', label: 'text-[10px]' },
+  lg: { cell: 'min-w-[60px] px-2 py-2 sm:min-w-[72px] sm:px-3 sm:py-2.5', num: 'text-2xl sm:text-3xl', label: 'text-[9px] sm:text-[10px]' },
 }
 
 /**
@@ -79,9 +79,9 @@ export const Countdown = ({ endDate, tone = 'light', size = 'md', className }: P
         <div
           key={label}
           className={clsx(
-            'flex flex-col items-center justify-center border text-center',
+            'flex flex-col items-center justify-center rounded-lg border text-center',
             s.cell,
-            tone === 'dark' ? 'border-white/20 bg-white/[0.06]' : 'border-wood-light bg-wood-cream',
+            tone === 'dark' ? 'border-[#D6B052]/30 bg-black/40 backdrop-blur-sm' : 'border-wood-light bg-wood-white',
           )}
         >
           <span className="relative block h-[1.15em] overflow-hidden">

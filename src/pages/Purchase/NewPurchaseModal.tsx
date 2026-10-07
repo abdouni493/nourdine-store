@@ -214,9 +214,9 @@ export const NewPurchaseModal = ({ open, onClose, editing }: NewPurchaseModalPro
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
           {/* Articles */}
           <div className="lg:col-span-2">
-            <div className="mb-2 flex items-center justify-between gap-2">
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
               <h4 className="flex items-center gap-2 font-bold text-wood-dark">
-                <IconCart size={18} className="text-wood-warm" />
+                <IconCart size={18} className="text-goldink" />
                 {t('products')}
               </h4>
               <Button action="create"
@@ -242,12 +242,12 @@ export const NewPurchaseModal = ({ open, onClose, editing }: NewPurchaseModalPro
                 className="input-wood ps-10"
               />
               {productQuery && (
-                <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-wood-light bg-white shadow-wood-lg">
+                <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-wood-light bg-wood-white shadow-wood-lg">
                   {productSuggestions.length > 0 ? (
                     productSuggestions.map((p) => (
                       <div key={p.id} className="border-b border-wood-cream p-2.5 last:border-0">
-                        <div className="mb-1.5 flex items-center justify-between">
-                          <span className="text-sm font-medium text-wood-dark">{p.name}</span>
+                        <div className="mb-1.5 flex items-center justify-between gap-2">
+                          <span className="min-w-0 truncate text-sm font-medium text-wood-dark">{p.name}</span>
                           <span className="text-mono text-xs text-wood-medium">
                             {p.quantity} {t('inStock').toLowerCase()}
                           </span>
@@ -266,7 +266,7 @@ export const NewPurchaseModal = ({ open, onClose, editing }: NewPurchaseModalPro
                                 <button
                                   key={s}
                                   onClick={() => addLine(p, s)}
-                                  className="size-chip transition hover:border-wood-warm hover:bg-wood-warm hover:text-white"
+                                  className="size-chip transition hover:border-gold hover:bg-wood-btn hover:text-accentfg"
                                 >
                                   {s}
                                 </button>
@@ -303,11 +303,11 @@ export const NewPurchaseModal = ({ open, onClose, editing }: NewPurchaseModalPro
               ) : (
                 lines.map((l) => (
                   <div key={l._key} className="rounded-xl border border-wood-light bg-wood-cream/30 p-3">
-                    <div className="flex items-center justify-between">
-                      <p className="flex items-center gap-2 font-semibold text-wood-dark">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="flex min-w-0 flex-wrap items-center gap-2 break-words font-semibold text-wood-dark">
                         {l.productName}
                         {l.size && (
-                          <span className="rounded-md bg-wood-warm px-1.5 py-0.5 text-[11px] font-bold text-white">
+                          <span className="rounded-md bg-wood-btn px-1.5 py-0.5 text-[11px] font-bold text-accentfg">
                             {t('size')} {l.size}
                           </span>
                         )}
@@ -403,7 +403,7 @@ export const NewPurchaseModal = ({ open, onClose, editing }: NewPurchaseModalPro
                     className="input-wood"
                   />
                   {supplierSuggestions.length > 0 && (
-                    <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-wood-light bg-white shadow-wood-lg">
+                    <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-wood-light bg-wood-white shadow-wood-lg">
                       {supplierSuggestions.map((s) => (
                         <button
                           key={s.id}

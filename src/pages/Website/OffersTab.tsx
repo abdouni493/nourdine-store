@@ -75,14 +75,14 @@ export const OffersTab = () => {
   return (
     <div>
       {/* Toolbar */}
-      <div className="mb-5 flex flex-wrap items-center gap-3">
+      <div className="mb-5 flex flex-wrap items-center gap-2 sm:gap-3">
         <SearchInput
           value={query}
           onChange={setQuery}
           placeholder={t('search')}
-          className="min-w-[220px] flex-1"
+          className="w-full sm:w-auto sm:min-w-[220px] sm:flex-1"
         />
-        <div className="flex items-center gap-2 border border-wood-light px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-wood-medium">
+        <div className="flex items-center gap-2 rounded-xl border border-wood-light px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-wood-medium">
           {t('offerLive')} <span className="text-mono text-wood-dark">{liveCount}</span>
           <span className="h-3 w-px bg-wood-light" />
           {t('offersCount')} <span className="text-mono text-wood-dark">{offers.length}</span>
@@ -124,7 +124,7 @@ export const OffersTab = () => {
               initial="initial"
               animate="animate"
               custom={i}
-              className="card-wood group flex flex-col overflow-hidden"
+              className="card-wood group flex min-w-0 flex-col overflow-hidden rounded-2xl"
             >
               <div className="relative aspect-[16/9] overflow-hidden bg-wood-cream">
                 {o.image ? (
@@ -141,7 +141,7 @@ export const OffersTab = () => {
                 )}
                 <div className="absolute start-2 top-2">{badge(o)}</div>
                 {o.discountPercent > 0 && (
-                  <div className="text-mono absolute end-2 top-2 bg-wood-btn px-2 py-1 text-sm font-black text-accentfg">
+                  <div className="text-mono absolute end-2 top-2 rounded-full bg-gradient-to-br from-[#F0D487] to-[#B8913A] px-2.5 py-1 text-sm font-black text-[#111]">
                     −{o.discountPercent.toFixed(0)}%
                   </div>
                 )}
@@ -163,7 +163,7 @@ export const OffersTab = () => {
                   </p>
                 )}
 
-                <div className="mt-3 flex items-baseline gap-2">
+                <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
                   <span className="text-mono text-lg font-black text-wood-dark">
                     {formatMoney(o.offerTotal, currency)}
                   </span>
@@ -210,10 +210,10 @@ export const OffersTab = () => {
                       onClick={a.onClick}
                       title={a.label}
                       aria-label={a.label}
-                      className={`flex items-center justify-center border py-2 transition ${
+                      className={`flex items-center justify-center rounded-lg border py-2.5 transition ${
                         a.accent
                           ? 'border-wood-warm bg-wood-btn text-accentfg hover:opacity-85'
-                          : 'border-wood-light text-wood-medium hover:border-wood-warm hover:text-wood-dark'
+                          : 'border-wood-light text-wood-medium hover:border-gold hover:text-wood-dark'
                       }`}
                     >
                       {a.icon}
@@ -308,7 +308,7 @@ export const OffersTab = () => {
               ))}
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] text-wood-medium">
+            <div className="flex flex-wrap items-center gap-2 text-[11px] text-wood-medium">
               <CalendarClock size={14} />
               {details.startDate ? new Date(details.startDate).toLocaleString('fr-FR') : '—'}
               {' → '}
@@ -317,8 +317,8 @@ export const OffersTab = () => {
 
             <div>
               <p className="eyebrow mb-2">{t('selectedProducts')}</p>
-              <div className="overflow-x-auto border border-wood-light">
-                <table className="w-full text-xs">
+              <div className="overflow-x-auto rounded-xl border border-wood-light">
+                <table className="w-full min-w-[460px] text-xs">
                   <thead className="bg-wood-header text-white">
                     <tr className="text-start">
                       {[

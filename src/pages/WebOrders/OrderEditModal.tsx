@@ -148,7 +148,7 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
       <div className="space-y-6">
         {/* ── Customer ───────────────────────────────────────────────────── */}
         <section>
-          <h4 className="mb-3 text-xs font-bold uppercase tracking-widest text-wood-warm">
+          <h4 className="mb-3 text-xs font-bold uppercase tracking-widest text-goldink">
             {t('customerName')}
           </h4>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -171,7 +171,7 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
 
         {/* ── Destination & carrier ──────────────────────────────────────── */}
         <section>
-          <h4 className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-wood-warm">
+          <h4 className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-goldink">
             <Truck size={14} />
             {t('webDelivery')}
           </h4>
@@ -218,7 +218,7 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
             </Select>
             <div>
               <label className="label-wood">{t('deliveryMode')}</label>
-              <div className="grid grid-cols-2 gap-0 border border-wood-light">
+              <div className="grid grid-cols-2 gap-0 overflow-hidden rounded-xl border border-wood-light">
                 {(['home', 'desk'] as DeliveryMode[]).map((m) => (
                   <button
                     key={m}
@@ -253,7 +253,7 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
 
         {/* ── Basket ─────────────────────────────────────────────────────── */}
         <section>
-          <h4 className="mb-3 text-xs font-bold uppercase tracking-widest text-wood-warm">
+          <h4 className="mb-3 text-xs font-bold uppercase tracking-widest text-goldink">
             {t('articlesCount')}
           </h4>
 
@@ -289,7 +289,7 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
                         <span className="text-mono text-xs text-wood-medium">
                           {formatMoney(p.salePrice, currency)}
                         </span>
-                        <Plus size={14} className="text-wood-warm" />
+                        <Plus size={14} className="text-goldink" />
                       </button>
                     </li>
                   ))}
@@ -305,7 +305,7 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
               return (
                 <div
                   key={`${l.productId}-${l.size}-${i}`}
-                  className="grid grid-cols-1 items-end gap-3 border border-wood-light bg-wood-white p-3 sm:grid-cols-[auto_1fr_auto_auto_auto_auto]"
+                  className="grid grid-cols-[auto_1fr] items-end gap-3 rounded-xl border border-wood-light bg-wood-white p-3 sm:grid-cols-[auto_1fr_auto_auto_auto_auto]"
                 >
                   {l.image ? (
                     <img src={l.image} alt="" className="h-14 w-11 object-cover" />
@@ -324,6 +324,7 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
                     )}
                   </div>
 
+                  <div className="col-span-2 flex flex-wrap items-end gap-3 sm:contents">
                   <div>
                     <label className="label-wood">{t('size')}</label>
                     {scale.length > 0 ? (
@@ -377,7 +378,7 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
                       onChange={(e) =>
                         patchLine(i, { unitPrice: Math.max(0, Number(e.target.value) || 0) })
                       }
-                      className="input-wood text-mono w-28 py-2 text-end font-bold"
+                      className="input-wood text-mono w-24 py-2 text-end font-bold sm:w-28"
                     />
                   </div>
 
@@ -385,10 +386,11 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
                     type="button"
                     onClick={() => setLines((prev) => prev.filter((_, k) => k !== i))}
                     aria-label={t('delete')}
-                    className="mb-0.5 border border-wood-light p-2.5 text-terracotta transition hover:border-terracotta hover:bg-terracotta/10"
+                    className="mb-0.5 ms-auto rounded-lg border border-wood-light p-2.5 text-terracotta sm:ms-0 transition hover:border-terracotta hover:bg-terracotta/10"
                   >
                     <Trash2 size={14} />
                   </button>
+                  </div>
                 </div>
               )
             })}
@@ -401,16 +403,16 @@ export const OrderEditModal = ({ open, onClose, order }: Props) => {
         </section>
 
         {/* ── Totals ─────────────────────────────────────────────────────── */}
-        <section className="grid grid-cols-3 gap-px border border-wood-warm bg-wood-light">
+        <section className="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-gold/50 bg-wood-light">
           {[
             { label: t('subtotal'), value: formatMoney(totals.subtotal, currency) },
             { label: t('deliveryFee'), value: formatMoney(deliveryPrice, currency) },
             { label: t('grandTotal'), value: formatMoney(totals.total, currency), strong: true },
           ].map((c) => (
-            <div key={c.label} className="bg-wood-white px-4 py-3">
-              <p className="eyebrow">{c.label}</p>
+            <div key={c.label} className="min-w-0 bg-wood-white px-2 py-3 sm:px-4">
+              <p className="eyebrow truncate">{c.label}</p>
               <p
-                className={`text-mono mt-1 font-bold text-wood-dark ${c.strong ? 'text-base' : 'text-sm'}`}
+                className={`text-mono mt-1 break-words font-bold leading-tight text-wood-dark ${c.strong ? 'text-sm sm:text-base' : 'text-xs sm:text-sm'}`}
               >
                 {c.value}
               </p>

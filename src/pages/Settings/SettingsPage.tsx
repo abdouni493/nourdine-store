@@ -1,13 +1,14 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
-import { Store, UserCog, Database, Download, Upload, Check, Eraser, Image as ImageIcon } from 'lucide-react'
+import { Store, UserCog, Database, Download, Upload, Check, Eraser, Image as ImageIcon, Sun, Moon } from 'lucide-react'
 import { PageHeader } from '@/components/ui/Misc'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useSettingsStore } from '@/store/useSettingsStore'
 import { useAuthStore } from '@/store/useAuthStore'
+import { useThemeStore } from '@/store/useThemeStore'
 import { useTranslation } from '@/i18n/useTranslation'
 import { exportData, restoreData } from '@/utils/export'
 import { uploadImage } from '@/lib/imageUpload'
@@ -18,7 +19,7 @@ import { commit } from '@/utils/mutate'
 import { useBootstrap } from '@/store/bootstrap'
 
 const Section = ({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) => (
-  <motion.div variants={fadeUp} className="card-wood rounded-2xl p-5">
+  <motion.div variants={fadeUp} className="card-wood min-w-0 rounded-2xl p-4 sm:p-5">
     <div className="mb-4 flex items-center gap-2">
       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wood-btn text-accentfg">{icon}</div>
       <h3 className="text-display text-lg font-bold text-wood-dark">{title}</h3>
@@ -29,6 +30,8 @@ const Section = ({ title, icon, children }: { title: string; icon: React.ReactNo
 
 export const SettingsPage = () => {
   const { t, lang, setLang } = useTranslation()
+  const theme = useThemeStore((s) => s.theme)
+  const setTheme = useThemeStore((s) => s.setTheme)
   const { settings, updateSettings } = useSettingsStore()
   const loadAll = useBootstrap((s) => s.loadAll)
   const [restoring, setRestoring] = useState(false)
@@ -150,7 +153,7 @@ export const SettingsPage = () => {
           <Section title={t('storeInfo')} icon={<Store size={20} />}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {/* Logo */}
-              <div className="sm:col-span-2 flex items-center gap-4">
+              <div className="flex items-center gap-4 sm:col-span-2">
                 {store.logo ? (
                   <img src={store.logo} alt="logo" className="h-20 w-20 rounded-xl object-cover shadow-wood" />
                 ) : (
@@ -190,6 +193,36 @@ export const SettingsPage = () => {
             <div className="flex gap-2">
               <Button variant={lang === 'fr' ? 'primary' : 'outline'} size="sm" onClick={() => setLang('fr')}>{t('french')}</Button>
               <Button variant={lang === 'ar' ? 'primary' : 'outline'} size="sm" onClick={() => setLang('ar')}>{t('arabic')}</Button>
+            </div>
+          </div>
+          <div className="mt-5 border-t border-wood-light/20 pt-4">
+            <p className="label-wood">{t('appearance')}</p>
+            <div className="grid grid-cols-2 gap-2">
+              {(['light', 'dark'] as const).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setTheme(mode)}
+                  aria-pressed={theme === mode}
+                  className={`flex items-center gap-3 rounded-xl border p-2.5 text-start transition ${
+                    theme === mode ? 'border-gold bg-gold/10' : 'border-wood-light hover:border-gold/60'
+                  }`}
+                >
+                  {/* A miniature of each palette, so the choice is seen, not described */}
+                  <span
+                    className={`flex h-10 w-12 shrink-0 flex-col justify-between rounded-lg border p-1.5 ${
+                      mode === 'light' ? 'border-[#E6E1D6] bg-[#F7F6F2]' : 'border-[#302D28] bg-[#0A0A0B]'
+                    }`}
+                  >
+                    <span className={`h-1.5 w-7 rounded-full ${mode === 'light' ? 'bg-[#111]' : 'bg-[#F6F3EC]'}`} />
+                    <span className="h-2.5 w-5 rounded bg-gradient-to-r from-[#E9C977] to-[#B8913A]" />
+                  </span>
+                  <span className="flex min-w-0 items-center gap-1.5 text-sm font-semibold text-wood-dark">
+                    {mode === 'light' ? <Sun size={15} /> : <Moon size={15} />}
+                    <span className="truncate">{mode === 'light' ? t('lightMode') : t('darkMode')}</span>
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         </Section>

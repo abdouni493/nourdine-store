@@ -121,14 +121,14 @@ export const StockPage = () => {
       />
 
       {/* Filters — Select renders a w-full wrapper, so constrain it from outside */}
-      <div className="card-wood mb-5 flex flex-wrap items-center gap-3 rounded-2xl p-4">
+      <div className="card-wood mb-5 grid grid-cols-2 gap-2 rounded-2xl p-3 sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:p-4">
         <SearchInput
           value={search}
           onChange={setSearch}
           placeholder={`${t('search')}…`}
-          className="min-w-[200px] flex-1"
+          className="col-span-2 sm:min-w-[200px] sm:flex-1"
         />
-        <div className="w-[170px] shrink-0">
+        <div className="min-w-0 sm:w-[170px] sm:shrink-0">
           <Select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as '' | ProductType)}
@@ -141,7 +141,7 @@ export const StockPage = () => {
             ))}
           </Select>
         </div>
-        <div className="w-[180px] shrink-0">
+        <div className="min-w-0 sm:w-[180px] sm:shrink-0">
           <Select value={brandFilter} onChange={(e) => setBrandFilter(e.target.value)}>
             <option value="">
               {t('all')} — {t('brand')}
@@ -153,7 +153,7 @@ export const StockPage = () => {
             ))}
           </Select>
         </div>
-        <div className="w-[180px] shrink-0">
+        <div className="min-w-0 sm:w-[180px] sm:shrink-0">
           <Select value={catFilter} onChange={(e) => setCatFilter(e.target.value)}>
             <option value="">
               {t('all')} — {t('category')}
@@ -165,7 +165,7 @@ export const StockPage = () => {
             ))}
           </Select>
         </div>
-        <div className="w-[140px] shrink-0">
+        <div className="min-w-0 sm:w-[140px] sm:shrink-0">
           <Select value={sizeFilter} onChange={(e) => setSizeFilter(e.target.value)}>
             <option value="">
               {t('all')} — {t('size')}
@@ -201,7 +201,7 @@ export const StockPage = () => {
           variants={staggerContainer}
           initial="initial"
           animate="animate"
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4"
         >
           <AnimatePresence>
             {filtered.map((p, i) => (
@@ -210,8 +210,7 @@ export const StockPage = () => {
                 variants={cardVariants}
                 custom={i}
                 layout
-                whileHover={{ y: -5 }}
-                className="card-wood flex flex-col rounded-2xl p-4"
+                className="card-wood flex min-w-0 flex-col rounded-2xl p-4"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
@@ -223,7 +222,7 @@ export const StockPage = () => {
                   {stockBadge(p)}
                 </div>
 
-                <span className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-wood-warm/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-wood-warm">
+                <span className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-wood-warm/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-goldink">
                   {isClothing(p) ? <IconGarment size={11} /> : <Package size={11} />}
                   {t(`productType_${p.productType}` as TranslationKey)}
                 </span>
@@ -257,7 +256,7 @@ export const StockPage = () => {
                   <MissingSizePill product={p} />
                 </div>
 
-                <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:text-sm">
                   <div className="rounded-lg bg-wood-cream px-2 py-1.5">
                     <p className="text-[10px] text-wood-medium">{t('purchasePrice')}</p>
                     <p className="text-mono font-semibold text-wood-dark">
@@ -382,7 +381,7 @@ export const StockPage = () => {
                         <Can action="edit"><button
                           onClick={() => openEdit(p)}
                           aria-label={t('edit')}
-                          className="rounded-lg p-1.5 text-wood-warm transition hover:bg-wood-cream"
+                          className="rounded-lg p-1.5 text-goldink transition hover:bg-wood-cream"
                         >
                           <IconEdit size={16} />
                         </button></Can>
@@ -452,7 +451,7 @@ export const StockPage = () => {
               ].map((r) => (
                 <div key={r.label} className="rounded-lg bg-wood-cream px-2.5 py-1.5">
                   <p className="flex items-center gap-1 text-[10px] text-wood-medium">
-                    <span className="text-wood-warm">{r.icon}</span>
+                    <span className="text-goldink">{r.icon}</span>
                     {r.label}
                   </p>
                   <p className="font-semibold text-wood-dark">{r.value}</p>

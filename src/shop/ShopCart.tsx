@@ -61,7 +61,7 @@ export const ShopCart = () => {
                 >
                   <Link
                     to={`/shop/products/${item.productId}`}
-                    className="h-28 w-20 shrink-0 overflow-hidden bg-wood-cream sm:h-32 sm:w-24"
+                    className="h-28 w-20 shrink-0 overflow-hidden rounded-lg bg-wood-cream sm:h-32 sm:w-24"
                   >
                     {item.image ? (
                       <img src={item.image} alt="" className="h-full w-full object-cover" />
@@ -111,7 +111,7 @@ export const ShopCart = () => {
                                 ),
                               }))
                             }
-                            className={`min-w-[2rem] border px-2 py-1 text-[10px] font-bold uppercase transition ${
+                            className={`min-w-[2rem] rounded-md border px-2 py-1 text-[10px] font-bold uppercase transition ${
                               s.quantity <= 0
                                 ? 'cursor-not-allowed border-wood-light text-wood-medium/30 line-through'
                                 : item.size === s.size
@@ -145,7 +145,7 @@ export const ShopCart = () => {
                           <Plus size={13} />
                         </button>
                       </div>
-                      <p className="text-mono text-sm font-black text-wood-dark">
+                      <p className="text-mono text-end text-sm font-black text-wood-dark">
                         {formatMoney(item.unitPrice * item.quantity, identity.currency)}
                       </p>
                     </div>
@@ -158,7 +158,7 @@ export const ShopCart = () => {
 
         {/* Summary */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="border border-wood-dark p-5">
+          <div className="rounded-2xl border border-wood-dark p-4 sm:p-5">
             <h2 className="eyebrow mb-4">{t('orderSummary')}</h2>
             <div className="flex justify-between border-b border-wood-light pb-3">
               <span className="text-xs font-medium text-wood-medium">{t('subtotal')}</span>
@@ -182,7 +182,7 @@ export const ShopCart = () => {
             )}
             <Link
               to="/shop/order"
-              className="flex w-full items-center justify-center gap-2 bg-wood-btn px-6 py-4 text-[11px] font-black uppercase tracking-widest text-accentfg transition hover:opacity-85"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-wood-btn px-6 py-4 text-[11px] font-black uppercase tracking-widest text-accentfg transition hover:opacity-85"
             >
               {t('checkout')}
               <ArrowRight size={14} className="rtl:rotate-180" />

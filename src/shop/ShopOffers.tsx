@@ -85,7 +85,7 @@ export const ShopOffers = () => {
               transition={{ delay: Math.min(i * 0.07, 0.35), duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <Link to={`/shop/offers/${o.id}`} className="group block">
-                <div className="relative aspect-[16/10] overflow-hidden bg-[#042F2E]">
+                <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-[#0B0B0B]">
                   {o.image ? (
                     <img
                       src={o.image}
@@ -98,10 +98,10 @@ export const ShopOffers = () => {
                       <ImageOff size={30} />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/25 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
 
                   {o.discountPercent > 0 && (
-                    <span className="text-mono absolute end-3 top-3 rounded-full bg-white px-3 py-1.5 text-lg font-black text-teal-700">
+                    <span className="text-mono absolute end-3 top-3 rounded-full bg-gradient-to-br from-[#F0D487] to-[#B8913A] text-[#111] px-3 py-1.5 text-lg font-black">
                       −{o.discountPercent.toFixed(0)}%
                     </span>
                   )}
@@ -194,15 +194,15 @@ export const ShopOfferDetail = () => {
       </Link>
 
       {/* Hero */}
-      <div className="relative aspect-[16/9] overflow-hidden bg-[#042F2E] sm:aspect-[21/9]">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#0B0B0B] sm:aspect-[21/9]">
         {offer.image ? (
           <img src={offer.image} alt={offer.title} className="h-full w-full object-cover opacity-70" />
         ) : (
           <div className="wood-grain h-full w-full bg-neutral-900" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/35 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8">
-          <h1 className="text-hero text-[clamp(1.75rem,6vw,3.5rem)] text-white">{offer.title}</h1>
+          <h1 className="text-hero break-words text-[clamp(1.6rem,6vw,3.5rem)] text-white">{offer.title}</h1>
           {offer.description && (
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/65">
               {offer.description}
@@ -210,7 +210,7 @@ export const ShopOfferDetail = () => {
           )}
         </div>
         {offer.discountPercent > 0 && (
-          <span className="text-mono absolute end-4 top-4 rounded-full bg-white px-4 py-2 text-2xl font-black text-teal-700">
+          <span className="text-mono absolute end-4 top-4 rounded-full bg-gradient-to-br from-[#F0D487] to-[#B8913A] text-[#111] px-3 py-1.5 text-lg font-black sm:px-4 sm:py-2 sm:text-2xl">
             −{offer.discountPercent.toFixed(0)}%
           </span>
         )}
@@ -218,7 +218,7 @@ export const ShopOfferDetail = () => {
 
       {/* Clock */}
       {offer.endDate && (
-        <div className="mt-7 flex flex-col items-center gap-3 border border-wood-light bg-wood-cream px-5 py-6">
+        <div className="mt-7 flex flex-col items-center gap-3 rounded-2xl border border-wood-light bg-wood-cream px-3 py-6">
           <span className="eyebrow">{t('timeRemaining')}</span>
           <Countdown endDate={offer.endDate} size="lg" />
         </div>
@@ -269,12 +269,12 @@ export const ShopOfferDetail = () => {
       </section>
 
       {/* Total + CTA */}
-      <section className="mt-6 border border-wood-dark p-5 sm:p-6">
+      <section className="mt-6 rounded-2xl border border-wood-dark p-4 sm:p-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">{t('offerTotal')}</p>
-            <div className="mt-1 flex items-baseline gap-3">
-              <span className="text-mono text-3xl font-black text-wood-dark">
+            <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="text-mono text-2xl font-black text-wood-dark sm:text-3xl">
                 {formatMoney(offer.offerTotal, identity.currency)}
               </span>
               {offer.discountAmount > 0 && (
@@ -288,7 +288,7 @@ export const ShopOfferDetail = () => {
             </p>
           </div>
 
-          <div className="flex flex-1 flex-col gap-2.5 sm:flex-none sm:flex-row">
+          <div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row">
             <button
               onClick={buyBundle}
               disabled={!live}

@@ -63,12 +63,12 @@ export const WorkersPage = () => {
       {filtered.length === 0 ? (
         <EmptyState title={t('noData')} hint={t('noDataHint')} icon={<HardHat size={40} />} action={<Button action="create" onClick={() => open('form', null)}><Plus size={18} />{t('newWorker')}</Button>} />
       ) : (
-        <motion.div variants={staggerContainer} initial="initial" animate="animate" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div variants={staggerContainer} initial="initial" animate="animate" className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           <AnimatePresence>
             {filtered.map((w, i) => (
-              <motion.div key={w.id} variants={cardVariants} custom={i} layout whileHover={{ y: -4 }} className="card-wood rounded-2xl p-4">
+              <motion.div key={w.id} variants={cardVariants} custom={i} layout className="card-wood min-w-0 rounded-2xl p-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-gold to-wood-warm font-bold text-white">{initials(w.fullName)}</div>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gold/15 font-bold text-goldink ring-1 ring-inset ring-gold/30">{initials(w.fullName)}</div>
                   <div className="min-w-0 flex-1">
                     <h3 className="truncate font-bold text-wood-dark">{w.fullName}</h3>
                     <p className="text-xs text-wood-medium">{w.role}</p>
@@ -105,7 +105,7 @@ export const WorkersPage = () => {
       {/* View */}
       <Modal open={modal === 'view'} onClose={() => setModal(null)} title={current?.fullName} subtitle={current?.role} size="md">
         {current && (
-          <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="grid grid-cols-1 gap-3 text-sm min-[420px]:grid-cols-2">
             <Field label={t('phone')} value={current.phone} />
             <Field label={t('birthDate')} value={current.birthDate ? format(new Date(current.birthDate), 'dd/MM/yyyy') : '—'} />
             <Field label={t('idCard')} value={current.idCard || '—'} />
@@ -126,6 +126,6 @@ export const WorkersPage = () => {
 const Field = ({ label, value }: { label: string; value: string }) => (
   <div className="rounded-xl bg-wood-cream/40 p-3">
     <p className="text-xs text-wood-medium">{label}</p>
-    <p className="font-semibold text-wood-dark">{value}</p>
+    <p className="break-words font-semibold text-wood-dark">{value}</p>
   </div>
 )

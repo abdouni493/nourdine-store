@@ -120,7 +120,19 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-[240px_1fr]">
         {/* ── Wilaya rail ────────────────────────────────────────────────── */}
-        <aside className="flex min-h-0 flex-col border border-wood-light">
+        {/* Phone: the 58-wilaya rail becomes one dropdown above the grid. */}
+        <select
+          value={wilayaCode}
+          onChange={(e) => setWilayaCode(e.target.value)}
+          className="input-wood cursor-pointer md:hidden"
+        >
+          {WILAYAS.map((w) => (
+            <option key={w.code} value={w.code}>
+              {w.code} — {isRTL ? w.nameAr : w.name} ({countFor(w.code)}/{w.communes.length})
+            </option>
+          ))}
+        </select>
+        <aside className="hidden min-h-0 flex-col overflow-hidden rounded-xl border border-wood-light md:flex">
           <div className="relative border-b border-wood-light p-2">
             <Search
               size={14}
@@ -185,7 +197,7 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
         {/* ── Commune grid ───────────────────────────────────────────────── */}
         <section className="min-w-0">
           {/* Bulk apply */}
-          <div className="mb-3 border border-wood-warm bg-wood-cream p-3">
+          <div className="mb-3 rounded-xl border border-gold/50 bg-wood-cream p-3">
             <h4 className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-wood-dark">
               <Zap size={14} />
               {t('applyToAllCommunes')}
@@ -193,8 +205,8 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
             <p className="mb-3 text-[11px] leading-relaxed text-wood-medium">
               {t('applyToWilayaHint')}
             </p>
-            <div className="flex flex-wrap items-end gap-2">
-              <div>
+            <div className="grid grid-cols-2 items-end gap-2 sm:flex sm:flex-wrap">
+              <div className="min-w-0">
                 <label className="label-wood">{t('priceHome')}</label>
                 <input
                   type="number"
@@ -202,10 +214,10 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
                   value={bulkHome}
                   onChange={(e) => setBulkHome(e.target.value)}
                   placeholder="0"
-                  className="input-wood text-mono w-28 text-end"
+                  className="input-wood text-mono w-full text-end sm:w-28"
                 />
               </div>
-              <div>
+              <div className="min-w-0">
                 <label className="label-wood">{t('priceDesk')}</label>
                 <input
                   type="number"
@@ -213,7 +225,7 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
                   value={bulkDesk}
                   onChange={(e) => setBulkDesk(e.target.value)}
                   placeholder="0"
-                  className="input-wood text-mono w-28 text-end"
+                  className="input-wood text-mono w-full text-end sm:w-28"
                 />
               </div>
               <Button onClick={applyBulk} disabled={!bulkHome && !bulkDesk}>
@@ -235,7 +247,7 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
           </div>
 
           {/* Communes */}
-          <div className="max-h-[42vh] overflow-y-auto border border-wood-light">
+          <div className="max-h-[50dvh] overflow-auto rounded-xl border border-wood-light md:max-h-[42vh]">
             <table className="w-full text-xs">
               <thead className="sticky top-0 z-10 bg-wood-header text-white">
                 <tr>
@@ -268,7 +280,7 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
                         on ? 'bg-sage/[0.04]' : 'bg-transparent',
                       )}
                     >
-                      <td className="px-3 py-1.5">
+                      <td className="max-w-[9rem] px-3 py-1.5">
                         <span className="block truncate font-semibold text-wood-dark">
                           {isRTL ? c.nameAr : c.name}
                         </span>
@@ -281,7 +293,7 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
                           value={p?.home ?? ''}
                           onChange={(e) => patch(c.name, 'home', Number(e.target.value) || 0)}
                           placeholder="0"
-                          className="text-mono w-24 border border-wood-light bg-wood-white px-2 py-1 text-end text-wood-dark outline-none focus:border-wood-warm"
+                          className="text-mono w-20 rounded-md border border-wood-light bg-wood-white px-2 py-1 text-end text-wood-dark outline-none focus:border-gold sm:w-24"
                         />
                       </td>
                       <td className="px-2 py-1.5 text-end">
@@ -291,7 +303,7 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
                           value={p?.desk ?? ''}
                           onChange={(e) => patch(c.name, 'desk', Number(e.target.value) || 0)}
                           placeholder="0"
-                          className="text-mono w-24 border border-wood-light bg-wood-white px-2 py-1 text-end text-wood-dark outline-none focus:border-wood-warm"
+                          className="text-mono w-20 rounded-md border border-wood-light bg-wood-white px-2 py-1 text-end text-wood-dark outline-none focus:border-gold sm:w-24"
                         />
                       </td>
                       <td className="px-3 py-1.5 text-center">
@@ -303,7 +315,7 @@ export const DeliveryPricesModal = ({ open, onClose, company }: Props) => {
                             'inline-flex h-5 w-5 items-center justify-center border transition',
                             on
                               ? 'border-sage bg-sage text-white'
-                              : 'border-wood-light text-transparent hover:border-wood-warm',
+                              : 'border-wood-light text-transparent hover:border-gold',
                           )}
                         >
                           <Check size={13} />

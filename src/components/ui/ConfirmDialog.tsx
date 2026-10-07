@@ -32,8 +32,8 @@ export const ConfirmDialog = ({
     <Modal open={open} onClose={onClose} size="sm">
       <div className="flex flex-col items-center gap-4 py-2 text-center">
         <div
-          className={`flex h-14 w-14 items-center justify-center ${
-            tone === 'danger' ? 'bg-terracotta/12 text-terracotta' : 'bg-wood-cream text-wood-dark'
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
+            tone === 'danger' ? 'bg-terracotta/10 text-terracotta' : 'bg-wood-cream text-wood-dark'
           }`}
         >
           {icon ?? <AlertTriangle size={28} />}

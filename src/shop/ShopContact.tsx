@@ -100,9 +100,9 @@ export const ShopContact = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: Math.min(i * 0.06, 0.3), duration: 0.4 }}
-      className="group flex items-center gap-4 border border-wood-light p-5 transition hover:border-wood-dark hover:bg-wood-cream"
+      className="group flex min-w-0 items-center gap-4 rounded-2xl border border-wood-light p-4 transition hover:border-gold hover:bg-wood-cream sm:p-5"
     >
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-wood-light bg-wood-white text-wood-dark transition group-hover:bg-wood-btn group-hover:text-accentfg">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-wood-light bg-wood-white text-goldink transition group-hover:bg-wood-btn group-hover:text-accentfg">
         <c.icon size={18} />
       </span>
       <span className="min-w-0">

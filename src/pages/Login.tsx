@@ -29,7 +29,7 @@ type LoginForm = z.infer<typeof loginSchema>
 
 /** Dark-surface field: the login screen is the one page that is always black. */
 const darkField =
-  'w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/35 focus:border-teal-300 focus:bg-white/10 focus:ring-4 focus:ring-teal-400/20'
+  'w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/35 focus:border-[#D6B052] focus:bg-white/10 focus:ring-4 focus:ring-[#D6B052]/20'
 
 const darkLabel = 'mb-1.5 block text-xs font-semibold text-white/60'
 
@@ -138,7 +138,7 @@ export const Login = () => {
   const storeName = settings.name || t('appName')
 
   return (
-    <div className="relative flex min-h-screen bg-gradient-to-br from-[#042F2E] via-[#0B4F4A] to-[#0E7490]">
+    <div className="relative flex min-h-dvh bg-gradient-to-br from-[#050505] via-[#0E0D0B] to-[#1C1810]">
       {/* ── Editorial half: the brand, full-bleed ──────────────────────────── */}
       <div className="wood-grain relative hidden flex-1 overflow-hidden border-e border-white/10 lg:flex">
         <div className="absolute inset-0 flex flex-col justify-between p-14">
@@ -146,8 +146,8 @@ export const Login = () => {
             {settings.logo ? (
               <img src={settings.logo} alt="" className="h-11 w-11 object-cover" />
             ) : (
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white">
-                <span className="text-display text-xl font-black text-teal-700">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#F0D487] to-[#A8843A]">
+                <span className="text-display text-xl font-black text-[#111]">
                   {storeName.slice(0, 1).toUpperCase()}
                 </span>
               </div>
@@ -168,7 +168,7 @@ export const Login = () => {
                   className={
                     i === 0
                       ? 'text-hero block text-[clamp(2.75rem,6vw,5.5rem)] text-white'
-                      : 'text-hero block text-[clamp(2.75rem,6vw,5.5rem)] text-white/25'
+                      : 'text-hero block text-[clamp(2.75rem,6vw,5.5rem)] text-[#D6B052]/70'
                   }
                 >
                   {line}
@@ -194,9 +194,9 @@ export const Login = () => {
       </div>
 
       {/* ── Form half ──────────────────────────────────────────────────────── */}
-      <div className="relative flex w-full flex-col justify-center px-6 py-12 sm:px-12 lg:w-[520px] lg:shrink-0">
+      <div className="relative flex w-full flex-col justify-center px-5 pb-12 pt-24 sm:px-12 sm:py-12 lg:w-[520px] lg:shrink-0">
         {/* Utilities */}
-        <div className="absolute end-6 top-6 flex items-center gap-2 sm:end-12">
+        <div className="absolute end-5 top-6 flex items-center gap-2 sm:end-12">
           <a
             href="/shop"
             target="_blank"
@@ -227,8 +227,8 @@ export const Login = () => {
             {settings.logo ? (
               <img src={settings.logo} alt="" className="h-10 w-10 object-cover" />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white">
-                <span className="text-display text-lg font-black text-teal-700">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#F0D487] to-[#A8843A]">
+                <span className="text-display text-lg font-black text-[#111]">
                   {storeName.slice(0, 1).toUpperCase()}
                 </span>
               </div>
@@ -238,7 +238,7 @@ export const Login = () => {
             </span>
           </div>
 
-          <p className="eyebrow text-white/40">{t('login')}</p>
+          <p className="eyebrow !text-[#D6B052]">{t('login')}</p>
           <h2 className="text-hero mt-2 text-4xl text-white">{t('welcomeBack')}</h2>
           <p className="mt-3 text-xs leading-relaxed text-white/45">{t('loginSubtitle')}</p>
 
@@ -272,7 +272,7 @@ export const Login = () => {
             <button
               type="submit"
               disabled={busy}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-teal-900/40 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#E9C977] via-[#D6B052] to-[#B8913A] text-[#111] px-6 py-3.5 text-sm font-bold shadow-lg shadow-black/50 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <LogIn size={16} />
               {t('login')}
@@ -356,7 +356,7 @@ export const Login = () => {
                             <p className="mt-1 text-[11px] text-terracotta">{t('required')}</p>
                           )}
                         </div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                           <div>
                             <label className={darkLabel}>{t('password')}</label>
                             <input
@@ -386,7 +386,7 @@ export const Login = () => {
                           type="submit"
                           size="lg"
                           disabled={busy}
-                          className="w-full !bg-white !text-teal-700"
+                          className="w-full !bg-gradient-to-r !from-[#E9C977] !via-[#D6B052] !to-[#B8913A] !text-[#111]"
                         >
                           <UserPlus size={16} />
                           {t('createMyAdmin')}

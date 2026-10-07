@@ -5,7 +5,7 @@ import { useReactToPrint } from 'react-to-print'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'
 import { Plus, Eye, Pencil, CreditCard, Printer, Trash2, ShoppingCart } from 'lucide-react'
-import { PageHeader, SearchInput, EmptyState, ViewToggle } from '@/components/ui/Misc'
+import { PageHeader, SearchInput, EmptyState, ViewToggle, MoneyTriplet } from '@/components/ui/Misc'
 import { Button } from '@/components/ui/Button'
 import { Badge, statusTone } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Input'
@@ -83,21 +83,23 @@ export const PurchasePage = () => {
         }
       />
 
-      <div className="card-wood mb-5 flex flex-wrap items-center gap-3 rounded-2xl p-4">
-        <SearchInput value={search} onChange={setSearch} placeholder={`${t('search')}…`} className="min-w-[200px] flex-1" />
-        <Select value={supplierFilter} onChange={(e) => setSupplierFilter(e.target.value)} className="max-w-[200px]">
+      <div className="card-wood mb-5 grid grid-cols-2 gap-2 rounded-2xl p-3 sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:p-4 [&>div]:min-w-0 sm:[&>div]:w-48">
+        <SearchInput value={search} onChange={setSearch} placeholder={`${t('search')}…`} className="col-span-2 sm:!w-auto sm:min-w-[200px] sm:flex-1" />
+        <Select value={supplierFilter} onChange={(e) => setSupplierFilter(e.target.value)}>
           <option value="">{t('all')} — {t('supplier')}</option>
           {suppliers.map((s) => (
             <option key={s.id} value={s.id}>{s.name}</option>
           ))}
         </Select>
-        <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="max-w-[160px]">
+        <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option value="">{t('all')}</option>
           <option value="paid">{t('statusPaid')}</option>
           <option value="partial">{t('statusPartial')}</option>
           <option value="unpaid">{t('statusUnpaid')}</option>
         </Select>
-        <ViewToggle view={view} onChange={setView} labels={{ cards: t('cardView'), table: t('tableView') }} />
+        <div className="col-span-2 flex justify-end sm:!w-auto">
+          <ViewToggle view={view} onChange={setView} labels={{ cards: t('cardView'), table: t('tableView') }} />
+        </div>
       </div>
 
       {filtered.length === 0 ? (
@@ -109,20 +111,23 @@ export const PurchasePage = () => {
               const status = paymentStatus(p.total, p.paid)
               const rest = remaining(p.total, p.paid)
               return (
-                <motion.div key={p.id} variants={cardVariants} custom={i} layout whileHover={{ y: -4 }} className="card-wood rounded-2xl p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
+                <motion.div key={p.id} variants={cardVariants} custom={i} layout className="card-wood min-w-0 rounded-2xl p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
                       <p className="text-mono font-bold text-wood-dark">{p.reference}</p>
-                      <p className="text-sm text-wood-medium">{p.supplierName}</p>
+                      <p className="truncate text-sm text-wood-medium">{p.supplierName}</p>
                     </div>
                     <Badge tone={statusTone(status)}>{statusLabel(status)}</Badge>
                   </div>
                   <p className="mt-1 text-xs text-wood-medium">{format(new Date(p.date), 'dd/MM/yyyy')} · {p.lines.length} {t('products').toLowerCase()}</p>
-                  <div className="mt-3 grid grid-cols-3 gap-2 text-center text-sm">
-                    <div className="rounded-lg bg-wood-cream/40 py-1.5"><p className="text-[10px] text-wood-medium">{t('total')}</p><p className="text-mono font-bold">{formatMoney(p.total)}</p></div>
-                    <div className="rounded-lg bg-sage/10 py-1.5"><p className="text-[10px] text-wood-medium">{t('paid')}</p><p className="text-mono font-bold text-sage">{formatMoney(p.paid)}</p></div>
-                    <div className="rounded-lg bg-terracotta/10 py-1.5"><p className="text-[10px] text-wood-medium">{t('remaining')}</p><p className="text-mono font-bold text-terracotta">{formatMoney(rest)}</p></div>
-                  </div>
+                  <MoneyTriplet
+                    className="mt-3"
+                    cells={[
+                      { label: t('total'), value: formatMoney(p.total) },
+                      { label: t('paid'), value: formatMoney(p.paid), tone: 'sage' },
+                      { label: t('remaining'), value: formatMoney(rest), tone: 'terracotta' },
+                    ]}
+                  />
                   <div className="mt-4 flex flex-wrap gap-1.5 border-t border-wood-light/20 pt-3">
                     <Button size="sm" variant="outline" onClick={() => setViewing(p)}><Eye size={15} /></Button>
                     <Button action="edit" size="sm" variant="outline" onClick={() => { setEditing(p); setFormOpen(true) }}><Pencil size={15} /></Button>
@@ -167,7 +172,7 @@ export const PurchasePage = () => {
                       <td className="px-4 py-2.5">
                         <div className="flex justify-center gap-1">
                           <button onClick={() => setViewing(p)} className="rounded-lg p-1.5 text-wood-medium hover:bg-wood-cream"><Eye size={16} /></button>
-                          <Can action="edit"><button onClick={() => { setEditing(p); setFormOpen(true) }} className="rounded-lg p-1.5 text-wood-warm hover:bg-wood-cream"><Pencil size={16} /></button></Can>
+                          <Can action="edit"><button onClick={() => { setEditing(p); setFormOpen(true) }} className="rounded-lg p-1.5 text-goldink hover:bg-wood-cream"><Pencil size={16} /></button></Can>
                           {rest > 0 && <Can action="pay"><button onClick={() => setPaying(p)} className="rounded-lg p-1.5 text-sage hover:bg-sage/10"><CreditCard size={16} /></button></Can>}
                           <Can action="print"><button onClick={() => doPrint(p)} className="rounded-lg p-1.5 text-gold hover:bg-gold/10"><Printer size={16} /></button></Can>
                           <Can action="delete"><button onClick={() => setDeleting(p)} className="rounded-lg p-1.5 text-terracotta hover:bg-terracotta/10"><Trash2 size={16} /></button></Can>
@@ -188,7 +193,8 @@ export const PurchasePage = () => {
       <Modal open={!!viewing} onClose={() => setViewing(null)} title={viewing?.reference} subtitle={viewing?.supplierName} size="lg">
         {viewing && (
           <div className="space-y-4">
-            <table className="w-full text-sm">
+            <div className="-mx-1 overflow-x-auto px-1">
+            <table className="w-full min-w-[420px] text-sm">
               <thead><tr className="border-b border-wood-light/30 text-start text-xs uppercase text-wood-medium"><th className="py-2 text-start">{t('productName')}</th><th className="py-2 text-center">{t('quantity')}</th><th className="py-2 text-end">{t('purchasePrice')}</th><th className="py-2 text-end">{t('subtotal')}</th></tr></thead>
               <tbody>
                 {viewing.lines.map((l, i) => (
@@ -196,6 +202,7 @@ export const PurchasePage = () => {
                 ))}
               </tbody>
             </table>
+            </div>
             <div className="flex justify-end gap-6 text-sm">
               <div className="space-y-1 text-end">
                 <p>{t('total')}: <span className="text-mono font-bold">{formatMoney(viewing.total)}</span></p>

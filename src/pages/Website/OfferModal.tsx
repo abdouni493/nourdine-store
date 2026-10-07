@@ -192,8 +192,8 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
         </section>
 
         {/* ── Campaign window ────────────────────────────────────────────── */}
-        <section className="border border-wood-light bg-wood-cream/60 p-4">
-          <h4 className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-wood-warm">
+        <section className="rounded-xl border border-wood-light bg-wood-cream/60 p-3 sm:p-4">
+          <h4 className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-goldink">
             <CalendarRange size={15} />
             {t('offerPeriod')}
           </h4>
@@ -216,7 +216,7 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
                 type="button"
                 onClick={() => setActive((v) => !v)}
                 aria-pressed={active}
-                className={`flex w-full items-center justify-between border px-4 py-2.5 text-xs font-bold uppercase tracking-wide transition ${
+                className={`flex w-full items-center justify-between rounded-xl border px-4 py-2.5 text-xs font-bold uppercase tracking-wide transition ${
                   active
                     ? 'border-wood-warm bg-wood-btn text-accentfg'
                     : 'border-wood-light bg-wood-white text-wood-medium'
@@ -239,7 +239,7 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
 
         {/* ── Articles ───────────────────────────────────────────────────── */}
         <section>
-          <h4 className="mb-1 text-xs font-bold uppercase tracking-widest text-wood-warm">
+          <h4 className="mb-1 text-xs font-bold uppercase tracking-widest text-goldink">
             {t('selectProducts')}
           </h4>
           <p className="mb-3 text-[11px] text-wood-medium">{t('searchProductsHint')}</p>
@@ -286,7 +286,7 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
                         <span className="text-mono shrink-0 text-xs font-bold text-wood-dark">
                           {formatMoney(p.salePrice, currency)}
                         </span>
-                        <Plus size={15} className="shrink-0 text-wood-warm" />
+                        <Plus size={15} className="shrink-0 text-goldink" />
                       </button>
                     </li>
                   ))}
@@ -315,9 +315,9 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
                       layout
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="grid grid-cols-1 items-end gap-3 border border-wood-light bg-wood-white p-3 sm:grid-cols-[1fr_auto_auto_auto_auto]"
+                      className="grid grid-cols-2 items-end gap-3 rounded-xl border border-wood-light bg-wood-white p-3 sm:grid-cols-[1fr_auto_auto_auto_auto]"
                     >
-                      <div className="min-w-0">
+                      <div className="col-span-2 min-w-0 sm:col-span-1">
                         <p className="truncate text-xs font-bold uppercase text-wood-dark">
                           {l.productName}
                         </p>
@@ -329,7 +329,7 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
                       {/* Quantity stepper */}
                       <div>
                         <label className="label-wood">{t('quantity')}</label>
-                        <div className="flex items-center border border-wood-light">
+                        <div className="flex items-center overflow-hidden rounded-xl border border-wood-light">
                           <button
                             type="button"
                             onClick={() => patchLine(i, { quantity: Math.max(1, l.quantity - 1) })}
@@ -344,7 +344,7 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
                             onChange={(e) =>
                               patchLine(i, { quantity: Math.max(1, Number(e.target.value) || 1) })
                             }
-                            className="text-mono w-14 border-x border-wood-light bg-transparent py-2 text-center text-xs font-bold text-wood-dark outline-none"
+                            className="text-mono w-full min-w-0 border-x border-wood-light bg-transparent py-2 text-center text-xs font-bold text-wood-dark outline-none sm:w-14"
                           />
                           <button
                             type="button"
@@ -366,14 +366,14 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
                           onChange={(e) =>
                             patchLine(i, { offerPrice: Math.max(0, Number(e.target.value) || 0) })
                           }
-                          className="input-wood text-mono w-28 text-end font-bold"
+                          className="input-wood text-mono w-full text-end font-bold sm:w-28"
                         />
                       </div>
 
                       {/* Live discount, both ways round */}
-                      <div className="min-w-[104px]">
+                      <div className="min-w-0 sm:min-w-[104px]">
                         <label className="label-wood">{t('discount')}</label>
-                        <div className="border border-wood-light bg-wood-cream px-2 py-2 text-center">
+                        <div className="rounded-xl border border-wood-light bg-wood-cream px-2 py-2 text-center">
                           <p className="text-mono text-xs font-bold text-sage">
                             −{formatMoney(d.amount, currency)}
                           </p>
@@ -387,7 +387,7 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
                         type="button"
                         onClick={() => removeLine(i)}
                         aria-label={t('delete')}
-                        className="mb-0.5 border border-wood-light p-2.5 text-terracotta transition hover:border-terracotta hover:bg-terracotta/10"
+                        className="mb-0.5 flex items-center justify-center rounded-xl border border-wood-light p-2.5 text-terracotta transition hover:border-terracotta hover:bg-terracotta/10"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -401,15 +401,15 @@ export const OfferModal = ({ open, onClose, offer }: Props) => {
 
         {/* ── Totals ─────────────────────────────────────────────────────── */}
         {lines.length > 0 && (
-          <section className="grid grid-cols-2 gap-px border border-wood-warm bg-wood-light sm:grid-cols-4">
+          <section className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-gold/50 bg-wood-light sm:grid-cols-4">
             {[
               { label: t('originalTotal'), value: formatMoney(totals.originalTotal, currency) },
               { label: t('offerTotal'), value: formatMoney(totals.offerTotal, currency) },
               { label: t('savings'), value: `−${formatMoney(totals.discountAmount, currency)}` },
               { label: t('discountPercent'), value: `${totals.discountPercent.toFixed(1)} %` },
             ].map((cell, i) => (
-              <div key={cell.label} className="bg-wood-white px-4 py-3">
-                <p className="eyebrow">{cell.label}</p>
+              <div key={cell.label} className="min-w-0 bg-wood-white px-3 py-3 sm:px-4">
+                <p className="eyebrow truncate">{cell.label}</p>
                 <p
                   className={`text-mono mt-1 text-sm font-bold ${i >= 2 ? 'text-sage' : 'text-wood-dark'}`}
                 >

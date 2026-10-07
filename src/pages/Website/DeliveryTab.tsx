@@ -75,7 +75,7 @@ export const DeliveryTab = () => {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 border border-wood-light px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-wood-medium">
+        <div className="flex items-center gap-2 rounded-xl border border-wood-light px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-wood-medium">
           {WILAYAS.length} {t('wilaya')}
           <span className="h-3 w-px bg-wood-light" />
           <span className="text-mono text-wood-dark">{TOTAL_COMMUNES}</span> {t('communes')}
@@ -119,10 +119,10 @@ export const DeliveryTab = () => {
                 initial="initial"
                 animate="animate"
                 custom={i}
-                className={`card-wood flex flex-col p-4 ${c.active ? '' : 'opacity-60'}`}
+                className={`card-wood flex min-w-0 flex-col rounded-2xl p-4 ${c.active ? '' : 'opacity-60'}`}
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden border border-wood-light bg-wood-cream">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-wood-light bg-wood-cream">
                     {c.logo ? (
                       <img src={c.logo} alt="" className="h-full w-full object-cover" />
                     ) : (
@@ -170,7 +170,7 @@ export const DeliveryTab = () => {
                 <div className="mt-4 flex gap-1.5">
                   <Can action="edit"><button
                     onClick={() => setPricing(c)}
-                    className="flex flex-1 items-center justify-center gap-1.5 border border-wood-warm bg-wood-btn py-2 text-[10px] font-bold uppercase tracking-wide text-accentfg transition hover:opacity-85"
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-transparent bg-wood-btn py-2.5 text-[10px] font-bold uppercase tracking-wide text-accentfg transition hover:opacity-85"
                   >
                     <MapPin size={13} />
                     {t('managePrices')}
@@ -182,7 +182,7 @@ export const DeliveryTab = () => {
                     }}
                     title={t('edit')}
                     aria-label={t('edit')}
-                    className="border border-wood-light px-3 text-wood-medium transition hover:border-wood-warm hover:text-wood-dark"
+                    className="rounded-lg border border-wood-light px-3 text-wood-medium transition hover:border-gold hover:text-wood-dark"
                   >
                     <Pencil size={14} />
                   </button></Can>
@@ -192,7 +192,7 @@ export const DeliveryTab = () => {
                     }}
                     title={c.active ? t('deactivate') : t('activate')}
                     aria-label={c.active ? t('deactivate') : t('activate')}
-                    className="border border-wood-light px-3 text-wood-medium transition hover:border-wood-warm hover:text-wood-dark"
+                    className="rounded-lg border border-wood-light px-3 text-wood-medium transition hover:border-gold hover:text-wood-dark"
                   >
                     <Power size={14} />
                   </button>
@@ -200,7 +200,7 @@ export const DeliveryTab = () => {
                     onClick={() => setRemoving(c)}
                     title={t('delete')}
                     aria-label={t('delete')}
-                    className="border border-wood-light px-3 text-terracotta transition hover:border-terracotta hover:bg-terracotta/10"
+                    className="rounded-lg border border-wood-light px-3 text-terracotta transition hover:border-terracotta hover:bg-terracotta/10"
                   >
                     <Trash2 size={14} />
                   </button></Can>

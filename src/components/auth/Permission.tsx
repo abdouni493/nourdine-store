@@ -75,7 +75,7 @@ export const NoAccess = () => {
   const { t } = useTranslation()
   return (
     <div className="card-wood mx-auto mt-16 max-w-md rounded-2xl p-8 text-center">
-      <ShieldOff size={40} className="mx-auto text-wood-warm" />
+      <ShieldOff size={40} className="mx-auto text-goldink" />
       <h2 className="text-display mt-4 text-xl text-wood-dark">{t('noAccessTitle')}</h2>
       <p className="mt-2 text-sm text-wood-medium">{t('noAccessHint')}</p>
     </div>

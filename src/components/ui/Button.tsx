@@ -17,15 +17,16 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'ref'> {
 }
 
 /**
- * Rounded marketplace buttons. `primary` is the indigo→violet gradient that
- * carries every main action; `outline` is its quiet counterpart.
+ * Rounded buttons. `primary` is the black slab with gold lettering (gold with
+ * black lettering in dark mode) that carries every main action; `outline` is
+ * its quiet counterpart and `gold` the decorative secondary.
  */
 const variants: Record<Variant, string> = {
   primary: 'bg-wood-btn text-accentfg shadow-gold hover:brightness-110',
-  gold: 'border border-wood-warm/40 bg-wood-warm/10 text-wood-warm hover:bg-wood-warm hover:text-accentfg',
+  gold: 'border border-gold/50 bg-gold/10 text-goldink hover:bg-gold/20',
   ghost: 'bg-transparent text-wood-medium hover:bg-wood-cream hover:text-wood-dark',
   danger: 'bg-terracotta text-white shadow-[0_8px_20px_-8px_rgb(var(--c-danger)/0.6)] hover:brightness-110',
-  outline: 'border border-wood-light bg-wood-white text-wood-dark hover:border-wood-warm hover:text-wood-warm',
+  outline: 'border border-wood-light bg-wood-white text-wood-dark hover:border-gold hover:text-goldink',
   sage: 'bg-sage text-white shadow-[0_8px_20px_-8px_rgb(var(--c-success)/0.6)] hover:brightness-110',
 }
 
@@ -55,7 +56,7 @@ export const Button = ({
       transition={{ duration: 0.18, ease: 'easeOut' }}
       disabled={disabled}
       className={clsx(
-        'inline-flex cursor-pointer items-center justify-center font-semibold outline-none transition-[opacity,background-color,border-color,color,filter] duration-200 focus-visible:ring-4 focus-visible:ring-wood-warm/25 disabled:cursor-not-allowed disabled:opacity-40',
+        'inline-flex cursor-pointer items-center justify-center font-semibold outline-none transition-[opacity,background-color,border-color,color,filter] duration-200 focus-visible:ring-4 focus-visible:ring-gold/30 disabled:cursor-not-allowed disabled:opacity-40',
         variants[variant],
         sizes[size],
         className,

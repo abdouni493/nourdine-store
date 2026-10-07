@@ -160,7 +160,7 @@ export const ShopOrder = () => {
   }
 
   const field =
-    'w-full border border-wood-light bg-wood-white px-4 py-3 text-sm text-wood-dark outline-none transition placeholder:text-wood-medium/45 focus:border-wood-dark'
+    'w-full rounded-xl border border-wood-light bg-wood-white px-4 py-3 text-sm text-wood-dark outline-none transition placeholder:text-wood-medium/45 focus:border-gold focus:ring-4 focus:ring-gold/15'
   const label = 'mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-wood-medium'
   const errorText = 'mt-1.5 text-[10px] font-bold uppercase tracking-wide text-terracotta'
 
@@ -180,7 +180,7 @@ export const ShopOrder = () => {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+    <div className="mx-auto max-w-6xl px-4 pb-32 pt-8 sm:px-6 sm:py-14 lg:pb-14">
       <Link
         to="/shop/products"
         className="mb-6 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-wood-medium transition hover:text-wood-dark"
@@ -312,19 +312,19 @@ export const ShopOrder = () => {
                     type="button"
                     onClick={() => setMode(opt.key)}
                     className={clsx(
-                      'flex items-center gap-3 border px-4 py-3.5 text-start transition',
+                      'flex items-center gap-3 rounded-xl border px-4 py-3.5 text-start transition',
                       mode === opt.key
-                        ? 'border-wood-dark bg-wood-cream'
+                        ? 'border-gold bg-gold/10'
                         : 'border-wood-light hover:border-wood-medium',
                     )}
                   >
                     <span
                       className={clsx(
-                        'flex h-4 w-4 shrink-0 items-center justify-center border',
-                        mode === opt.key ? 'border-wood-dark' : 'border-wood-light',
+                        'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border',
+                        mode === opt.key ? 'border-gold' : 'border-wood-light',
                       )}
                     >
-                      {mode === opt.key && <span className="h-2 w-2 bg-wood-dark" />}
+                      {mode === opt.key && <span className="h-2 w-2 rounded-full bg-gold" />}
                     </span>
                     <opt.icon size={16} className="shrink-0 text-wood-dark" />
                     <span className="min-w-0 flex-1">
@@ -403,7 +403,7 @@ export const ShopOrder = () => {
 
         {/* ── Summary ────────────────────────────────────────────────────── */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="border border-wood-dark">
+          <div className="overflow-hidden rounded-2xl border border-wood-dark">
             <h2 className="border-b border-wood-light px-5 py-3.5 text-xs font-black uppercase tracking-widest text-wood-dark">
               {t('orderSummary')}
             </h2>
@@ -489,7 +489,7 @@ export const ShopOrder = () => {
               <button
                 onClick={() => void submit()}
                 disabled={saving}
-                className="flex w-full items-center justify-center gap-2 bg-wood-btn px-6 py-4 text-[11px] font-black uppercase tracking-widest text-accentfg transition hover:opacity-85 disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-wood-btn px-6 py-4 text-[11px] font-black uppercase tracking-widest text-accentfg transition hover:opacity-85 disabled:opacity-50"
               >
                 <Lock size={14} />
                 {t('placeOrder')}
@@ -500,6 +500,27 @@ export const ShopOrder = () => {
             </div>
           </div>
         </aside>
+      </div>
+
+      {/* Phone: the total and the order button stay under the thumb while the
+          customer fills the form, instead of waiting below the whole page. */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-wood-light bg-wood-white/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-12px_30px_-18px_rgb(var(--c-shadow)/0.5)] backdrop-blur-md lg:hidden">
+        <div className="mx-auto flex max-w-6xl items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-wood-medium">{t('grandTotal')}</p>
+            <p className="text-mono truncate text-lg font-black text-wood-dark">
+              {formatMoney(totals.total, identity.currency)}
+            </p>
+          </div>
+          <button
+            onClick={() => void submit()}
+            disabled={saving}
+            className="flex shrink-0 items-center justify-center gap-2 rounded-xl bg-wood-btn px-5 py-3.5 text-[11px] font-black uppercase tracking-widest text-accentfg shadow-gold transition hover:opacity-85 disabled:opacity-50"
+          >
+            <Lock size={14} />
+            {t('placeOrder')}
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -10,6 +10,10 @@ interface StatCardProps {
   index?: number
   suffix?: string
   decimals?: boolean
+  /**
+   * Legacy gradient hint (`from-sage …`, `from-terracotta …`, `from-gold …`).
+   * It is read only for its colour family, which picks the tile tone.
+   */
   accent?: string
   hint?: ReactNode
 }
@@ -36,38 +40,65 @@ const AnimatedNumber = ({ value, decimals }: { value: number; decimals?: boolean
   return <span>{display}</span>
 }
 
-export const StatCard = ({
-  icon,
-  label,
-  value,
-  index = 0,
-  suffix,
-  decimals,
-  accent = 'from-wood-medium to-wood-light',
-  hint,
-}: StatCardProps) => (
-  <motion.div
-    variants={cardVariants}
-    initial="initial"
-    animate="animate"
-    custom={index}
-    whileHover={{ y: -4 }}
-    className="card-wood relative overflow-hidden rounded-2xl p-5"
-  >
-    <div className={clsx('absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br opacity-10', accent)} />
-    <div className="flex items-start justify-between">
-      <div className={clsx('flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-wood', accent)}>
+type Tone = 'success' | 'danger' | 'gold' | 'ink'
+
+const toneOf = (accent = ''): Tone =>
+  accent.includes('sage')
+    ? 'success'
+    : accent.includes('terracotta')
+      ? 'danger'
+      : accent.includes('gold') || accent.includes('warm')
+        ? 'gold'
+        : 'ink'
+
+const tiles: Record<Tone, string> = {
+  success: 'bg-sage/10 text-sage ring-sage/20',
+  danger: 'bg-terracotta/10 text-terracotta ring-terracotta/20',
+  gold: 'bg-gold/15 text-goldink ring-gold/30',
+  ink: 'bg-wood-btn text-accentfg ring-transparent',
+}
+
+const bars: Record<Tone, string> = {
+  success: 'bg-sage',
+  danger: 'bg-terracotta',
+  gold: 'bg-gold',
+  ink: 'bg-wood-dark',
+}
+
+export const StatCard = ({ icon, label, value, index = 0, suffix, decimals, accent, hint }: StatCardProps) => {
+  const tone = toneOf(accent)
+  return (
+    <motion.div
+      variants={cardVariants}
+      initial="initial"
+      animate="animate"
+      custom={index}
+      className="card-wood relative min-w-0 overflow-hidden rounded-2xl p-3.5 sm:p-5"
+    >
+      {/* A thin colour rule on the leading edge carries the tone */}
+      <span className={clsx('absolute inset-y-0 start-0 w-1', bars[tone])} />
+      <div
+        className={clsx(
+          'flex h-9 w-9 items-center justify-center rounded-xl ring-1 ring-inset sm:h-11 sm:w-11 [&>svg]:h-[18px] [&>svg]:w-[18px] sm:[&>svg]:h-[22px] sm:[&>svg]:w-[22px]',
+          tiles[tone],
+        )}
+      >
         {icon}
       </div>
-    </div>
-    <p className="mt-4 text-sm font-medium text-wood-medium">{label}</p>
-    {/* Number stays intact; the currency suffix may wrap below on tight cards. */}
-    <p className="text-mono mt-1 text-xl font-bold leading-tight text-wood-dark [font-size:clamp(1.05rem,2vw,1.5rem)]">
-      <span className="whitespace-nowrap">
-        <AnimatedNumber value={value} decimals={decimals} />
-      </span>
-      {suffix && <span className="ml-1 text-sm font-medium text-wood-medium">{suffix}</span>}
-    </p>
-    {hint && <div className="mt-1 text-xs text-wood-medium/70">{hint}</div>}
-  </motion.div>
-)
+      <p className="mt-3 line-clamp-2 text-xs font-medium leading-snug text-wood-medium sm:mt-4 sm:text-sm">
+        {label}
+      </p>
+      {/* The figure scales with the card itself, so six across on a desktop and
+          two across on a phone both fit without clipping a digit. */}
+      <div className="[container-type:inline-size]">
+        <p className="text-mono mt-1 font-bold leading-tight text-wood-dark [font-size:clamp(0.85rem,10.5cqi,1.5rem)]">
+          <span className="whitespace-nowrap">
+            <AnimatedNumber value={value} decimals={decimals} />
+          </span>
+          {suffix && <span className="ms-1 text-[0.6em] font-medium text-wood-medium">{suffix}</span>}
+        </p>
+      </div>
+      {hint && <div className="mt-1 truncate text-[11px] text-wood-medium/80 sm:text-xs">{hint}</div>}
+    </motion.div>
+  )
+}

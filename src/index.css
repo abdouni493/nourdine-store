@@ -3,51 +3,61 @@
 @tailwind utilities;
 
 /* ============================================================================
-   Marketplace design system — teal & cyan on fresh mint-slate.
+   Marketplace design system — black & gold, light and dark.
    ----------------------------------------------------------------------------
-   A friendly online-market look: soft slate surfaces, one teal→cyan accent
+   A friendly online-market look: soft slate surfaces, one black (light) / gold (dark) accent
    gradient for every primary action, rounded cards and coloured soft shadows.
    Every colour is an "R G B" triplet so Tailwind can apply opacity to it.
    ========================================================================== */
 
 :root {
-  --c-bg: 244 248 248;
-  --c-bg-2: 234 243 242;
+  /* Ivory paper, ink text, gold accents */
+  --c-bg: 247 246 242;
+  --c-bg-2: 240 237 230;
   --c-surface: 255 255 255;
-  --c-surface-2: 238 246 245;
-  --c-border: 218 231 230;
-  --c-fg: 15 31 33;
-  --c-fg-muted: 71 90 92; /* 7:1 on white */
-  --c-fg-subtle: 140 160 162;
-  --c-accent: 13 148 136; /* teal-600 */
-  --c-accent-2: 8 145 178; /* cyan-600 */
-  --c-accent-fg: 255 255 255;
-  /* Deep-teal chrome (sidebar, table heads) + the text that sits on it */
-  --c-chrome: 4 47 46;
-  --c-chrome-2: 17 94 89;
+  --c-surface-2: 246 243 236;
+  --c-border: 230 225 214;
+  --c-fg: 17 17 17;
+  --c-fg-muted: 87 83 78; /* 7.4:1 on white */
+  --c-fg-subtle: 160 154 146;
+  /* Primary actions: black slab with gold lettering */
+  --c-accent: 17 17 17;
+  --c-accent-2: 52 52 54;
+  --c-accent-fg: 228 196 108;
+  /* Decorative gold (icons, tiles, highlights) and its text-safe ink */
+  --c-gold: 191 154 64;
+  --c-gold-2: 226 196 116;
+  --c-gold-ink: 138 104 26; /* 5:1 on white */
+  /* Permanent black chrome (sidebar, table heads, modal heads) */
+  --c-chrome: 12 12 12;
+  --c-chrome-2: 34 32 28;
   --c-chrome-fg: 255 255 255;
-  --c-success: 22 163 74;
-  --c-danger: 225 29 72;
-  --c-warning: 217 119 6;
-  --c-shadow: 4 47 46;
+  --c-success: 21 128 61;
+  --c-danger: 190 18 60;
+  --c-warning: 180 83 9;
+  --c-shadow: 23 20 12;
 
   color-scheme: light;
 }
 
 .dark {
-  --c-bg: 7 20 22;
-  --c-bg-2: 4 14 16;
-  --c-surface: 13 30 32;
-  --c-surface-2: 21 42 44;
-  --c-border: 36 62 63;
-  --c-fg: 236 246 245;
-  --c-fg-muted: 159 184 182;
-  --c-fg-subtle: 104 130 130;
-  --c-accent: 45 212 191; /* teal-400 */
-  --c-accent-2: 34 211 238; /* cyan-400 */
-  --c-accent-fg: 4 30 30;
-  --c-chrome: 4 22 24;
-  --c-chrome-2: 4 47 46;
+  --c-bg: 10 10 11;
+  --c-bg-2: 5 5 6;
+  --c-surface: 21 21 23;
+  --c-surface-2: 31 30 29;
+  --c-border: 48 45 40;
+  --c-fg: 246 243 236;
+  --c-fg-muted: 178 171 158;
+  --c-fg-subtle: 118 113 104;
+  /* Primary actions: gold slab with black lettering */
+  --c-accent: 214 176 82;
+  --c-accent-2: 168 132 50;
+  --c-accent-fg: 14 14 14;
+  --c-gold: 214 176 82;
+  --c-gold-2: 240 212 135;
+  --c-gold-ink: 226 192 108;
+  --c-chrome: 0 0 0;
+  --c-chrome-2: 22 21 19;
   --c-chrome-fg: 255 255 255;
   --c-success: 74 222 128;
   --c-danger: 251 113 133;
@@ -66,12 +76,12 @@ body,
 #root {
   height: 100%;
   max-width: 100%;
+  overflow-x: clip;
   margin: 0;
   padding: 0;
 }
 
 body {
-  overflow-x: hidden;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: rgb(var(--c-fg));
   background: rgb(var(--c-bg));
@@ -81,7 +91,6 @@ body {
 }
 
 html[dir='rtl'] body {
-  overflow-x: hidden;
   font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -98,8 +107,8 @@ html[dir='rtl'] body {
   opacity: 0.5;
   background-image: radial-gradient(
       120% 80% at 80% 0%,
-      rgba(255, 255, 255, 0.07) 0%,
-      rgba(255, 255, 255, 0) 55%
+      rgba(214, 176, 82, 0.10) 0%,
+      rgba(214, 176, 82, 0) 55%
     ),
     repeating-linear-gradient(
       45deg,
@@ -128,8 +137,8 @@ html[dir='rtl'] body {
 }
 
 ::selection {
-  background: rgb(var(--c-accent));
-  color: rgb(var(--c-accent-fg));
+  background: rgb(var(--c-gold) / 0.35);
+  color: rgb(var(--c-fg));
 }
 
 @layer components {
@@ -152,7 +161,7 @@ html[dir='rtl'] body {
   }
 
   .input-wood {
-    @apply w-full rounded-xl border border-wood-light bg-wood-white px-4 py-2.5 text-sm text-wood-dark outline-none transition placeholder:text-wood-medium/50 focus:border-wood-warm focus:ring-4 focus:ring-wood-warm/15;
+    @apply w-full min-w-0 rounded-xl border border-wood-light bg-wood-white px-4 py-2.5 text-sm text-wood-dark outline-none transition placeholder:text-wood-medium/50 focus:border-gold focus:ring-4 focus:ring-gold/20;
   }
 
   .label-wood {
@@ -180,7 +189,7 @@ html[dir='rtl'] body {
 
   /* Small all-caps eyebrow used above section titles. */
   .eyebrow {
-    @apply text-[11px] font-bold uppercase tracking-wide text-wood-warm;
+    @apply text-[11px] font-bold uppercase tracking-wide text-goldink;
   }
 
   /* Size chips — the clothing-specific token used in stock, POS and reports */
@@ -255,18 +264,30 @@ html[dir='rtl'] body {
   }
 }
 
-/* Mobile: wide tables scroll inside their card instead of stretching the page,
-   and form controls stay at 16px so iOS does not zoom on focus. */
+/* Mobile: form controls stay at 16px so iOS Safari does not zoom on focus,
+   and long unbroken strings never push a card wider than the screen. */
 @media (max-width: 640px) {
-  main table {
-    display: block;
-    max-width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
   input,
   select,
   textarea {
     font-size: 16px !important;
+  }
+}
+
+/* Printing always uses the light palette, whatever theme is on screen. */
+@media print {
+  :root,
+  .dark {
+    --c-bg: 255 255 255;
+    --c-surface: 255 255 255;
+    --c-surface-2: 246 243 236;
+    --c-border: 230 225 214;
+    --c-fg: 17 17 17;
+    --c-fg-muted: 87 83 78;
+    --c-accent: 17 17 17;
+    --c-accent-fg: 228 196 108;
+    --c-gold-ink: 138 104 26;
+    --c-success: 21 128 61;
+    --c-danger: 190 18 60;
   }
 }

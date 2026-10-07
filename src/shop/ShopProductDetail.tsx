@@ -120,7 +120,7 @@ export const ShopProductDetail = () => {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-14">
         {/* ── Gallery ────────────────────────────────────────────────────── */}
         <div>
-          <div className="relative aspect-[3/4] overflow-hidden bg-wood-cream">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-wood-cream">
             <AnimatePresence mode="wait">
               {product.images?.[active] ? (
                 <motion.img
@@ -154,7 +154,7 @@ export const ShopProductDetail = () => {
                   onClick={() => setActive(i)}
                   aria-label={`${i + 1}`}
                   className={clsx(
-                    'h-24 w-20 shrink-0 overflow-hidden border transition',
+                    'h-20 w-16 shrink-0 overflow-hidden rounded-lg border transition sm:h-24 sm:w-20',
                     i === active ? 'border-wood-dark' : 'border-wood-light opacity-60 hover:opacity-100',
                   )}
                 >
@@ -168,7 +168,7 @@ export const ShopProductDetail = () => {
         {/* ── Buy box ────────────────────────────────────────────────────── */}
         <div className="lg:sticky lg:top-24 lg:self-start">
           <p className="eyebrow">{product.category}</p>
-          <h1 className="text-hero mt-2 text-[clamp(1.75rem,5vw,3rem)] text-wood-dark">
+          <h1 className="text-hero mt-2 break-words text-[clamp(1.6rem,5vw,3rem)] text-wood-dark">
             {product.name}
           </h1>
           <p className="text-mono mt-4 text-2xl font-black text-wood-dark">
@@ -204,7 +204,7 @@ export const ShopProductDetail = () => {
                         setQuantity(1)
                       }}
                       className={clsx(
-                        'min-w-[3rem] border px-3 py-2.5 text-xs font-bold uppercase transition',
+                        'min-w-[3rem] rounded-lg border px-3 py-2.5 text-xs font-bold uppercase transition',
                         out
                           ? 'cursor-not-allowed border-wood-light text-wood-medium/35 line-through'
                           : on
@@ -254,7 +254,7 @@ export const ShopProductDetail = () => {
             <button
               onClick={onBuy}
               disabled={soldOut}
-              className="flex flex-1 items-center justify-center gap-2 bg-wood-btn px-6 py-4 text-[11px] font-black uppercase tracking-widest text-accentfg transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-wood-btn px-6 py-4 text-[11px] font-black uppercase tracking-widest text-accentfg transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35"
             >
               <Zap size={15} />
               {t('buyNow')}
@@ -262,7 +262,7 @@ export const ShopProductDetail = () => {
             <button
               onClick={onAdd}
               disabled={soldOut}
-              className="flex flex-1 items-center justify-center gap-2 border border-wood-dark px-6 py-4 text-[11px] font-black uppercase tracking-widest text-wood-dark transition hover:bg-wood-cream disabled:cursor-not-allowed disabled:opacity-35"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-wood-dark px-6 py-4 text-[11px] font-black uppercase tracking-widest text-wood-dark transition hover:bg-wood-cream disabled:cursor-not-allowed disabled:opacity-35"
             >
               <ShoppingBag size={15} />
               {t('addToCart')}
@@ -270,13 +270,13 @@ export const ShopProductDetail = () => {
           </div>
 
           {/* Reassurance */}
-          <div className="mt-6 grid grid-cols-1 gap-px border border-wood-light bg-wood-light sm:grid-cols-2">
+          <div className="mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-wood-light bg-wood-light sm:grid-cols-2">
             {[
               { icon: Truck, label: t('deliveryToAllWilayas') },
               { icon: ShieldCheck, label: t('securePayment') },
             ].map((r) => (
               <div key={r.label} className="flex items-center gap-2.5 bg-wood-white px-4 py-3">
-                <r.icon size={15} className="shrink-0 text-wood-dark" />
+                <r.icon size={15} className="shrink-0 text-goldink" />
                 <span className="text-[10px] font-bold uppercase tracking-wide text-wood-medium">
                   {r.label}
                 </span>
@@ -292,7 +292,7 @@ export const ShopProductDetail = () => {
                   <dt className="text-[10px] font-bold uppercase tracking-widest text-wood-medium">
                     {t(key)}
                   </dt>
-                  <dd className="text-xs font-medium text-wood-dark">{value}</dd>
+                  <dd className="min-w-0 break-words text-end text-xs font-medium text-wood-dark">{value}</dd>
                 </div>
               ))}
             </dl>
