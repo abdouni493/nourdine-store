@@ -1,0 +1,253 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   Marketplace design system — indigo & violet on cool slate.
+   ----------------------------------------------------------------------------
+   A friendly online-market look: soft slate surfaces, one indigo→violet accent
+   gradient for every primary action, rounded cards and coloured soft shadows.
+   Every colour is an "R G B" triplet so Tailwind can apply opacity to it.
+   ========================================================================== */
+
+:root {
+  --c-bg: 246 247 251;
+  --c-bg-2: 238 240 248;
+  --c-surface: 255 255 255;
+  --c-surface-2: 241 243 250;
+  --c-border: 224 228 239;
+  --c-fg: 17 24 39;
+  --c-fg-muted: 75 85 99; /* 7.5:1 on white */
+  --c-fg-subtle: 148 155 170;
+  --c-accent: 79 70 229; /* indigo-600 */
+  --c-accent-2: 124 58 237; /* violet-600 */
+  --c-accent-fg: 255 255 255;
+  /* Deep-indigo chrome (sidebar, table heads) + the text that sits on it */
+  --c-chrome: 30 27 75;
+  --c-chrome-2: 55 48 163;
+  --c-chrome-fg: 255 255 255;
+  --c-success: 5 150 105;
+  --c-danger: 225 29 72;
+  --c-warning: 217 119 6;
+  --c-shadow: 49 46 129;
+
+  color-scheme: light;
+}
+
+.dark {
+  --c-bg: 11 13 24;
+  --c-bg-2: 7 9 18;
+  --c-surface: 19 22 38;
+  --c-surface-2: 29 33 54;
+  --c-border: 46 51 78;
+  --c-fg: 241 243 250;
+  --c-fg-muted: 165 172 196;
+  --c-fg-subtle: 110 118 145;
+  --c-accent: 129 140 248; /* indigo-400 */
+  --c-accent-2: 167 139 250; /* violet-400 */
+  --c-accent-fg: 15 17 35;
+  --c-chrome: 15 17 35;
+  --c-chrome-2: 30 27 75;
+  --c-chrome-fg: 255 255 255;
+  --c-success: 52 211 153;
+  --c-danger: 251 113 133;
+  --c-warning: 251 191 36;
+  --c-shadow: 0 0 0;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: rgb(var(--c-fg));
+  background: rgb(var(--c-bg));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+html[dir='rtl'] body {
+  font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* The dark chrome (sidebar, hero) carries a barely-there diagonal weave so a
+   full-black panel still has surface rather than reading as a void. */
+.wood-grain {
+  position: relative;
+}
+.wood-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: radial-gradient(
+      120% 80% at 80% 0%,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0) 55%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.022) 0px,
+      rgba(255, 255, 255, 0.022) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--c-surface-2));
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--c-fg-subtle));
+  border: 3px solid rgb(var(--c-surface-2));
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--c-fg-muted));
+}
+
+::selection {
+  background: rgb(var(--c-accent));
+  color: rgb(var(--c-accent-fg));
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .card-wood {
+    background: rgb(var(--c-surface));
+    border: 1px solid rgb(var(--c-border));
+    box-shadow: 0 1px 3px rgb(var(--c-shadow) / 0.06), 0 6px 20px -8px rgb(var(--c-shadow) / 0.12);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, rgb(var(--c-accent)) 0%, rgb(var(--c-accent-2)) 100%);
+    color: rgb(var(--c-accent-fg));
+  }
+
+  .input-wood {
+    @apply w-full rounded-xl border border-wood-light bg-wood-white px-4 py-2.5 text-sm text-wood-dark outline-none transition placeholder:text-wood-medium/50 focus:border-wood-warm focus:ring-4 focus:ring-wood-warm/15;
+  }
+
+  .label-wood {
+    @apply mb-1.5 block text-xs font-semibold text-wood-medium;
+  }
+
+  .text-display {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  /* The oversized statement headline of the style. */
+  .text-hero {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .text-mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Small all-caps eyebrow used above section titles. */
+  .eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-wide text-wood-warm;
+  }
+
+  /* Size chips — the clothing-specific token used in stock, POS and reports */
+  .size-chip {
+    @apply inline-flex min-w-[2rem] items-center rounded-lg justify-center border border-wood-light bg-wood-cream px-2 py-0.5 text-xs font-semibold text-wood-dark;
+  }
+  .size-chip-active {
+    @apply border-wood-warm bg-wood-btn text-accentfg;
+  }
+  .size-chip-empty {
+    @apply border-dashed border-wood-light/60 bg-transparent text-wood-medium/45 line-through;
+  }
+
+  /* Storefront: the underline that draws itself on hover. */
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* Users who ask their OS to reduce motion get the layout, not the choreography. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print styles for invoices / reports */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-area section {
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+  .print-area table {
+    font-size: 10px;
+  }
+}

@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.venv/
+.vite/
+.claude/
+*.log
+.DS_Store
+coverage/
+
+# TypeScript incremental build metadata
+*.tsbuildinfo
+
+# Windows shortcuts created by the launcher scripts
+*.lnk
+supabase/.temp/
+
+# Local notes (contain private keys) — never pushed
+prompt.md
+prmpt.md

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4F46E5" />
+    <meta
+      name="description"
+      content="Marché en ligne — vêtements et produits. Commande en ligne, livraison 58 wilayas."
+    />
+    <!-- Type system: Plus Jakarta Sans (display) · Inter (UI) · JetBrains Mono (figures) · Cairo (RTL) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Cairo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Light is the boutique's default. Dark is applied only when the visitor
+      // has picked it, and it is painted before React mounts so a reload in
+      // dark mode never flashes a white page.
+      (function () {
+        try {
+          if (localStorage.getItem('atelier-theme') === 'dark') {
+            document.documentElement.classList.add('dark')
+          }
+        } catch (e) {
+          /* private mode — stay on the light default */
+        }
+      })()
+    </script>
+    <title>Nourdine Store — Vêtements & Produits</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
