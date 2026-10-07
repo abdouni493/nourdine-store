@@ -262,7 +262,7 @@ export const ImageGallery = ({
                     type="button"
                     onClick={() => makeCover(i)}
                     title={t('coverImage')}
-                    className="rounded-lg bg-white/90 p-1.5 text-indigo-700 transition hover:bg-white"
+                    className="rounded-lg bg-white/90 p-1.5 text-teal-700 transition hover:bg-white"
                   >
                     <Star size={13} />
                   </button>

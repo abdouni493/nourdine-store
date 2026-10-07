@@ -85,7 +85,7 @@ export const ShopOffers = () => {
               transition={{ delay: Math.min(i * 0.07, 0.35), duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <Link to={`/shop/offers/${o.id}`} className="group block">
-                <div className="relative aspect-[16/10] overflow-hidden bg-[#1E1B4B]">
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#042F2E]">
                   {o.image ? (
                     <img
                       src={o.image}
@@ -98,10 +98,10 @@ export const ShopOffers = () => {
                       <ImageOff size={30} />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E1B4B] via-[#1E1B4B]/25 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/25 to-transparent" />
 
                   {o.discountPercent > 0 && (
-                    <span className="text-mono absolute end-3 top-3 rounded-full bg-white px-3 py-1.5 text-lg font-black text-indigo-700">
+                    <span className="text-mono absolute end-3 top-3 rounded-full bg-white px-3 py-1.5 text-lg font-black text-teal-700">
                       −{o.discountPercent.toFixed(0)}%
                     </span>
                   )}
@@ -194,13 +194,13 @@ export const ShopOfferDetail = () => {
       </Link>
 
       {/* Hero */}
-      <div className="relative aspect-[16/9] overflow-hidden bg-[#1E1B4B] sm:aspect-[21/9]">
+      <div className="relative aspect-[16/9] overflow-hidden bg-[#042F2E] sm:aspect-[21/9]">
         {offer.image ? (
           <img src={offer.image} alt={offer.title} className="h-full w-full object-cover opacity-70" />
         ) : (
           <div className="wood-grain h-full w-full bg-neutral-900" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1E1B4B] via-[#1E1B4B]/35 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/35 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8">
           <h1 className="text-hero text-[clamp(1.75rem,6vw,3.5rem)] text-white">{offer.title}</h1>
           {offer.description && (
@@ -210,7 +210,7 @@ export const ShopOfferDetail = () => {
           )}
         </div>
         {offer.discountPercent > 0 && (
-          <span className="text-mono absolute end-4 top-4 rounded-full bg-white px-4 py-2 text-2xl font-black text-indigo-700">
+          <span className="text-mono absolute end-4 top-4 rounded-full bg-white px-4 py-2 text-2xl font-black text-teal-700">
             −{offer.discountPercent.toFixed(0)}%
           </span>
         )}

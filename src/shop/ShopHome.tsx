@@ -49,7 +49,7 @@ export const ShopHome = () => {
   return (
     <div>
       {/* ══ Hero ═══════════════════════════════════════════════════════════ */}
-      <section ref={heroRef} className="relative h-[88vh] min-h-[520px] overflow-hidden bg-[#1E1B4B]">
+      <section ref={heroRef} className="relative h-[88vh] min-h-[520px] overflow-hidden bg-[#042F2E]">
         <motion.div style={{ y: imageY }} className="absolute inset-0 -bottom-[18%]">
           {identity.heroImage ? (
             <img
@@ -58,10 +58,10 @@ export const ShopHome = () => {
               className="h-full w-full object-cover opacity-65"
             />
           ) : (
-            <div className="wood-grain h-full w-full bg-gradient-to-br from-indigo-950 via-violet-900 to-fuchsia-900" />
+            <div className="wood-grain h-full w-full bg-gradient-to-br from-teal-950 via-cyan-900 to-emerald-900" />
           )}
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1E1B4B] via-[#1E1B4B]/45 to-[#1E1B4B]/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/45 to-[#042F2E]/20" />
 
         <motion.div
           style={{ opacity: copyOpacity }}
@@ -112,7 +112,7 @@ export const ShopHome = () => {
           >
             <Link
               to="/shop/products"
-              className="group flex items-center gap-2 rounded-full bg-white px-7 py-4 text-[11px] font-black uppercase tracking-widest text-indigo-700 transition hover:bg-white/85"
+              className="group flex items-center gap-2 rounded-full bg-white px-7 py-4 text-[11px] font-black uppercase tracking-widest text-teal-700 transition hover:bg-white/85"
             >
               {t('shopNow')}
               <ArrowRight
@@ -199,7 +199,7 @@ export const ShopHome = () => {
               >
                 <Link
                   to={`/shop/offers/${o.id}`}
-                  className="group relative block aspect-[16/10] overflow-hidden bg-[#1E1B4B]"
+                  className="group relative block aspect-[16/10] overflow-hidden bg-[#042F2E]"
                 >
                   {o.image ? (
                     <img
@@ -210,10 +210,10 @@ export const ShopHome = () => {
                   ) : (
                     <div className="wood-grain h-full w-full bg-neutral-900" />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E1B4B] via-[#1E1B4B]/30 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/30 to-transparent" />
 
                   {o.discountPercent > 0 && (
-                    <span className="text-mono absolute end-4 top-4 rounded-full bg-white px-3 py-1.5 text-lg font-black text-indigo-700">
+                    <span className="text-mono absolute end-4 top-4 rounded-full bg-white px-3 py-1.5 text-lg font-black text-teal-700">
                       −{o.discountPercent.toFixed(0)}%
                     </span>
                   )}

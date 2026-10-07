@@ -104,7 +104,7 @@ export const SiteSettingsTab = () => {
       {/* ── Live preview of the landing hero ───────────────────────────── */}
       <aside className="lg:sticky lg:top-20 lg:self-start">
         <p className="eyebrow mb-2">{t('website')}</p>
-        <div className="relative aspect-[9/14] overflow-hidden border border-wood-light bg-[#1E1B4B]">
+        <div className="relative aspect-[9/14] overflow-hidden border border-wood-light bg-[#042F2E]">
           {draft.heroImage && (
             <img
               src={draft.heroImage}
@@ -112,7 +112,7 @@ export const SiteSettingsTab = () => {
               className="absolute inset-0 h-full w-full object-cover opacity-60"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1E1B4B] via-[#1E1B4B]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#042F2E] via-[#042F2E]/40 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-between p-5">
             <div className="flex items-center gap-2">
               {draft.favicon ? (
@@ -120,7 +120,7 @@ export const SiteSettingsTab = () => {
               ) : settings.logo ? (
                 <img src={settings.logo} alt="" className="h-6 w-6 object-cover" />
               ) : (
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-white text-[10px] font-black text-indigo-700">
+                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-white text-[10px] font-black text-teal-700">
                   {(settings.name || 'B').slice(0, 1).toUpperCase()}
                 </span>
               )}
@@ -138,7 +138,7 @@ export const SiteSettingsTab = () => {
               <p className="mt-2 line-clamp-3 text-[10px] leading-relaxed text-white/60">
                 {draft.description || t('appTagline')}
               </p>
-              <span className="mt-4 inline-block rounded-full bg-white px-4 py-2 text-[9px] font-black uppercase tracking-widest text-indigo-700">
+              <span className="mt-4 inline-block rounded-full bg-white px-4 py-2 text-[9px] font-black uppercase tracking-widest text-teal-700">
                 {t('shopNow')}
               </span>
             </div>

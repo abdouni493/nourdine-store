@@ -58,7 +58,7 @@ export default {
         full: '9999px',
       },
       backgroundImage: {
-        'wood-sidebar': 'linear-gradient(180deg, #1E1B4B 0%, #272166 55%, #3B2A8F 100%)',
+        'wood-sidebar': 'linear-gradient(180deg, #032423 0%, #063F3C 55%, #0B5E58 100%)',
         'wood-header':
           'linear-gradient(135deg, rgb(var(--c-chrome)) 0%, rgb(var(--c-chrome-2)) 100%)',
         'wood-btn': 'linear-gradient(135deg, rgb(var(--c-accent)) 0%, rgb(var(--c-accent-2)) 100%)',

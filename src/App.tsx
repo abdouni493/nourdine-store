@@ -52,7 +52,7 @@ const RequireAuth = () => {
 
 /** Shown while the session is revalidated and the boutique is read back. */
 const Splash = () => (
-  <div className="wood-grain flex min-h-screen flex-col items-center justify-center gap-6 bg-gradient-to-br from-[#1E1B4B] via-[#2E1065] to-[#4C1D95]">
+  <div className="wood-grain flex min-h-screen flex-col items-center justify-center gap-6 bg-gradient-to-br from-[#042F2E] via-[#0B4F4A] to-[#0E7490]">
     <div className="h-14 w-14 animate-float bg-white" />
     <div className="h-px w-40 overflow-hidden bg-white/15">
       <div className="h-full w-1/2 animate-shimmer bg-gradient-to-r from-transparent via-white to-transparent" />

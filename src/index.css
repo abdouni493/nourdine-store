@@ -3,53 +3,53 @@
 @tailwind utilities;
 
 /* ============================================================================
-   Marketplace design system — indigo & violet on cool slate.
+   Marketplace design system — teal & cyan on fresh mint-slate.
    ----------------------------------------------------------------------------
-   A friendly online-market look: soft slate surfaces, one indigo→violet accent
+   A friendly online-market look: soft slate surfaces, one teal→cyan accent
    gradient for every primary action, rounded cards and coloured soft shadows.
    Every colour is an "R G B" triplet so Tailwind can apply opacity to it.
    ========================================================================== */
 
 :root {
-  --c-bg: 246 247 251;
-  --c-bg-2: 238 240 248;
+  --c-bg: 244 248 248;
+  --c-bg-2: 234 243 242;
   --c-surface: 255 255 255;
-  --c-surface-2: 241 243 250;
-  --c-border: 224 228 239;
-  --c-fg: 17 24 39;
-  --c-fg-muted: 75 85 99; /* 7.5:1 on white */
-  --c-fg-subtle: 148 155 170;
-  --c-accent: 79 70 229; /* indigo-600 */
-  --c-accent-2: 124 58 237; /* violet-600 */
+  --c-surface-2: 238 246 245;
+  --c-border: 218 231 230;
+  --c-fg: 15 31 33;
+  --c-fg-muted: 71 90 92; /* 7:1 on white */
+  --c-fg-subtle: 140 160 162;
+  --c-accent: 13 148 136; /* teal-600 */
+  --c-accent-2: 8 145 178; /* cyan-600 */
   --c-accent-fg: 255 255 255;
-  /* Deep-indigo chrome (sidebar, table heads) + the text that sits on it */
-  --c-chrome: 30 27 75;
-  --c-chrome-2: 55 48 163;
+  /* Deep-teal chrome (sidebar, table heads) + the text that sits on it */
+  --c-chrome: 4 47 46;
+  --c-chrome-2: 17 94 89;
   --c-chrome-fg: 255 255 255;
-  --c-success: 5 150 105;
+  --c-success: 22 163 74;
   --c-danger: 225 29 72;
   --c-warning: 217 119 6;
-  --c-shadow: 49 46 129;
+  --c-shadow: 4 47 46;
 
   color-scheme: light;
 }
 
 .dark {
-  --c-bg: 11 13 24;
-  --c-bg-2: 7 9 18;
-  --c-surface: 19 22 38;
-  --c-surface-2: 29 33 54;
-  --c-border: 46 51 78;
-  --c-fg: 241 243 250;
-  --c-fg-muted: 165 172 196;
-  --c-fg-subtle: 110 118 145;
-  --c-accent: 129 140 248; /* indigo-400 */
-  --c-accent-2: 167 139 250; /* violet-400 */
-  --c-accent-fg: 15 17 35;
-  --c-chrome: 15 17 35;
-  --c-chrome-2: 30 27 75;
+  --c-bg: 7 20 22;
+  --c-bg-2: 4 14 16;
+  --c-surface: 13 30 32;
+  --c-surface-2: 21 42 44;
+  --c-border: 36 62 63;
+  --c-fg: 236 246 245;
+  --c-fg-muted: 159 184 182;
+  --c-fg-subtle: 104 130 130;
+  --c-accent: 45 212 191; /* teal-400 */
+  --c-accent-2: 34 211 238; /* cyan-400 */
+  --c-accent-fg: 4 30 30;
+  --c-chrome: 4 22 24;
+  --c-chrome-2: 4 47 46;
   --c-chrome-fg: 255 255 255;
-  --c-success: 52 211 153;
+  --c-success: 74 222 128;
   --c-danger: 251 113 133;
   --c-warning: 251 191 36;
   --c-shadow: 0 0 0;
@@ -65,11 +65,13 @@ html,
 body,
 #root {
   height: 100%;
+  max-width: 100%;
   margin: 0;
   padding: 0;
 }
 
 body {
+  overflow-x: hidden;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: rgb(var(--c-fg));
   background: rgb(var(--c-bg));
@@ -79,6 +81,7 @@ body {
 }
 
 html[dir='rtl'] body {
+  overflow-x: hidden;
   font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -249,5 +252,21 @@ html[dir='rtl'] body {
   }
   .print-area table {
     font-size: 10px;
+  }
+}
+
+/* Mobile: wide tables scroll inside their card instead of stretching the page,
+   and form controls stay at 16px so iOS does not zoom on focus. */
+@media (max-width: 640px) {
+  main table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
   }
 }

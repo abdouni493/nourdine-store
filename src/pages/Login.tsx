@@ -29,7 +29,7 @@ type LoginForm = z.infer<typeof loginSchema>
 
 /** Dark-surface field: the login screen is the one page that is always black. */
 const darkField =
-  'w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/35 focus:border-indigo-300 focus:bg-white/10 focus:ring-4 focus:ring-indigo-400/20'
+  'w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/35 focus:border-teal-300 focus:bg-white/10 focus:ring-4 focus:ring-teal-400/20'
 
 const darkLabel = 'mb-1.5 block text-xs font-semibold text-white/60'
 
@@ -138,7 +138,7 @@ export const Login = () => {
   const storeName = settings.name || t('appName')
 
   return (
-    <div className="relative flex min-h-screen bg-gradient-to-br from-[#1E1B4B] via-[#2E1065] to-[#4C1D95]">
+    <div className="relative flex min-h-screen bg-gradient-to-br from-[#042F2E] via-[#0B4F4A] to-[#0E7490]">
       {/* ── Editorial half: the brand, full-bleed ──────────────────────────── */}
       <div className="wood-grain relative hidden flex-1 overflow-hidden border-e border-white/10 lg:flex">
         <div className="absolute inset-0 flex flex-col justify-between p-14">
@@ -147,7 +147,7 @@ export const Login = () => {
               <img src={settings.logo} alt="" className="h-11 w-11 object-cover" />
             ) : (
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white">
-                <span className="text-display text-xl font-black text-indigo-700">
+                <span className="text-display text-xl font-black text-teal-700">
                   {storeName.slice(0, 1).toUpperCase()}
                 </span>
               </div>
@@ -228,7 +228,7 @@ export const Login = () => {
               <img src={settings.logo} alt="" className="h-10 w-10 object-cover" />
             ) : (
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white">
-                <span className="text-display text-lg font-black text-indigo-700">
+                <span className="text-display text-lg font-black text-teal-700">
                   {storeName.slice(0, 1).toUpperCase()}
                 </span>
               </div>
@@ -272,7 +272,7 @@ export const Login = () => {
             <button
               type="submit"
               disabled={busy}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-900/40 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-teal-900/40 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <LogIn size={16} />
               {t('login')}
@@ -386,7 +386,7 @@ export const Login = () => {
                           type="submit"
                           size="lg"
                           disabled={busy}
-                          className="w-full !bg-white !text-indigo-700"
+                          className="w-full !bg-white !text-teal-700"
                         >
                           <UserPlus size={16} />
                           {t('createMyAdmin')}

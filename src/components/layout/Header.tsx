@@ -12,6 +12,9 @@ import {
   Sun,
   ExternalLink,
   ShoppingBag,
+  Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react'
 import { useTranslation } from '@/i18n/useTranslation'
 import { useAuthStore } from '@/store/useAuthStore'
@@ -22,7 +25,12 @@ import { NAV_ITEMS } from './navConfig'
 import { initials, brokenSizes, formatMoney } from '@/utils/helpers'
 import type { Product } from '@/types'
 
-export const Header = () => {
+interface HeaderProps {
+  sidebarOpen: boolean
+  onToggleSidebar: () => void
+}
+
+export const Header = ({ sidebarOpen, onToggleSidebar }: HeaderProps) => {
   const { t, toggleLang, lang } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
@@ -61,13 +69,29 @@ export const Header = () => {
   }
 
   const iconBtn =
-    'flex items-center justify-center border border-wood-light bg-wood-white p-2 text-wood-medium transition hover:border-wood-warm hover:text-wood-dark'
+    'flex h-10 min-w-10 items-center justify-center rounded-xl border border-wood-light bg-wood-white p-2 text-wood-medium transition hover:border-wood-warm hover:text-wood-dark'
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-wood-light bg-wood-white/90 px-4 py-2.5 backdrop-blur-md sm:px-6">
+    <header className="sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-wood-light bg-wood-white/90 px-3 py-2.5 backdrop-blur-md sm:px-6">
+      <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+      {/* Sidebar toggle */}
+      <motion.button
+        whileTap={{ scale: 0.92 }}
+        onClick={onToggleSidebar}
+        aria-label="menu"
+        aria-expanded={sidebarOpen}
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-wood-btn text-accentfg shadow-gold transition hover:opacity-90"
+      >
+        <span className="lg:hidden">
+          <Menu size={19} />
+        </span>
+        <span className="hidden lg:inline rtl:-scale-x-100">
+          {sidebarOpen ? <PanelLeftClose size={19} /> : <PanelLeftOpen size={19} />}
+        </span>
+      </motion.button>
       {/* Breadcrumb */}
       <div className="flex min-w-0 items-center gap-2 text-[11px] font-semibold uppercase tracking-wide">
-        <Link to="/dashboard" className="shrink-0 text-wood-medium transition hover:text-wood-dark">
+        <Link to="/dashboard" className="hidden shrink-0 text-wood-medium sm:inline transition hover:text-wood-dark">
           {t('appName')}
         </Link>
         {crumb && (
@@ -77,15 +101,16 @@ export const Header = () => {
           </>
         )}
       </div>
+      </div>
 
-      <div className="flex shrink-0 items-center gap-1.5">
+      <div className="flex shrink-0 items-center gap-1 sm:gap-1.5">
         {/* Storefront */}
         <a
           href="/shop"
           target="_blank"
           rel="noopener noreferrer"
           title={t('visitWebsite')}
-          className="hidden items-center gap-1.5 bg-wood-btn px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-accentfg transition hover:opacity-85 sm:flex"
+          className="hidden items-center gap-1.5 rounded-xl bg-wood-btn px-3 py-2.5 text-[10px] font-bold uppercase tracking-wide text-accentfg transition hover:opacity-85 sm:flex"
         >
           <ExternalLink size={14} />
           {t('visitWebsite')}
@@ -126,7 +151,7 @@ export const Header = () => {
           >
             <Bell size={16} />
             {alertCount > 0 && (
-              <span className="text-mono absolute -end-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center bg-terracotta px-1 text-[9px] font-bold leading-none text-white">
+              <span className="text-mono absolute -end-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-terracotta px-1 text-[9px] font-bold leading-none text-white">
                 {alertCount}
               </span>
             )}
@@ -138,7 +163,7 @@ export const Header = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 6 }}
                 transition={{ duration: 0.18 }}
-                className="card-wood absolute end-0 mt-2 w-80 p-2 shadow-wood-lg"
+                className="card-wood fixed inset-x-3 top-14 rounded-2xl p-2 sm:absolute sm:inset-x-auto sm:end-0 sm:top-auto sm:mt-2 sm:w-80 shadow-wood-lg"
               >
                 {alertCount === 0 ? (
                   <p className="px-1 py-4 text-center text-xs text-wood-medium">{t('noData')}</p>
@@ -227,9 +252,9 @@ export const Header = () => {
               setMenuOpen((v) => !v)
               setNotifOpen(false)
             }}
-            className="flex items-center gap-2 border border-wood-light bg-wood-white py-1 pe-3 ps-1 transition hover:border-wood-warm"
+            className="flex items-center gap-2 rounded-xl border border-wood-light bg-wood-white p-1 sm:pe-3 transition hover:border-wood-warm"
           >
-            <div className="flex h-7 w-7 items-center justify-center bg-wood-btn text-[10px] font-bold text-accentfg">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-wood-btn text-[10px] font-bold text-accentfg">
               {initials(currentUser?.fullName ?? 'U')}
             </div>
             <div className="hidden text-start sm:block">
@@ -248,7 +273,7 @@ export const Header = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 6 }}
                 transition={{ duration: 0.18 }}
-                className="card-wood absolute end-0 mt-2 w-48 p-1.5 shadow-wood-lg"
+                className="card-wood absolute end-0 mt-2 w-52 rounded-2xl p-1.5 shadow-wood-lg"
               >
                 <Link
                   to="/settings"

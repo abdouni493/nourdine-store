@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LogOut, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
+import { LogOut, X, ExternalLink } from 'lucide-react'
 import { NAV_ITEMS, type NavItem } from './navConfig'
 import { useTranslation } from '@/i18n/useTranslation'
 import { useAuthStore } from '@/store/useAuthStore'
@@ -10,11 +10,16 @@ import { can, moduleEnabled } from '@/utils/helpers'
 import { clsx } from '@/utils/clsx'
 
 interface SidebarProps {
-  collapsed: boolean
-  onToggle: () => void
+  open: boolean
+  isMobile: boolean
+  onClose: () => void
 }
 
-export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
+const WIDTH = 252
+
+export const Sidebar = ({ open, isMobile, onClose }: SidebarProps) => {
+  // The rail is either fully shown or fully hidden — never an icon-only strip.
+  const collapsed = false
   const { t, isRTL } = useTranslation()
   const navigate = useNavigate()
   const currentUser = useAuthStore((s) => s.currentUser)
@@ -40,14 +45,6 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
     navigate('/login')
   }
 
-  const CollapseIcon = collapsed
-    ? isRTL
-      ? ChevronLeft
-      : ChevronRight
-    : isRTL
-      ? ChevronRight
-      : ChevronLeft
-
   const renderItem = (item: NavItem) => {
     const badge = item.key === 'weborders' ? pending : 0
     return (
@@ -55,26 +52,31 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         {({ isActive }) => (
           <div
             className={clsx(
-              'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors duration-200',
-              isActive ? '' : 'hover:bg-white/[0.07]',
+              'group relative mx-2 flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors duration-200',
+              isActive ? '' : 'hover:bg-white/[0.08]',
             )}
           >
             {isActive && (
               <motion.span
                 layoutId="activeBar"
                 transition={{ type: 'spring', damping: 30, stiffness: 380 }}
-                className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/90 to-violet-500/80 shadow-lg shadow-indigo-950/40"
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-teal-400/95 to-cyan-500/85 shadow-lg shadow-teal-950/50"
               />
             )}
-            <span className="relative shrink-0">
+            <span
+              className={clsx(
+                'relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition',
+                isActive ? 'bg-white/20' : 'bg-white/[0.06] group-hover:bg-white/[0.12]',
+              )}
+            >
               <item.icon
-                size={19}
+                size={17}
                 strokeWidth={isActive ? 2.2 : 1.7}
                 className={isActive ? 'text-white' : 'text-white/55 group-hover:text-white/85'}
               />
               {/* Collapsed rail keeps the alert as a dot on the icon itself. */}
               {badge > 0 && collapsed && (
-                <span className="absolute -end-1.5 -top-1.5 h-2.5 w-2.5 animate-pulse-glow rounded-full bg-terracotta ring-2 ring-indigo-950" />
+                <span className="absolute -end-1.5 -top-1.5 h-2.5 w-2.5 animate-pulse-glow rounded-full bg-terracotta ring-2 ring-teal-950" />
               )}
             </span>
             <AnimatePresence initial={false}>
@@ -104,14 +106,37 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   }
 
   return (
+    <>
+      <AnimatePresence>
+        {isMobile && open && (
+          <motion.div
+            key="scrim"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] lg:hidden"
+          />
+        )}
+      </AnimatePresence>
     <motion.aside
-      animate={{ width: collapsed ? 72 : 236 }}
-      transition={{ type: 'spring', damping: 28, stiffness: 260 }}
-      className="wood-grain relative z-30 flex h-screen flex-col bg-wood-sidebar"
+      initial={false}
+      animate={
+        isMobile
+          ? { x: open ? 0 : isRTL ? WIDTH + 20 : -(WIDTH + 20), width: WIDTH }
+          : { x: 0, width: open ? WIDTH : 0 }
+      }
+      transition={{ type: 'spring', damping: 30, stiffness: 280 }}
+      aria-hidden={!open}
+      className={clsx(
+        'wood-grain z-50 flex h-[100dvh] shrink-0 flex-col overflow-hidden bg-wood-sidebar',
+        isMobile ? 'fixed inset-y-0 start-0 shadow-2xl' : 'relative',
+      )}
     >
+      <div className="flex h-full flex-col" style={{ width: WIDTH }}>
       {/* Brand */}
       <div className="flex items-center gap-3 border-b border-white/10 px-4 py-5">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-indigo-400 to-violet-500 shadow-lg shadow-indigo-950/40">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-teal-300 to-cyan-500 shadow-lg shadow-teal-950/50">
           {settings.logo ? (
             <img src={settings.logo} alt="" className="h-full w-full object-cover" />
           ) : (
@@ -137,16 +162,16 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
             </motion.div>
           )}
         </AnimatePresence>
+        {isMobile && (
+          <button
+            onClick={onClose}
+            aria-label="close menu"
+            className="ms-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20"
+          >
+            <X size={18} />
+          </button>
+        )}
       </div>
-
-      {/* Collapse toggle */}
-      <button
-        onClick={onToggle}
-        aria-label="toggle sidebar"
-        className="absolute -end-3 top-[70px] z-40 flex h-6 w-6 items-center justify-center border border-wood-light bg-wood-white text-wood-dark transition hover:bg-wood-cream"
-      >
-        <CollapseIcon size={13} />
-      </button>
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden py-3">
@@ -184,7 +209,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
           target="_blank"
           rel="noopener noreferrer"
           title={collapsed ? t('visitWebsite') : undefined}
-          className="flex w-full items-center gap-3 px-3 py-2.5 text-white/60 transition hover:bg-white/[0.06] hover:text-white"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-white/70 transition hover:bg-white/[0.08] hover:text-white"
         >
           <ExternalLink size={18} strokeWidth={1.7} className="shrink-0" />
           {!collapsed && (
@@ -194,7 +219,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         <button
           onClick={handleLogout}
           title={collapsed ? t('logout') : undefined}
-          className="flex w-full items-center gap-3 px-3 py-2.5 text-white/60 transition hover:bg-terracotta/20 hover:text-white"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-white/70 transition hover:bg-terracotta/25 hover:text-white"
         >
           <LogOut size={18} strokeWidth={1.7} className="shrink-0" />
           {!collapsed && (
@@ -202,6 +227,8 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
           )}
         </button>
       </div>
+      </div>
     </motion.aside>
+    </>
   )
 }

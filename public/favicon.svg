@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#E7C063"/>
-      <stop offset="0.55" stop-color="#CA8A04"/>
-      <stop offset="1" stop-color="#A16207"/>
+      <stop offset="0" stop-color="#2DD4BF"/>
+      <stop offset="0.55" stop-color="#0D9488"/>
+      <stop offset="1" stop-color="#0E7490"/>
     </linearGradient>
   </defs>
-  <!-- brass boutique tile -->
-  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
-  <!-- t-shirt (garment) in ink -->
-  <path d="M26 17 L21 17 L12 26 L18 32 L22 29.5 L22 50 L42 50 L42 29.5 L46 32 L52 26 L43 17 L38 17 Q32 24 26 17 Z"
-        fill="#1C1917"/>
-  <!-- collar highlight -->
-  <path d="M26 17 Q32 24 38 17" fill="none" stroke="#E7C063" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- teal market tile -->
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+  <!-- shopping bag -->
+  <path d="M16 24 H48 L45.5 50 Q45.2 53 42 53 H22 Q18.8 53 18.5 50 Z" fill="#FFFFFF"/>
+  <path d="M25 28 V21 Q25 13 32 13 Q39 13 39 21 V28" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <!-- N monogram -->
+  <path d="M26 46 V32 L38 46 V32" fill="none" stroke="#0D9488" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
