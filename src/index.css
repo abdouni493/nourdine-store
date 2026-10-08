@@ -96,7 +96,9 @@ html[dir='rtl'] body {
 
 /* The dark chrome (sidebar, hero) carries a barely-there diagonal weave so a
    full-black panel still has surface rather than reading as a void. */
-.wood-grain {
+/* Only give a containing block to elements that are not already positioned,
+   so utilities like `fixed` (the mobile sidebar drawer) still win. */
+.wood-grain:not(.fixed):not(.absolute):not(.sticky) {
   position: relative;
 }
 .wood-grain::after {
