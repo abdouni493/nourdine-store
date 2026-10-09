@@ -210,22 +210,51 @@ export const StockPage = () => {
                 variants={cardVariants}
                 custom={i}
                 layout
-                className="card-wood flex min-w-0 flex-col rounded-2xl p-4"
+                className="card-wood group flex min-w-0 flex-col overflow-hidden rounded-2xl transition-shadow hover:shadow-lg"
               >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <h3 className="truncate font-bold text-wood-dark">{p.name}</h3>
-                    <p className="truncate text-xs text-wood-medium">
-                      {[p.brand, p.category].filter(Boolean).join(' · ')}
-                    </p>
-                  </div>
-                  {stockBadge(p)}
-                </div>
+                {/* Cover photo */}
+                <button
+                  type="button"
+                  onClick={() => setViewing(p)}
+                  aria-label={t('view')}
+                  className="relative block aspect-[4/3] w-full overflow-hidden bg-wood-cream"
+                >
+                  {p.images?.[0] ? (
+                    <img
+                      src={p.images[0]}
+                      alt={p.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-wood-medium/40">
+                      {isClothing(p) ? <IconGarment size={48} /> : <Package size={48} />}
+                    </div>
+                  )}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute start-2 top-2 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white backdrop-blur">
+                    {isClothing(p) ? <IconGarment size={11} /> : <Package size={11} />}
+                    {t(`productType_${p.productType}` as TranslationKey)}
+                  </span>
+                  <span className="absolute end-2 top-2">{stockBadge(p)}</span>
+                  {(p.images?.length ?? 0) > 1 && (
+                    <span className="absolute bottom-2 end-2 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-semibold text-white">
+                      +{(p.images?.length ?? 1) - 1}
+                    </span>
+                  )}
+                  <span className="text-mono absolute bottom-2 start-2 text-lg font-bold text-white drop-shadow">
+                    {formatMoney(p.salePrice)}
+                  </span>
+                </button>
 
-                <span className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-wood-warm/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-goldink">
-                  {isClothing(p) ? <IconGarment size={11} /> : <Package size={11} />}
-                  {t(`productType_${p.productType}` as TranslationKey)}
-                </span>
+                <div className="flex flex-1 flex-col p-4">
+                <div className="min-w-0">
+                  <h3 className="truncate font-bold text-wood-dark">{p.name}</h3>
+                  <p className="truncate text-xs text-wood-medium">
+                    {[p.brand, p.category].filter(Boolean).join(' · ')}
+                  </p>
+                </div>
 
                 {/* Garment identity at a glance */}
                 {isClothing(p) && (
@@ -256,20 +285,30 @@ export const StockPage = () => {
                   <MissingSizePill product={p} />
                 </div>
 
-                <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:text-sm">
+                <div className="mt-3 grid grid-cols-3 gap-1.5 text-xs">
                   <div className="rounded-lg bg-wood-cream px-2 py-1.5">
-                    <p className="text-[10px] text-wood-medium">{t('purchasePrice')}</p>
-                    <p className="text-mono font-semibold text-wood-dark">
+                    <p className="truncate text-[10px] text-wood-medium">{t('purchasePrice')}</p>
+                    <p className="text-mono truncate font-semibold text-wood-dark">
                       {formatMoney(p.purchasePrice)}
                     </p>
                   </div>
                   <div className="rounded-lg bg-sage/10 px-2 py-1.5">
-                    <p className="text-[10px] text-wood-medium">{t('salePrice')}</p>
-                    <p className="text-mono font-semibold text-sage">{formatMoney(p.salePrice)}</p>
+                    <p className="truncate text-[10px] text-wood-medium">{t('salePrice')}</p>
+                    <p className="text-mono truncate font-semibold text-sage">{formatMoney(p.salePrice)}</p>
+                  </div>
+                  <div className="rounded-lg bg-gold/10 px-2 py-1.5">
+                    <p className="truncate text-[10px] text-wood-medium">{t('margin')}</p>
+                    <p
+                      className={`text-mono truncate font-semibold ${
+                        p.salePrice - p.purchasePrice < 0 ? 'text-terracotta' : 'text-goldink'
+                      }`}
+                    >
+                      {formatMoney(p.salePrice - p.purchasePrice)}
+                    </p>
                   </div>
                 </div>
 
-                <div className="mt-3">
+                <div className="mb-3 mt-3">
                   <div className="mb-1 flex justify-between text-xs">
                     <span className="text-wood-medium">{t('totalStock')}</span>
                     <span className="text-mono font-bold text-wood-dark">
@@ -315,6 +354,7 @@ export const StockPage = () => {
                     <IconDelete size={15} />
                   </Button>
                 </div>
+                </div>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -344,6 +384,17 @@ export const StockPage = () => {
                     className="border-b border-wood-light/50 hover:bg-wood-cream/40"
                   >
                     <td className="px-4 py-2.5">
+                      <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-wood-cream">
+                        {p.images?.[0] ? (
+                          <img src={p.images[0]} alt="" loading="lazy" className="h-full w-full object-cover" />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-wood-medium/50">
+                            <Package size={16} />
+                          </div>
+                        )}
+                      </div>
+                      <div className="min-w-0">
                       <p className="font-medium text-wood-dark">{p.name}</p>
                       <p className="text-xs text-wood-medium">
                         {[
@@ -354,6 +405,8 @@ export const StockPage = () => {
                           .filter(Boolean)
                           .join(' · ')}
                       </p>
+                      </div>
+                      </div>
                     </td>
                     <td className="px-4 py-2.5 text-wood-medium">{p.category}</td>
                     <td className="px-4 py-2.5">
@@ -420,6 +473,19 @@ export const StockPage = () => {
       >
         {viewing && (
           <div className="space-y-4">
+            {viewing.images && viewing.images.length > 0 && (
+              <div className="flex snap-x gap-2 overflow-x-auto pb-1">
+                {viewing.images.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-[3/4] w-40 shrink-0 snap-start rounded-xl object-cover"
+                  />
+                ))}
+              </div>
+            )}
             <p className="text-sm text-wood-medium">{viewing.description || '—'}</p>
 
             {/* Garment attributes */}

@@ -26,10 +26,10 @@ import { SizePicker } from '@/components/shared/SizePicker'
 import { ImageGallery } from '@/components/shared/ImageUploader'
 import { useProductStore } from '@/store/useProductStore'
 import { useTranslation } from '@/i18n/useTranslation'
-import { generateEAN13 } from '@/utils/helpers'
+import { generateEAN13, formatMoney } from '@/utils/helpers'
 import { SIZE_CATEGORIES, GENDERS, SEASONS, PRODUCT_TYPES } from '@/types'
 import type { Product, ProductType, SizeCategory, SizeStock, Gender, Season } from '@/types'
-import { Package } from 'lucide-react'
+import { Package, Coins } from 'lucide-react'
 import type { TranslationKey } from '@/i18n/translations'
 
 // Identity + cut of the garment. Prices and the alert threshold are set on the
@@ -169,6 +169,9 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
   /** Stock of a general product, which has no size breakdown to sum. */
   const [stock, setStock] = useState(0)
   const [minStock, setMinStock] = useState(0)
+  /** Prices, editable here; a later purchase can still update them. */
+  const [purchasePrice, setPurchasePrice] = useState(0)
+  const [salePrice, setSalePrice] = useState(0)
   const [saving, setSaving] = useState(false)
 
   const {
@@ -218,6 +221,8 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
       setImages(product.images ?? [])
       setStock(product.quantity)
       setMinStock(product.minQuantity)
+      setPurchasePrice(product.purchasePrice ?? 0)
+      setSalePrice(product.salePrice ?? 0)
     } else {
       reset({
         productType: 'clothing',
@@ -237,6 +242,8 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
       setImages([])
       setStock(0)
       setMinStock(0)
+      setPurchasePrice(0)
+      setSalePrice(0)
     }
   }, [open, product, presetName]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -263,6 +270,8 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
       brand: data.brand ?? '',
       category: data.category,
       images,
+      purchasePrice: Math.max(0, purchasePrice),
+      salePrice: Math.max(0, salePrice),
       ...(isGarment
         ? {
             sizeCategory: data.sizeCategory,
@@ -299,8 +308,6 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
         const created = await addProduct({
           minQuantity: 0,
           ...common,
-          purchasePrice: 0,
-          salePrice: 0,
         })
         toast.success(t('saved'))
         onSaved?.(created)
@@ -616,11 +623,66 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
           </div>
         </section>
 
-        {/* Pricing is captured on the first purchase of the article */}
-        <div className="flex items-start gap-2 rounded-xl border border-wood-light bg-gradient-to-br from-wood-cream/60 to-wood-white px-4 py-3 text-xs text-wood-medium">
-          <Info size={15} className="mt-0.5 shrink-0 text-goldink" />
-          <span>{t('pricingLaterHint')}</span>
-        </div>
+        {/* ── Pricing ────────────────────────────────────────────────────── */}
+        <section className="space-y-3 rounded-xl border border-wood-light bg-gradient-to-br from-wood-cream/60 to-wood-white p-4">
+          <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-goldink">
+            <Coins size={16} />
+            {t('pricing')}
+          </h4>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className="label-wood">{t('purchasePrice')}</label>
+              <input
+                type="number"
+                min={0}
+                step="0.01"
+                inputMode="decimal"
+                value={purchasePrice || ''}
+                placeholder="0"
+                onChange={(e) => setPurchasePrice(Number(e.target.value) || 0)}
+                className="input-wood text-mono"
+              />
+            </div>
+            <div>
+              <label className="label-wood">{t('salePrice')}</label>
+              <input
+                type="number"
+                min={0}
+                step="0.01"
+                inputMode="decimal"
+                value={salePrice || ''}
+                placeholder="0"
+                onChange={(e) => setSalePrice(Number(e.target.value) || 0)}
+                className="input-wood text-mono"
+              />
+            </div>
+          </div>
+          {(() => {
+            const margin = salePrice - purchasePrice
+            const rate = purchasePrice > 0 ? Math.round((margin / purchasePrice) * 100) : null
+            const bad = salePrice > 0 && margin < 0
+            return (
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className={`rounded-lg px-3 py-2 ${bad ? 'bg-terracotta/10' : 'bg-sage/10'}`}>
+                  <p className="text-[10px] text-wood-medium">{t('margin')}</p>
+                  <p className={`text-mono font-bold ${bad ? 'text-terracotta' : 'text-sage'}`}>
+                    {formatMoney(margin)}
+                  </p>
+                </div>
+                <div className={`rounded-lg px-3 py-2 ${bad ? 'bg-terracotta/10' : 'bg-sage/10'}`}>
+                  <p className="text-[10px] text-wood-medium">{t('marginRate')}</p>
+                  <p className={`text-mono font-bold ${bad ? 'text-terracotta' : 'text-sage'}`}>
+                    {rate === null ? '—' : `${rate} %`}
+                  </p>
+                </div>
+              </div>
+            )
+          })()}
+          <p className="flex items-start gap-1.5 text-[11px] text-wood-medium">
+            <Info size={13} className="mt-0.5 shrink-0 text-goldink" />
+            {t('pricingEditHint')}
+          </p>
+        </section>
       </form>
     </Modal>
   )

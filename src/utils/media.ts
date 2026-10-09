@@ -30,7 +30,7 @@ const loadCompressor = async () => (await import('browser-image-compression')).d
 const MAX_EDGE = 1280
 
 /** Encoder quality the search starts from, before it hunts for the target. */
-const START_QUALITY = 0.82
+const START_QUALITY = 0.75
 
 /**
  * Formats a canvas cannot rasterise, or that are vector to begin with. They
@@ -43,7 +43,7 @@ const PASSTHROUGH_TYPES = new Set([
 ])
 
 /** A picked file already lighter than this is left alone. */
-const ALREADY_SMALL = 120 * 1024
+const ALREADY_SMALL = 60 * 1024
 
 // ----------------------------------------------------------------------------
 // Presets — one per place the app accepts an image
@@ -58,11 +58,11 @@ export interface ImagePreset {
 
 export const IMAGE_PRESETS = {
   /** Storefront gallery photos — the heaviest and the most numerous. */
-  product: { maxEdge: 1600, maxBytes: 450 * 1024 },
+  product: { maxEdge: 1080, maxBytes: 150 * 1024 },
   /** Full-width banner behind the shop title. */
-  hero: { maxEdge: 1920, maxBytes: 600 * 1024 },
+  hero: { maxEdge: 1920, maxBytes: 350 * 1024 },
   /** Campaign cover, shown in a portrait card. */
-  offer: { maxEdge: 1280, maxBytes: 350 * 1024 },
+  offer: { maxEdge: 1200, maxBytes: 200 * 1024 },
   /** Boutique logo — printed on invoices, so it keeps a little more detail. */
   logo: { maxEdge: 512, maxBytes: 120 * 1024 },
   /** Carrier logo in the delivery list. */
