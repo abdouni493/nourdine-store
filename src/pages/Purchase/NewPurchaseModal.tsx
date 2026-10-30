@@ -110,6 +110,7 @@ export const NewPurchaseModal = ({ open, onClose, editing }: NewPurchaseModalPro
         quantity: 1,
         purchasePrice: p.purchasePrice,
         salePrice: p.salePrice,
+        wholesalePrice: p.wholesalePrice,
         minQuantity: p.minQuantity,
       },
     ])
@@ -319,7 +320,7 @@ export const NewPurchaseModal = ({ open, onClose, editing }: NewPurchaseModalPro
                         <IconDelete size={16} />
                       </button>
                     </div>
-                    <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                    <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
                       <label className="text-xs text-wood-medium">
                         {t('qtyBought')}
                         <input
@@ -349,6 +350,17 @@ export const NewPurchaseModal = ({ open, onClose, editing }: NewPurchaseModalPro
                           step="0.01"
                           value={l.salePrice}
                           onChange={(e) => updateLine(l._key, { salePrice: Number(e.target.value) })}
+                          className="input-wood mt-0.5 py-1.5"
+                        />
+                      </label>
+                      <label className="text-xs text-wood-medium">
+                        {t('wholesalePrice')}
+                        <input
+                          type="number"
+                          step="0.01"
+                          min={0}
+                          value={l.wholesalePrice ?? 0}
+                          onChange={(e) => updateLine(l._key, { wholesalePrice: Number(e.target.value) })}
                           className="input-wood mt-0.5 py-1.5"
                         />
                       </label>

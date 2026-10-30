@@ -23,12 +23,21 @@ import { useSalesStore } from '@/store/useSalesStore'
 import { useTranslation } from '@/i18n/useTranslation'
 import { formatMoney, round2, compareSizes, sizeQuantity, isClothing } from '@/utils/helpers'
 import { PRODUCT_TYPES } from '@/types'
-import type { Client, Product, ProductType, SaleLine } from '@/types'
+import type { Client, PriceType, Product, ProductType, SaleLine } from '@/types'
 import { format } from 'date-fns'
 
 /** A cart line is identified by article *and* size — an M and an L are two lines. */
 interface CartItem extends SaleLine {
   stock: number
+  retailPrice: number
+  /** 0 when the article has no wholesale price. */
+  wholesalePrice: number
+}
+
+/** Re-price a cart line at the given price list (retail if it has no wholesale price). */
+const priceAt = (l: CartItem, priceType: PriceType): CartItem => {
+  const pt: PriceType = priceType === 'wholesale' && l.wholesalePrice > 0 ? 'wholesale' : 'retail'
+  return { ...l, priceType: pt, unitPrice: pt === 'wholesale' ? l.wholesalePrice : l.retailPrice }
 }
 
 const lineKey = (productId: string, size: string) => `${productId}::${size}`
@@ -48,7 +57,7 @@ export const POSPage = () => {
   const [clientQuery, setClientQuery] = useState('')
   const [walkIn, setWalkIn] = useState(true)
   const [showNewClient, setShowNewClient] = useState(false)
-  const [newClient, setNewClient] = useState({ name: '', phone: '' })
+  const [newClient, setNewClient] = useState<{ name: string; phone: string; priceType: PriceType }>({ name: '', phone: '', priceType: 'retail' })
   const [discountOn, setDiscountOn] = useState(false)
   const [discount, setDiscount] = useState(0)
   const [received, setReceived] = useState(0)
@@ -107,15 +116,21 @@ export const POSPage = () => {
       }
       return [
         ...prev,
-        {
-          productId: p.id,
-          productName: p.name,
-          barcode: p.barcode,
-          size,
-          quantity: 1,
-          unitPrice: p.salePrice,
-          stock: available,
-        },
+        priceAt(
+          {
+            productId: p.id,
+            productName: p.name,
+            barcode: p.barcode,
+            size,
+            quantity: 1,
+            unitPrice: p.salePrice,
+            priceType: 'retail',
+            stock: available,
+            retailPrice: p.salePrice,
+            wholesalePrice: p.wholesalePrice,
+          },
+          client?.priceType ?? 'retail',
+        ),
       ]
     })
     setPicking(null)
@@ -153,6 +168,25 @@ export const POSPage = () => {
         .filter((l) => l.quantity > 0),
     )
 
+  /** Switch one line between the normal and the wholesale price. */
+  const togglePriceType = (key: string) =>
+    setCart((prev) =>
+      prev.map((l) => {
+        if (lineKey(l.productId, l.size) !== key) return l
+        if (l.priceType === 'retail' && l.wholesalePrice <= 0) {
+          toast.error(t('noWholesalePrice'))
+          return l
+        }
+        return priceAt(l, l.priceType === 'wholesale' ? 'retail' : 'wholesale')
+      }),
+    )
+
+  /** Selecting a client re-prices the whole cart at that client's price list. */
+  const chooseClient = (c: Client | null) => {
+    setClient(c)
+    setCart((prev) => prev.map((l) => priceAt(l, c?.priceType ?? 'retail')))
+  }
+
   const removeItem = (key: string) =>
     setCart((prev) => prev.filter((l) => lineKey(l.productId, l.size) !== key))
 
@@ -172,11 +206,11 @@ export const POSPage = () => {
       return
     }
     try {
-      const created = await addClient({ name: newClient.name, phone: newClient.phone })
-      setClient(created)
+      const created = await addClient(newClient)
+      chooseClient(created)
       setWalkIn(false)
       setShowNewClient(false)
-      setNewClient({ name: '', phone: '' })
+      setNewClient({ name: '', phone: '', priceType: 'retail' })
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t('saveFailed'))
     }
@@ -194,7 +228,7 @@ export const POSPage = () => {
       return
     }
 
-    const lines: SaleLine[] = cart.map(({ stock, ...l }) => l) // eslint-disable-line @typescript-eslint/no-unused-vars
+    const lines: SaleLine[] = cart.map(({ stock, retailPrice, wholesalePrice, ...l }) => l) // eslint-disable-line @typescript-eslint/no-unused-vars
     const paid = round2(Math.min(received, total))
     const nowIso = new Date().toISOString()
 
@@ -287,7 +321,14 @@ export const POSPage = () => {
                     .join(' · ') || t(`productType_${p.productType}` as TranslationKey)}
                 </p>
                 <div className="mt-1 flex items-center justify-between gap-1">
-                  <span className="text-mono min-w-0 truncate text-xs font-bold text-sage sm:text-sm">{formatMoney(p.salePrice)}</span>
+                  <span className="min-w-0">
+                    <span className="text-mono block truncate text-xs font-bold text-sage sm:text-sm">{formatMoney(p.salePrice)}</span>
+                    {p.wholesalePrice > 0 && (
+                      <span className="text-mono block truncate text-[10px] font-semibold text-goldink">
+                        {t('priceWholesale')}: {formatMoney(p.wholesalePrice)}
+                      </span>
+                    )}
+                  </span>
                   <span
                     className={`text-xs ${p.quantity <= p.minQuantity ? 'font-bold text-terracotta' : 'text-wood-medium'}`}
                   >
@@ -347,7 +388,7 @@ export const POSPage = () => {
                     onChange={(e) => {
                       setWalkIn(e.target.checked)
                       if (e.target.checked) {
-                        setClient(null)
+                        chooseClient(null)
                         setClientQuery('')
                       }
                     }}
@@ -359,10 +400,17 @@ export const POSPage = () => {
                   (client ? (
                     <div className="flex items-center justify-between rounded-lg bg-sage/10 px-3 py-2">
                       <div>
-                        <p className="text-sm font-medium text-wood-dark">{client.name}</p>
+                        <p className="flex items-center gap-1.5 text-sm font-medium text-wood-dark">
+                          {client.name}
+                          {client.priceType === 'wholesale' && (
+                            <span className="rounded-md bg-gold/15 px-1.5 py-0.5 text-[10px] font-bold text-goldink">
+                              {t('priceWholesale')}
+                            </span>
+                          )}
+                        </p>
                         <p className="text-xs text-wood-medium">{client.phone}</p>
                       </div>
-                      <button onClick={() => setClient(null)} className="text-terracotta">
+                      <button onClick={() => chooseClient(null)} className="text-terracotta">
                         <IconClose size={16} />
                       </button>
                     </div>
@@ -380,12 +428,13 @@ export const POSPage = () => {
                             <button
                               key={c.id}
                               onClick={() => {
-                                setClient(c)
+                                chooseClient(c)
                                 setClientQuery(c.name)
                               }}
                               className="block w-full px-3 py-2 text-start text-sm hover:bg-wood-cream"
                             >
                               {c.name} · {c.phone}
+                              {c.priceType === 'wholesale' && ` · ${t('priceWholesale')}`}
                             </button>
                           ))}
                         </div>
@@ -414,6 +463,22 @@ export const POSPage = () => {
                             placeholder={t('phone')}
                             className="input-wood py-1.5"
                           />
+                          <div className="grid grid-cols-2 gap-1.5">
+                            {(['retail', 'wholesale'] as PriceType[]).map((pt) => (
+                              <button
+                                key={pt}
+                                type="button"
+                                onClick={() => setNewClient({ ...newClient, priceType: pt })}
+                                className={`rounded-lg border px-2 py-1.5 text-xs font-semibold transition ${
+                                  newClient.priceType === pt
+                                    ? 'border-transparent bg-wood-btn text-accentfg'
+                                    : 'border-wood-light text-wood-medium'
+                                }`}
+                              >
+                                {pt === 'retail' ? t('retailPrice') : t('wholesalePrice')}
+                              </button>
+                            ))}
+                          </div>
                           <Button
                             type="button"
                             variant="sage"
@@ -480,9 +545,27 @@ export const POSPage = () => {
                                 <IconAdd size={13} />
                               </button>
                             </div>
-                            <span className="text-mono text-sm font-bold text-sage">
-                              {formatMoney(l.quantity * l.unitPrice)}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => togglePriceType(key)}
+                                title={t('priceType')}
+                                className={`rounded-lg border px-2 py-1 text-[11px] font-bold transition ${
+                                  l.priceType === 'wholesale'
+                                    ? 'border-gold/50 bg-gold/15 text-goldink'
+                                    : 'border-wood-light bg-wood-white text-wood-medium'
+                                } ${l.wholesalePrice <= 0 ? 'opacity-50' : ''}`}
+                              >
+                                {l.priceType === 'wholesale' ? t('priceWholesale') : t('priceRetail')}
+                              </button>
+                              <div className="text-end">
+                                <p className="text-mono text-sm font-bold text-sage">
+                                  {formatMoney(l.quantity * l.unitPrice)}
+                                </p>
+                                <p className="text-mono text-[10px] text-wood-medium">
+                                  {l.quantity} × {formatMoney(l.unitPrice)}
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </motion.div>
                       )

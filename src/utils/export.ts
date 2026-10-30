@@ -152,7 +152,7 @@ export const restoreData = async (file: File): Promise<RestoreReport> => {
     let written = 0
     for (const c of data.clients.clients) {
       if (existing.has(`${c.name.toLowerCase()}|${c.phone}`)) continue
-      await db.createClient({ name: c.name, phone: c.phone })
+      await db.createClient({ name: c.name, phone: c.phone, priceType: c.priceType ?? 'retail' })
       written += 1
     }
     count('clients', written)

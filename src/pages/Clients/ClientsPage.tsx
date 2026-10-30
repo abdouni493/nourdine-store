@@ -15,7 +15,7 @@ import { useTranslation } from '@/i18n/useTranslation'
 import { formatMoney, initials } from '@/utils/helpers'
 import { clientStats, remaining } from '@/utils/calculations'
 import { cardVariants, staggerContainer } from '@/utils/animations'
-import type { Client } from '@/types'
+import type { Client, PriceType } from '@/types'
 import { commit } from '@/utils/mutate'
 
 export const ClientsPage = () => {
@@ -26,7 +26,7 @@ export const ClientsPage = () => {
   const [search, setSearch] = useState('')
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<Client | null>(null)
-  const [form, setForm] = useState({ name: '', phone: '' })
+  const [form, setForm] = useState<{ name: string; phone: string; priceType: PriceType }>({ name: '', phone: '', priceType: 'retail' })
   const [deleting, setDeleting] = useState<Client | null>(null)
   const [history, setHistory] = useState<Client | null>(null)
 
@@ -37,12 +37,12 @@ export const ClientsPage = () => {
 
   const openNew = () => {
     setEditing(null)
-    setForm({ name: '', phone: '' })
+    setForm({ name: '', phone: '', priceType: 'retail' })
     setFormOpen(true)
   }
   const openEdit = (c: Client) => {
     setEditing(c)
-    setForm({ name: c.name, phone: c.phone })
+    setForm({ name: c.name, phone: c.phone, priceType: c.priceType })
     setFormOpen(true)
   }
 
@@ -80,7 +80,10 @@ export const ClientsPage = () => {
                   <div className="flex items-center gap-3">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-wood-btn font-bold text-accentfg">{initials(c.name)}</div>
                     <div className="min-w-0">
-                      <h3 className="truncate font-bold text-wood-dark">{c.name}</h3>
+                      <h3 className="flex items-center gap-1.5 truncate font-bold text-wood-dark">
+                        <span className="truncate">{c.name}</span>
+                        {c.priceType === 'wholesale' && <Badge tone="gold">{t('priceWholesale')}</Badge>}
+                      </h3>
                       <p className="flex items-center gap-1 text-xs text-wood-medium"><Phone size={12} />{c.phone || '—'}</p>
                     </div>
                   </div>
@@ -111,6 +114,25 @@ export const ClientsPage = () => {
         <div className="space-y-4">
           <Input label={t('name')} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
           <Input label={t('phone')} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+          <div>
+            <span className="mb-1.5 block text-sm font-medium text-wood-dark">{t('priceType')}</span>
+            <div className="grid grid-cols-2 gap-2">
+              {(['retail', 'wholesale'] as PriceType[]).map((pt) => (
+                <button
+                  key={pt}
+                  type="button"
+                  onClick={() => setForm({ ...form, priceType: pt })}
+                  className={`rounded-xl border px-3 py-2.5 text-sm font-semibold transition ${
+                    form.priceType === pt
+                      ? 'border-transparent bg-wood-btn text-accentfg'
+                      : 'border-wood-light text-wood-medium hover:bg-wood-cream/40'
+                  }`}
+                >
+                  {pt === 'retail' ? t('retailPrice') : t('wholesalePrice')}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </Modal>
 

@@ -7,7 +7,7 @@ interface ClientState {
   clients: Client[]
   loading: boolean
   load: () => Promise<void>
-  addClient: (data: Pick<Client, 'name' | 'phone'>) => Promise<Client>
+  addClient: (data: Pick<Client, 'name' | 'phone' | 'priceType'>) => Promise<Client>
   updateClient: (id: string, data: Partial<Client>) => Promise<void>
   deleteClient: (id: string) => Promise<void>
 }

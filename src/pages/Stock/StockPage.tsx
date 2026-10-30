@@ -285,7 +285,7 @@ export const StockPage = () => {
                   <MissingSizePill product={p} />
                 </div>
 
-                <div className="mt-3 grid grid-cols-3 gap-1.5 text-xs">
+                <div className="mt-3 grid grid-cols-2 gap-1.5 text-xs">
                   <div className="rounded-lg bg-wood-cream px-2 py-1.5">
                     <p className="truncate text-[10px] text-wood-medium">{t('purchasePrice')}</p>
                     <p className="text-mono truncate font-semibold text-wood-dark">
@@ -295,6 +295,12 @@ export const StockPage = () => {
                   <div className="rounded-lg bg-sage/10 px-2 py-1.5">
                     <p className="truncate text-[10px] text-wood-medium">{t('salePrice')}</p>
                     <p className="text-mono truncate font-semibold text-sage">{formatMoney(p.salePrice)}</p>
+                  </div>
+                  <div className="rounded-lg bg-gold/10 px-2 py-1.5">
+                    <p className="truncate text-[10px] text-wood-medium">{t('wholesalePrice')}</p>
+                    <p className="text-mono truncate font-semibold text-goldink">
+                      {p.wholesalePrice > 0 ? formatMoney(p.wholesalePrice) : '—'}
+                    </p>
                   </div>
                   <div className="rounded-lg bg-gold/10 px-2 py-1.5">
                     <p className="truncate text-[10px] text-wood-medium">{t('margin')}</p>
@@ -370,6 +376,7 @@ export const StockPage = () => {
                   <th className="px-4 py-3 text-start">{t('sizes')}</th>
                   <th className="px-4 py-3 text-end">{t('purchasePrice')}</th>
                   <th className="px-4 py-3 text-end">{t('salePrice')}</th>
+                  <th className="px-4 py-3 text-end">{t('wholesalePrice')}</th>
                   <th className="px-4 py-3 text-center">{t('totalStock')}</th>
                   <th className="px-4 py-3 text-center">{t('status')}</th>
                   <th className="px-4 py-3 text-center">{t('actions')}</th>
@@ -417,6 +424,9 @@ export const StockPage = () => {
                     </td>
                     <td className="text-mono px-4 py-2.5 text-end text-sage">
                       {formatMoney(p.salePrice)}
+                    </td>
+                    <td className="text-mono px-4 py-2.5 text-end text-goldink">
+                      {p.wholesalePrice > 0 ? formatMoney(p.wholesalePrice) : '—'}
                     </td>
                     <td className="text-mono px-4 py-2.5 text-center font-bold">{p.quantity}</td>
                     <td className="px-4 py-2.5">
@@ -562,6 +572,12 @@ export const StockPage = () => {
               <div className="rounded-xl bg-sage/10 px-3 py-2">
                 <p className="text-xs text-wood-medium">{t('salePrice')}</p>
                 <p className="text-mono font-bold text-sage">{formatMoney(viewing.salePrice)}</p>
+              </div>
+              <div className="rounded-xl bg-gold/10 px-3 py-2">
+                <p className="text-xs text-wood-medium">{t('wholesalePrice')}</p>
+                <p className="text-mono font-bold text-goldink">
+                  {viewing.wholesalePrice > 0 ? formatMoney(viewing.wholesalePrice) : '—'}
+                </p>
               </div>
               <div className="rounded-xl bg-wood-cream px-3 py-2">
                 <p className="text-xs text-wood-medium">{t('totalStock')}</p>

@@ -183,10 +183,10 @@ export const SalesPage = () => {
           <div className="space-y-4">
             <div className="-mx-1 overflow-x-auto px-1">
             <table className="w-full min-w-[480px] text-sm">
-              <thead><tr className="border-b border-wood-light/30 text-xs uppercase text-wood-medium"><th className="py-2 text-start">{t('productName')}</th><th className="py-2 text-center">{t('size')}</th><th className="py-2 text-center">{t('quantity')}</th><th className="py-2 text-end">{t('unitPrice')}</th><th className="py-2 text-end">{t('subtotal')}</th></tr></thead>
+              <thead><tr className="border-b border-wood-light/30 text-xs uppercase text-wood-medium"><th className="py-2 text-start">{t('productName')}</th><th className="py-2 text-center">{t('size')}</th><th className="py-2 text-center">{t('quantity')}</th><th className="py-2 text-center">{t('priceType')}</th><th className="py-2 text-end">{t('unitPrice')}</th><th className="py-2 text-end">{t('subtotal')}</th></tr></thead>
               <tbody>
                 {viewing.lines.map((l, i) => (
-                  <tr key={i} className="border-b border-wood-cream"><td className="py-2 font-medium">{l.productName}</td><td className="py-2 text-center"><span className="size-chip">{l.size || '—'}</span></td><td className="py-2 text-center">{l.quantity}</td><td className="text-mono py-2 text-end">{formatMoney(l.unitPrice)}</td><td className="text-mono py-2 text-end font-semibold">{formatMoney(l.quantity * l.unitPrice)}</td></tr>
+                  <tr key={i} className="border-b border-wood-cream"><td className="py-2 font-medium">{l.productName}</td><td className="py-2 text-center"><span className="size-chip">{l.size || '—'}</span></td><td className="py-2 text-center">{l.quantity}</td><td className="py-2 text-center"><Badge tone={l.priceType === 'wholesale' ? 'gold' : 'neutral'}>{l.priceType === 'wholesale' ? t('priceWholesale') : t('priceRetail')}</Badge></td><td className="text-mono py-2 text-end">{formatMoney(l.unitPrice)}</td><td className="text-mono py-2 text-end font-semibold">{formatMoney(l.quantity * l.unitPrice)}</td></tr>
                 ))}
               </tbody>
             </table>

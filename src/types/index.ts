@@ -102,6 +102,8 @@ export interface Product {
   category: string
   purchasePrice: number
   salePrice: number
+  /** Wholesale ("gros") price. 0 means the article has none. */
+  wholesalePrice: number
   /**
    * Total units in stock. When `sizes` is non-empty this is always the sum of
    * the per-size quantities — use `syncQuantity()` after mutating sizes.
@@ -143,6 +145,8 @@ export interface PurchaseLine {
   quantity: number
   purchasePrice: number
   salePrice: number
+  /** Wholesale ("gros") sale price set on reception. 0 leaves it unchanged. */
+  wholesalePrice: number
   minQuantity: number
 }
 
@@ -178,6 +182,8 @@ export interface SaleLine {
   size: string
   quantity: number
   unitPrice: number
+  /** Which price list the line was charged at. */
+  priceType: PriceType
 }
 
 export interface Sale {
@@ -199,10 +205,15 @@ export interface Sale {
 // Clients
 // ----------------------------------------------------------------------------
 
+/** `retail` is the normal sale price, `wholesale` the "gros" price. */
+export type PriceType = 'retail' | 'wholesale'
+
 export interface Client {
   id: string
   name: string
   phone: string
+  /** The price list this client buys at by default. */
+  priceType: PriceType
   createdAt: string
 }
 

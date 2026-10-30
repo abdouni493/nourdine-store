@@ -295,6 +295,7 @@ interface ProductRow {
   category: string | null
   purchase_price: number | string
   sale_price: number | string
+  wholesale_price: number | string | null
   quantity: number
   min_quantity: number
   size_category: SizeCategory
@@ -318,6 +319,7 @@ const toProduct = (r: ProductRow): Product => ({
   category: r.category ?? '',
   purchasePrice: num(r.purchase_price),
   salePrice: num(r.sale_price),
+  wholesalePrice: num(r.wholesale_price ?? 0),
   quantity: r.quantity ?? 0,
   minQuantity: r.min_quantity ?? 0,
   sizeCategory: r.size_category,
@@ -363,6 +365,7 @@ const productColumns = (data: Partial<Product>): Record<string, unknown> => {
   if (data.category !== undefined) row.category = data.category
   if (data.purchasePrice !== undefined) row.purchase_price = data.purchasePrice
   if (data.salePrice !== undefined) row.sale_price = data.salePrice
+  if (data.wholesalePrice !== undefined) row.wholesale_price = data.wholesalePrice
   if (data.minQuantity !== undefined) row.min_quantity = data.minQuantity
   if (data.sizeCategory !== undefined) row.size_category = data.sizeCategory
   if (data.color !== undefined) row.color = data.color
@@ -464,26 +467,39 @@ export const adjustStock = async (
 //  CLIENTS & SUPPLIERS
 // ============================================================================
 
-export const fetchClients = async (): Promise<Client[]> =>
-  rows<{ id: string; name: string; phone: string | null; created_at: string }>(
-    await db().from('clients').select('*').order('created_at', { ascending: false }),
-  ).map((r) => ({ id: r.id, name: r.name, phone: r.phone ?? '', createdAt: r.created_at }))
+type ClientRow = { id: string; name: string; phone: string | null; price_type: string | null; created_at: string }
 
-export const createClient = async (data: Pick<Client, 'name' | 'phone'>): Promise<Client> => {
+const toClient = (r: ClientRow): Client => ({
+  id: r.id,
+  name: r.name,
+  phone: r.phone ?? '',
+  priceType: r.price_type === 'wholesale' ? 'wholesale' : 'retail',
+  createdAt: r.created_at,
+})
+
+export const fetchClients = async (): Promise<Client[]> =>
+  rows<ClientRow>(
+    await db().from('clients').select('*').order('created_at', { ascending: false }),
+  ).map(toClient)
+
+export const createClient = async (
+  data: Pick<Client, 'name' | 'phone' | 'priceType'>,
+): Promise<Client> => {
   const r = ok(
     await db()
       .from('clients')
-      .insert({ name: data.name, phone: data.phone ?? '' })
+      .insert({ name: data.name, phone: data.phone ?? '', price_type: data.priceType ?? 'retail' })
       .select('*')
       .single(),
-  ) as { id: string; name: string; phone: string | null; created_at: string }
-  return { id: r.id, name: r.name, phone: r.phone ?? '', createdAt: r.created_at }
+  ) as ClientRow
+  return toClient(r)
 }
 
 export const updateClient = async (id: string, data: Partial<Client>): Promise<void> => {
   const row: Record<string, unknown> = {}
   if (data.name !== undefined) row.name = data.name
   if (data.phone !== undefined) row.phone = data.phone
+  if (data.priceType !== undefined) row.price_type = data.priceType
   const { error } = await db().from('clients').update(row).eq('id', id)
   if (error) throw new Error(error.message)
 }
@@ -570,6 +586,7 @@ const toPurchase = (r: Record<string, any>): Purchase => ({
       quantity: l.quantity,
       purchasePrice: num(l.purchase_price),
       salePrice: num(l.sale_price),
+      wholesalePrice: num(l.wholesale_price ?? 0),
       minQuantity: l.min_quantity ?? 0,
     }),
   ),
@@ -607,6 +624,7 @@ const purchaseLineRows = (purchaseId: string, lines: PurchaseLine[]) =>
     quantity: l.quantity,
     purchase_price: l.purchasePrice,
     sale_price: l.salePrice,
+    wholesale_price: l.wholesalePrice ?? 0,
     min_quantity: l.minQuantity ?? 0,
   }))
 
@@ -717,6 +735,7 @@ const toSale = (r: Record<string, any>): Sale => ({
       size: l.size ?? '',
       quantity: l.quantity,
       unitPrice: num(l.unit_price),
+      priceType: l.price_type === 'wholesale' ? 'wholesale' : 'retail',
     }),
   ),
   subtotal: num(r.subtotal),
@@ -754,6 +773,7 @@ const saleLineRows = (saleId: string, lines: SaleLine[]) =>
     size: l.size ?? '',
     quantity: l.quantity,
     unit_price: l.unitPrice,
+    price_type: l.priceType ?? 'retail',
   }))
 
 /**
@@ -1642,6 +1662,7 @@ export const fetchShopProducts = async (): Promise<ShopProductRow[]> => {
     category: r.category ?? '',
     purchasePrice: 0,
     salePrice: num(r.price),
+    wholesalePrice: 0,
     quantity: r.quantity ?? 0,
     minQuantity: 0,
     sizeCategory: r.size_category,

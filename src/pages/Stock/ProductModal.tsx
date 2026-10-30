@@ -172,6 +172,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
   /** Prices, editable here; a later purchase can still update them. */
   const [purchasePrice, setPurchasePrice] = useState(0)
   const [salePrice, setSalePrice] = useState(0)
+  const [wholesalePrice, setWholesalePrice] = useState(0)
   const [saving, setSaving] = useState(false)
 
   const {
@@ -223,6 +224,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
       setMinStock(product.minQuantity)
       setPurchasePrice(product.purchasePrice ?? 0)
       setSalePrice(product.salePrice ?? 0)
+      setWholesalePrice(product.wholesalePrice ?? 0)
     } else {
       reset({
         productType: 'clothing',
@@ -272,6 +274,7 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
       images,
       purchasePrice: Math.max(0, purchasePrice),
       salePrice: Math.max(0, salePrice),
+      wholesalePrice: Math.max(0, wholesalePrice),
       ...(isGarment
         ? {
             sizeCategory: data.sizeCategory,
@@ -653,6 +656,19 @@ export const ProductModal = ({ open, onClose, product, onSaved, presetName }: Pr
                 value={salePrice || ''}
                 placeholder="0"
                 onChange={(e) => setSalePrice(Number(e.target.value) || 0)}
+                className="input-wood text-mono"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="label-wood">{t('wholesalePrice')}</label>
+              <input
+                type="number"
+                min={0}
+                step="0.01"
+                inputMode="decimal"
+                value={wholesalePrice || ''}
+                placeholder="0"
+                onChange={(e) => setWholesalePrice(Number(e.target.value) || 0)}
                 className="input-wood text-mono"
               />
             </div>
